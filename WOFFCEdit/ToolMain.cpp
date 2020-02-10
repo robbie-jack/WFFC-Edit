@@ -306,15 +306,32 @@ void ToolMain::UpdateInput(MSG * msg)
 		break;
 
 	case WM_MOUSEMOVE:
+		m_toolInputCommands.mouseXLast = m_toolInputCommands.mouseX;
+		m_toolInputCommands.mouseYLast = m_toolInputCommands.mouseY;
+		m_toolInputCommands.mouseX = GET_X_LPARAM(msg->lParam);
+		m_toolInputCommands.mouseY = GET_Y_LPARAM(msg->lParam);
 		break;
 
 	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
 		//set some flag for the mouse button in inputcommands
+		m_toolInputCommands.mouseLeft = true;
+		break;
+
+	case WM_LBUTTONUP:
+		m_toolInputCommands.mouseLeft = false;
+		break;
+
+	case WM_RBUTTONDOWN:
+		m_toolInputCommands.mouseRight = true;
+		break;
+
+	case WM_RBUTTONUP:
+		m_toolInputCommands.mouseRight = false;
 		break;
 
 	}
 	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
-	//WASD movement
+	//WASDQE movement
 	if (m_keyArray['W'])
 	{
 		m_toolInputCommands.forward = true;
@@ -326,6 +343,7 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.back = true;
 	}
 	else m_toolInputCommands.back = false;
+
 	if (m_keyArray['A'])
 	{
 		m_toolInputCommands.left = true;
@@ -337,17 +355,43 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.right = true;
 	}
 	else m_toolInputCommands.right = false;
-	//rotation
+
+	if (m_keyArray['Q'])
+	{
+		m_toolInputCommands.down = true;
+	}
+	else m_toolInputCommands.down = false;
+
 	if (m_keyArray['E'])
+	{
+		m_toolInputCommands.up = true;
+	}
+	else m_toolInputCommands.up = false;
+
+	//rotation
+	if (m_keyArray['L'])
 	{
 		m_toolInputCommands.rotRight = true;
 	}
 	else m_toolInputCommands.rotRight = false;
-	if (m_keyArray['Q'])
+
+	if (m_keyArray['J'])
 	{
 		m_toolInputCommands.rotLeft = true;
 	}
 	else m_toolInputCommands.rotLeft = false;
+
+	if (m_keyArray['I'])
+	{
+		m_toolInputCommands.rotUp = true;
+	}
+	else m_toolInputCommands.rotUp = false;
+
+	if (m_keyArray['K'])
+	{
+		m_toolInputCommands.rotDown = true;
+	}
+	else m_toolInputCommands.rotDown = false;
 
 	//WASD
 }

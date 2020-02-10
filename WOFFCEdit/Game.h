@@ -11,6 +11,7 @@
 #include "DisplayChunk.h"
 #include "ChunkObject.h"
 #include "InputCommands.h"
+#include "Camera.h"
 #include <vector>
 
 
@@ -69,16 +70,8 @@ private:
 	DisplayChunk						m_displayChunk;
 	InputCommands						m_InputCommands;
 
-	//functionality
-	float								m_movespeed;
-
 	//camera
-	DirectX::SimpleMath::Vector3		m_camPosition;
-	DirectX::SimpleMath::Vector3		m_camOrientation;
-	DirectX::SimpleMath::Vector3		m_camLookAt;
-	DirectX::SimpleMath::Vector3		m_camLookDirection;
-	DirectX::SimpleMath::Vector3		m_camRight;
-	float m_camRotRate;
+	std::unique_ptr<Camera>				m_cam;
 
 	//control variables
 	bool m_grid;							//grid rendering on / off
