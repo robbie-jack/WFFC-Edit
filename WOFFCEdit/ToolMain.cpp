@@ -18,7 +18,18 @@ ToolMain::ToolMain()
 	m_toolInputCommands.back		= false;
 	m_toolInputCommands.left		= false;
 	m_toolInputCommands.right		= false;
-	
+	m_toolInputCommands.up			= false;
+	m_toolInputCommands.down		= false;
+	m_toolInputCommands.rotRight	= false;
+	m_toolInputCommands.rotLeft		= false;
+	m_toolInputCommands.rotUp		= false;
+	m_toolInputCommands.rotDown		= false;
+	m_toolInputCommands.mouseRight	= false;
+	m_toolInputCommands.mouseLeft	= false;
+	m_toolInputCommands.mouseX		= 0;
+	m_toolInputCommands.mouseY		= 0;
+	m_toolInputCommands.mouseXLast	= 0;
+	m_toolInputCommands.mouseYLast	= 0;
 }
 
 
