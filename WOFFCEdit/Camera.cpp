@@ -70,6 +70,16 @@ void Camera::Update(InputCommands InputCommands)
 		m_camOrientation.x = 90;
 	}
 
+	if (m_camOrientation.y > 360)
+	{
+		m_camOrientation.y = 0;
+	}
+
+	if (m_camOrientation.y < 0)
+	{
+		m_camOrientation.y = 360;
+	}
+
 	//create look direction from Euler angles in m_camOrientation
 	m_camLookDirection.x = cos((m_camOrientation.x) * 3.1415 / 180) * cos((m_camOrientation.y) * 3.1415 / 180);
 	m_camLookDirection.y = sin((m_camOrientation.x) * 3.1415 / 180);

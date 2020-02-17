@@ -317,29 +317,29 @@ void ToolMain::UpdateInput(MSG * msg)
 		break;
 
 	case WM_MOUSEMOVE:
-		m_toolInputCommands.mouseXLast = m_toolInputCommands.mouseX;
-		m_toolInputCommands.mouseYLast = m_toolInputCommands.mouseY;
-		m_toolInputCommands.mouseX = GET_X_LPARAM(msg->lParam);
-		m_toolInputCommands.mouseY = GET_Y_LPARAM(msg->lParam);
+		m_toolInputCommands.mouseXLast	= m_toolInputCommands.mouseX;
+		m_toolInputCommands.mouseYLast	= m_toolInputCommands.mouseY;
+		m_toolInputCommands.mouseX		= GET_X_LPARAM(msg->lParam);
+		m_toolInputCommands.mouseY		= GET_Y_LPARAM(msg->lParam);
+		
 		break;
 
 	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
 		//set some flag for the mouse button in inputcommands
-		m_toolInputCommands.mouseLeft = true;
+		m_toolInputCommands.mouseLeft	= true;
 		break;
 
 	case WM_LBUTTONUP:
-		m_toolInputCommands.mouseLeft = false;
+		m_toolInputCommands.mouseLeft	= false;
 		break;
 
 	case WM_RBUTTONDOWN:
-		m_toolInputCommands.mouseRight = true;
+		m_toolInputCommands.mouseRight	= true;
 		break;
 
 	case WM_RBUTTONUP:
-		m_toolInputCommands.mouseRight = false;
+		m_toolInputCommands.mouseRight	= false;
 		break;
-
 	}
 	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
 	//WASDQE movement

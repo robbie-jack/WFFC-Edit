@@ -177,9 +177,9 @@ void Game::Render()
 	//CAMERA POSITION ON HUD
 	m_sprites->Begin();
 	WCHAR   Buffer[256];
-	std::wstring var =	L"Cam X: " + std::to_wstring(m_cam->GetCamPosition().x) + L"Cam Z: " + std::to_wstring(m_cam->GetCamPosition().z) + 
-						L"CamRot X: " + std::to_wstring(m_cam->GetCamLookDirection().x) + L"CamRot Y: " + std::to_wstring(m_cam->GetCamLookDirection().y);
-	m_font->DrawString(m_sprites.get(), var.c_str() , XMFLOAT2(100, 10), Colors::Yellow);
+	std::wstring var =	L"Cam X: " + std::to_wstring(m_cam->GetCamPosition().x) + L" Cam Z: " + std::to_wstring(m_cam->GetCamPosition().z) + 
+						L" CamRot X: " + std::to_wstring(m_cam->GetCamOrientation().x) + L" CamRot Y: " + std::to_wstring(m_cam->GetCamOrientation().y);
+	m_font->DrawString(m_sprites.get(), var.c_str() , XMFLOAT2(20, 10), Colors::Yellow);
 	m_sprites->End();
 
 	//RENDER OBJECTS FROM SCENEGRAPH
