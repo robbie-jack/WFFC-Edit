@@ -238,7 +238,7 @@ void Game::Clear()
     m_deviceResources->PIXEndEvent();
 }
 
-int Game::MousePicking()
+std::vector<int> Game::MousePicking(std::vector<int> currentIDs)
 {
 	int selectedID = -1;
 	float pickedDistance = 0;
@@ -294,8 +294,52 @@ int Game::MousePicking()
 		}
 	}
 
-	//if we got a hit.  return it.  
-	return selectedID;
+	std::vector<int>::iterator currentID;
+	bool isSelected = false; // Boolean for checking is objetc is already selected
+
+	// Check if picked object is already selected
+	for (currentID = currentIDs.begin(); currentID < currentIDs.end(); currentID++)
+	{
+		if (selectedID == *currentID)
+		{
+			isSelected = true;
+			break;
+		}
+	}
+
+	if (selectedID != -1)
+	{
+		if (m_InputCommands.shift_Down)
+		{
+			// If object is selected remove it, else add it
+			if (isSelected)
+			{
+				currentIDs.erase(currentID);
+			}
+			else
+			{
+				currentIDs.push_back(selectedID);
+			}
+		}
+		else
+		{
+			// If picked object is only one selected, deselect, else select object
+			if (isSelected && currentIDs.size() == 1)
+			{
+				currentIDs.clear();
+			}
+			else
+			{
+				currentIDs.clear();
+				currentIDs.push_back(selectedID);
+			}
+		}
+	}
+	else
+		currentIDs.clear();
+
+	//if we got a hit.  return it. 
+	return currentIDs;
 }
 
 void XM_CALLCONV Game::DrawGrid(FXMVECTOR xAxis, FXMVECTOR yAxis, FXMVECTOR origin, size_t xdivs, size_t ydivs, GXMVECTOR color)

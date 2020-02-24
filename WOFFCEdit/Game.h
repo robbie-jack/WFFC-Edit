@@ -35,7 +35,7 @@ public:
 	// Rendering helpers
 	void Clear();
 
-	int MousePicking();
+	std::vector<int> MousePicking(std::vector<int> currentIDs);
 
 	// IDeviceNotify
 	virtual void OnDeviceLost() override;
