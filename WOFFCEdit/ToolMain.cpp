@@ -20,16 +20,12 @@ ToolMain::ToolMain()
 	m_toolInputCommands.right		= false;
 	m_toolInputCommands.up			= false;
 	m_toolInputCommands.down		= false;
-	m_toolInputCommands.rotRight	= false;
-	m_toolInputCommands.rotLeft		= false;
-	m_toolInputCommands.rotUp		= false;
-	m_toolInputCommands.rotDown		= false;
-	m_toolInputCommands.mouseRight	= false;
-	m_toolInputCommands.mouseLeft	= false;
-	m_toolInputCommands.mouseX		= 0;
-	m_toolInputCommands.mouseY		= 0;
-	m_toolInputCommands.mouseXLast	= 0;
-	m_toolInputCommands.mouseYLast	= 0;
+	m_toolInputCommands.mouse_RB_Down	= false;
+	m_toolInputCommands.mouse_LB_Down	= false;
+	m_toolInputCommands.mouse_X		= 0;
+	m_toolInputCommands.mouse_Y		= 0;
+	m_toolInputCommands.mouse_X_Last	= 0;
+	m_toolInputCommands.mouse_Y_Last	= 0;
 }
 
 
@@ -298,6 +294,12 @@ void ToolMain::Tick(MSG *msg)
 		//add to scenegraph
 		//resend scenegraph to Direct X renderer
 
+	if (m_toolInputCommands.mouse_LB_Down)
+	{
+		m_selectedObject = m_d3dRenderer.MousePicking();
+		m_toolInputCommands.mouse_LB_Down = false;
+	}
+
 	//Renderer Update Call
 	m_d3dRenderer.Tick(&m_toolInputCommands);
 }
@@ -317,28 +319,28 @@ void ToolMain::UpdateInput(MSG * msg)
 		break;
 
 	case WM_MOUSEMOVE:
-		m_toolInputCommands.mouseXLast	= m_toolInputCommands.mouseX;
-		m_toolInputCommands.mouseYLast	= m_toolInputCommands.mouseY;
-		m_toolInputCommands.mouseX		= GET_X_LPARAM(msg->lParam);
-		m_toolInputCommands.mouseY		= GET_Y_LPARAM(msg->lParam);
+		m_toolInputCommands.mouse_X_Last	= m_toolInputCommands.mouse_X;
+		m_toolInputCommands.mouse_Y_Last	= m_toolInputCommands.mouse_Y;
+		m_toolInputCommands.mouse_X		= GET_X_LPARAM(msg->lParam);
+		m_toolInputCommands.mouse_Y		= GET_Y_LPARAM(msg->lParam);
 		
 		break;
 
 	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
 		//set some flag for the mouse button in inputcommands
-		m_toolInputCommands.mouseLeft	= true;
+		m_toolInputCommands.mouse_LB_Down	= true;
 		break;
 
 	case WM_LBUTTONUP:
-		m_toolInputCommands.mouseLeft	= false;
+		m_toolInputCommands.mouse_LB_Down	= false;
 		break;
 
 	case WM_RBUTTONDOWN:
-		m_toolInputCommands.mouseRight	= true;
+		m_toolInputCommands.mouse_RB_Down	= true;
 		break;
 
 	case WM_RBUTTONUP:
-		m_toolInputCommands.mouseRight	= false;
+		m_toolInputCommands.mouse_RB_Down	= false;
 		break;
 	}
 	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
@@ -378,31 +380,6 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.up = true;
 	}
 	else m_toolInputCommands.up = false;
-
-	//rotation
-	if (m_keyArray['L'])
-	{
-		m_toolInputCommands.rotRight = true;
-	}
-	else m_toolInputCommands.rotRight = false;
-
-	if (m_keyArray['J'])
-	{
-		m_toolInputCommands.rotLeft = true;
-	}
-	else m_toolInputCommands.rotLeft = false;
-
-	if (m_keyArray['I'])
-	{
-		m_toolInputCommands.rotUp = true;
-	}
-	else m_toolInputCommands.rotUp = false;
-
-	if (m_keyArray['K'])
-	{
-		m_toolInputCommands.rotDown = true;
-	}
-	else m_toolInputCommands.rotDown = false;
 
 	//WASD
 }

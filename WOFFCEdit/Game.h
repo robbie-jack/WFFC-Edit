@@ -35,6 +35,8 @@ public:
 	// Rendering helpers
 	void Clear();
 
+	int MousePicking();
+
 	// IDeviceNotify
 	virtual void OnDeviceLost() override;
 	virtual void OnDeviceRestored() override;
@@ -72,6 +74,8 @@ private:
 
 	//camera
 	std::unique_ptr<Camera>				m_cam;
+
+	RECT								m_ScreenDimensions;
 
 	//control variables
 	bool m_grid;							//grid rendering on / off

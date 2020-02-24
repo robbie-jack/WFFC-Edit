@@ -32,31 +32,13 @@ void Camera::Update(InputCommands InputCommands)
 	planarMotionVector.y = 0.0;
 
 	// Mouse Rotation Input
-	if (InputCommands.mouseRight)
+	if (InputCommands.mouse_RB_Down)
 	{
-		int dx = InputCommands.mouseX - InputCommands.mouseXLast;
-		int dy = InputCommands.mouseY - InputCommands.mouseYLast;
+		int dx = InputCommands.mouse_X - InputCommands.mouse_X_Last;
+		int dy = InputCommands.mouse_Y - InputCommands.mouse_Y_Last;
 
 		m_camOrientation.y += dx * m_camSensitivity;
 		m_camOrientation.x -= dy * m_camSensitivity;
-	}
-
-	// Keyboard Rotation Input
-	if (InputCommands.rotLeft)
-	{
-		m_camOrientation.y -= m_camRotRate;
-	}
-	if (InputCommands.rotRight)
-	{
-		m_camOrientation.y += m_camRotRate;
-	}
-	if (InputCommands.rotDown && m_camOrientation.x > -90)
-	{
-		m_camOrientation.x -= m_camRotRate;
-	}
-	if (InputCommands.rotUp && m_camOrientation.x < 90)
-	{
-		m_camOrientation.x += m_camRotRate;
 	}
 
 	// Max/Min Camera Pitch
