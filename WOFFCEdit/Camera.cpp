@@ -11,6 +11,7 @@ Camera::Camera(CameraMode camMode, float camMoveSpeed, float camRotRate, float c
 	m_camMoveSpeed = camMoveSpeed;
 	m_camRotRate = camRotRate;
 	m_camSensitivity = camSensitivity;
+	m_camDistance = 10.0f;
 
 	m_camPosition = camPosition;
 	m_camOrientation = camOrientation;
@@ -116,13 +117,25 @@ void Camera::FreeCamUpdate(InputCommands InputCommands)
 void Camera::OrbitCamUpdate(InputCommands InputCommands)
 {
 	//process input and update stuff
+	if (InputCommands.forward)
+	{
+		m_camDistance -= m_camMoveSpeed;
+	}
+	if (InputCommands.back)
+	{
+		m_camDistance += m_camMoveSpeed;
+	}
+
+	if (m_camDistance < 0.1f)
+		m_camDistance = 0.1f;
+
 	if (InputCommands.up)
 	{
-		m_camOrientation.x += m_camRotRate;
+		m_camOrientation.x -= m_camRotRate;
 	}
 	if (InputCommands.down)
 	{
-		m_camOrientation.x -= m_camRotRate;
+		m_camOrientation.x += m_camRotRate;
 	}
 	if (InputCommands.right)
 	{
@@ -161,5 +174,5 @@ void Camera::OrbitCamUpdate(InputCommands InputCommands)
 
 	m_camLookDirection.Normalize();
 
-	m_camPosition = m_camLookAt - m_camLookDirection;
+	m_camPosition = m_camLookAt - (m_camLookDirection * m_camDistance);
 }

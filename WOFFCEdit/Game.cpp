@@ -120,26 +120,27 @@ void Game::Update(DX::StepTimer const& timer)
 		switch (m_cam->GetCamMode())
 		{
 		case FREE:
-			m_cam->SetCamMode(ORBIT);
-			break;
-		case ORBIT:
-			m_cam->SetCamMode(FREE);
-
 			if (!m_currentIDs.empty())
 			{
-				DirectX::SimpleMath::Vector3 object_pos;
-				
+				m_cam->SetCamMode(ORBIT);
+
+				DirectX::SimpleMath::Vector3 camera_pos;
+
 				for (auto display_object : m_displayList)
 				{
-					if (display_object.m_ID = m_currentIDs[0])
+					if (display_object.m_ID == m_currentIDs[0])
 					{
-						object_pos = XMVector3Transform(display_object.m_position, m_world);
+						camera_pos = XMVector3Transform(display_object.m_position, m_world);
+						//camera_pos = display_object.m_position;
 					}
 				}
 
-				m_cam->SetCamLookAt(object_pos);
+				m_cam->SetCamLookAt(camera_pos);
 			}
 
+			break;
+		case ORBIT:
+			m_cam->SetCamMode(FREE);
 			break;
 		}
 	}

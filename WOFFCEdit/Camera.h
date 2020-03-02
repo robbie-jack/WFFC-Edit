@@ -54,6 +54,7 @@ private:
 	float								m_camRotRate;
 	float								m_camMoveSpeed;
 	float								m_camSensitivity;
+	float								m_camDistance;
 
 	CameraMode							m_camMode;
 
