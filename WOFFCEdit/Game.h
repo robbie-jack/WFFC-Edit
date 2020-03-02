@@ -72,6 +72,8 @@ private:
 	DisplayChunk						m_displayChunk;
 	InputCommands						m_InputCommands;
 
+	std::vector<int>					m_currentIDs;
+
 	//camera
 	std::unique_ptr<Camera>				m_cam;
 

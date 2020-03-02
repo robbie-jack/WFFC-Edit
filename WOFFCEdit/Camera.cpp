@@ -3,9 +3,11 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-Camera::Camera(float camMoveSpeed, float camRotRate, float camSensitivity, Vector3 camPosition, Vector3 camOrientation, Vector3 camLookAt, Vector3 camLookDirection, Vector3 camForward, Vector3 camRight, Vector3 camUp)
+Camera::Camera(CameraMode camMode, float camMoveSpeed, float camRotRate, float camSensitivity, Vector3 camPosition, Vector3 camOrientation, Vector3 camLookAt, Vector3 camLookDirection, Vector3 camForward, Vector3 camRight, Vector3 camUp)
 {
 	// Initialise Camera Variables
+	m_camMode = camMode;
+
 	m_camMoveSpeed = camMoveSpeed;
 	m_camRotRate = camRotRate;
 	m_camSensitivity = camSensitivity;
@@ -26,19 +28,28 @@ Camera::~Camera()
 
 void Camera::Update(InputCommands InputCommands)
 {
-	//TODO  any more complex than this, and the camera should be abstracted out to somewhere else
-	//camera motion is on a plane, so kill the 7 component of the look direction
-	Vector3 planarMotionVector = m_camLookDirection;
-	planarMotionVector.y = 0.0;
+	switch (m_camMode)
+	{
+	case FREE:
+		FreeCamUpdate(InputCommands);
+		break;
 
+	case ORBIT:
+		OrbitCamUpdate(InputCommands);
+		break;
+	}
+}
+
+void Camera::FreeCamUpdate(InputCommands InputCommands)
+{
 	// Mouse Rotation Input
 	if (InputCommands.mouse_RB_Down)
 	{
-		int dx = InputCommands.mouse_X - InputCommands.mouse_X_Last;
-		int dy = InputCommands.mouse_Y - InputCommands.mouse_Y_Last;
+		int dx = InputCommands.mouse_Y - InputCommands.mouse_Y_Last;
+		int dy = InputCommands.mouse_X - InputCommands.mouse_X_Last;
 
-		m_camOrientation.y += dx * m_camSensitivity;
-		m_camOrientation.x -= dy * m_camSensitivity;
+		m_camOrientation.y += dy * m_camSensitivity;
+		m_camOrientation.x -= dx * m_camSensitivity;
 	}
 
 	// Max/Min Camera Pitch
@@ -100,4 +111,55 @@ void Camera::Update(InputCommands InputCommands)
 
 	//update lookat point
 	m_camLookAt = m_camPosition + m_camLookDirection;
+}
+
+void Camera::OrbitCamUpdate(InputCommands InputCommands)
+{
+	//process input and update stuff
+	if (InputCommands.up)
+	{
+		m_camOrientation.x += m_camRotRate;
+	}
+	if (InputCommands.down)
+	{
+		m_camOrientation.x -= m_camRotRate;
+	}
+	if (InputCommands.right)
+	{
+		m_camOrientation.y -= m_camRotRate;
+	}
+	if (InputCommands.left)
+	{
+		m_camOrientation.y += m_camRotRate;
+	}
+
+	// Max/Min Camera Pitch
+	if (m_camOrientation.x < -90)
+	{
+		m_camOrientation.x = -90;
+	}
+
+	if (m_camOrientation.x > 90)
+	{
+		m_camOrientation.x = 90;
+	}
+
+	if (m_camOrientation.y > 360)
+	{
+		m_camOrientation.y = 0;
+	}
+
+	if (m_camOrientation.y < 0)
+	{
+		m_camOrientation.y = 360;
+	}
+
+	//create look direction from Euler angles in m_camOrientation
+	m_camLookDirection.x = cos((m_camOrientation.x) * 3.1415 / 180) * cos((m_camOrientation.y) * 3.1415 / 180);
+	m_camLookDirection.y = sin((m_camOrientation.x) * 3.1415 / 180);
+	m_camLookDirection.z = cos((m_camOrientation.x) * 3.1415 / 180) * sin((m_camOrientation.y) * 3.1415 / 180);
+
+	m_camLookDirection.Normalize();
+
+	m_camPosition = m_camLookAt - m_camLookDirection;
 }

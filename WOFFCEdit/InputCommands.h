@@ -9,6 +9,7 @@ struct InputCommands
 	bool up;
 	bool down;
 	bool shift_Down;
+	bool switch_Cam_Mode;
 	bool mouse_RB_Down;
 	bool mouse_LB_Down;
 	int mouse_X;

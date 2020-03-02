@@ -21,6 +21,7 @@ ToolMain::ToolMain()
 	m_toolInputCommands.up			= false;
 	m_toolInputCommands.down		= false;
 	m_toolInputCommands.shift_Down = false;
+	m_toolInputCommands.switch_Cam_Mode = false;
 	m_toolInputCommands.mouse_RB_Down	= false;
 	m_toolInputCommands.mouse_LB_Down	= false;
 	m_toolInputCommands.mouse_X		= 0;
@@ -381,6 +382,12 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.up = true;
 	}
 	else m_toolInputCommands.up = false;
+
+	if (m_keyArray['C'])
+	{
+		m_toolInputCommands.switch_Cam_Mode = true;
+	}
+	else m_toolInputCommands.switch_Cam_Mode = false;
 
 	if (m_keyArray[VK_SHIFT])
 	{

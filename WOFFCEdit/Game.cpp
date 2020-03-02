@@ -114,6 +114,36 @@ void Game::Tick(InputCommands *Input)
 // Updates the world.
 void Game::Update(DX::StepTimer const& timer)
 {
+	// Switch Camera Mode
+	if (m_InputCommands.switch_Cam_Mode)
+	{
+		switch (m_cam->GetCamMode())
+		{
+		case FREE:
+			m_cam->SetCamMode(ORBIT);
+			break;
+		case ORBIT:
+			m_cam->SetCamMode(FREE);
+
+			if (!m_currentIDs.empty())
+			{
+				DirectX::SimpleMath::Vector3 object_pos;
+				
+				for (auto display_object : m_displayList)
+				{
+					if (display_object.m_ID = m_currentIDs[0])
+					{
+						object_pos = XMVector3Transform(display_object.m_position, m_world);
+					}
+				}
+
+				m_cam->SetCamLookAt(object_pos);
+			}
+
+			break;
+		}
+	}
+
 	// Update Camera
 	m_cam->Update(m_InputCommands);
 
@@ -179,7 +209,7 @@ void Game::Render()
 	//CAMERA POSITION ON HUD
 	m_sprites->Begin();
 	WCHAR   Buffer[256];
-	std::wstring var =	L"Cam X: " + std::to_wstring(m_cam->GetCamPosition().x) + L" Cam Z: " + std::to_wstring(m_cam->GetCamPosition().z) + 
+	std::wstring var =	L"Cam X: " + std::to_wstring(m_cam->GetCamPosition().x) + L" Cam Y: " + std::to_wstring(m_cam->GetCamPosition().y) + L" Cam Z: " + std::to_wstring(m_cam->GetCamPosition().z) +
 						L" CamRot X: " + std::to_wstring(m_cam->GetCamOrientation().x) + L" CamRot Y: " + std::to_wstring(m_cam->GetCamOrientation().y);
 	m_font->DrawString(m_sprites.get(), var.c_str() , XMFLOAT2(20, 10), Colors::Yellow);
 	m_sprites->End();
@@ -338,7 +368,8 @@ std::vector<int> Game::MousePicking(std::vector<int> currentIDs)
 	else
 		currentIDs.clear();
 
-	//if we got a hit.  return it. 
+	//if we got a hit.  return it.
+	m_currentIDs = currentIDs;
 	return currentIDs;
 }
 
