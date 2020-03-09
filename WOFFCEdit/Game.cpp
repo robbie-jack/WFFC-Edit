@@ -207,13 +207,6 @@ void Game::Render()
 		const XMVECTORF32 yaxis = { 0.f, 0.f, 512.f };
 		DrawGrid(xaxis, yaxis, g_XMZero, 512, 512, Colors::Gray);
 	}
-	//CAMERA POSITION ON HUD
-	m_sprites->Begin();
-	WCHAR   Buffer[256];
-	std::wstring var =	L"Cam X: " + std::to_wstring(m_cam->GetCamPosition().x) + L" Cam Y: " + std::to_wstring(m_cam->GetCamPosition().y) + L" Cam Z: " + std::to_wstring(m_cam->GetCamPosition().z) +
-						L" CamRot X: " + std::to_wstring(m_cam->GetCamOrientation().x) + L" CamRot Y: " + std::to_wstring(m_cam->GetCamOrientation().y);
-	m_font->DrawString(m_sprites.get(), var.c_str() , XMFLOAT2(20, 10), Colors::Yellow);
-	m_sprites->End();
 
 	//RENDER OBJECTS FROM SCENEGRAPH
 	int numRenderObjects = m_displayList.size();
@@ -230,7 +223,7 @@ void Game::Render()
 
 		XMMATRIX local = m_world * XMMatrixTransformation(g_XMZero, Quaternion::Identity, scale, g_XMZero, rotate, translate);
 
-		m_displayList[i].m_model->Draw(context, *m_states, local, m_view, m_projection, false);	//last variable in draw,  make TRUE for wireframe
+		m_displayList[i].m_model->Draw(context, *m_states, local, m_view, m_projection, m_displayList[i].m_wireframe);	//last variable in draw,  make TRUE for wireframe
 
 		m_deviceResources->PIXEndEvent();
 	}
@@ -240,10 +233,18 @@ void Game::Render()
 	context->OMSetBlendState(m_states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(m_states->DepthDefault(),0);
 	context->RSSetState(m_states->CullNone());
-//	context->RSSetState(m_states->Wireframe());		//uncomment for wireframe
+	//context->RSSetState(m_states->Wireframe());		//uncomment for wireframe
 
 	//Render the batch,  This is handled in the Display chunk becuase it has the potential to get complex
 	m_displayChunk.RenderBatch(m_deviceResources);
+
+	//CAMERA POSITION ON HUD
+	/*m_sprites->Begin();
+	WCHAR   Buffer[256];
+	std::wstring var = L"Cam X: " + std::to_wstring(m_cam->GetCamPosition().x) + L" Cam Y: " + std::to_wstring(m_cam->GetCamPosition().y) + L" Cam Z: " + std::to_wstring(m_cam->GetCamPosition().z) +
+		L" CamRot X: " + std::to_wstring(m_cam->GetCamOrientation().x) + L" CamRot Y: " + std::to_wstring(m_cam->GetCamOrientation().y);
+	m_font->DrawString(m_sprites.get(), var.c_str(), XMFLOAT2(20, 10), Colors::Yellow);
+	m_sprites->End();*/
 
     m_deviceResources->Present();
 }

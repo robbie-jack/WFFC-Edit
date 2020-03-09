@@ -7,6 +7,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_FILE_SAVETERRAIN, &MFCMain::MenuFileSaveTerrain)
 	ON_COMMAND(ID_EDIT_SELECT, &MFCMain::MenuEditSelect)
 	ON_COMMAND(ID_BUTTON40001,	&MFCMain::ToolBarButton1)
+	//ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -116,10 +117,16 @@ void MFCMain::MenuEditSelect()
 
 void MFCMain::ToolBarButton1()
 {
-	
 	m_ToolSystem.onActionSave();
 }
 
+void MFCMain::ToolBarWireframe()
+{
+	for (auto sceneObject : m_ToolSystem.m_sceneGraph)
+	{
+		sceneObject.editor_wireframe = !sceneObject.editor_wireframe;
+	}
+}
 
 MFCMain::MFCMain()
 {
