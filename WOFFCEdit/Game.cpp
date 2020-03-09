@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "DisplayObject.h"
 #include <string>
+#include <iostream>
 
 
 using namespace DirectX;
@@ -124,18 +125,16 @@ void Game::Update(DX::StepTimer const& timer)
 			{
 				m_cam->SetCamMode(ORBIT);
 
-				DirectX::SimpleMath::Vector3 camera_pos;
-
 				for (auto display_object : m_displayList)
 				{
 					if (display_object.m_ID == m_currentIDs[0])
 					{
-						camera_pos = XMVector3Transform(display_object.m_position, m_world);
-						//camera_pos = display_object.m_position;
+						m_cam->SetCamLookAt(display_object.m_position);
+
+						std::cout << "Object Position X: " << display_object.m_position.x << " Y: " << display_object.m_position.y << " Z: " << display_object.m_position.z << std::endl;
+						std::cout << "Camera Look At X: " << m_cam->GetCamLookAt().x << " Y: " << m_cam->GetCamLookAt().y << " Z: " << m_cam->GetCamLookAt().z << std::endl;
 					}
 				}
-
-				m_cam->SetCamLookAt(camera_pos);
 			}
 
 			break;
@@ -164,6 +163,7 @@ void Game::Update(DX::StepTimer const& timer)
         {
             m_retryDefault = false;
             if (m_audEngine->Reset())
+            if (m_audEngine->Reset()
             {
                 // Restart looping audio
                 m_effect1->Play(true);
@@ -311,14 +311,14 @@ std::vector<int> Game::MousePicking(std::vector<int> currentIDs)
 			{
 				if (closestDistance == -1)
 				{
-					selectedID = i;
+					selectedID = m_displayList[i].m_ID;
 					closestDistance = pickedDistance;
 				}
 
 				// Only select if object is closer than previous object
 				if (pickedDistance < closestDistance)
 				{
-					selectedID = i;
+					selectedID = m_displayList[i].m_ID;
 					closestDistance = pickedDistance;
 				}
 			}
@@ -498,6 +498,9 @@ void Game::BuildDisplayList(std::vector<SceneObject> * SceneGraph)
 				lights->SetTexture(newDisplayObject.m_texture_diffuse);			
 			}
 		});
+
+		//set id
+		newDisplayObject.m_ID = SceneGraph->at(i).ID;
 
 		//set position
 		newDisplayObject.m_position.x = SceneGraph->at(i).posX;
