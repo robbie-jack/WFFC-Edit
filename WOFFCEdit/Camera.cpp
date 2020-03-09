@@ -44,7 +44,7 @@ void Camera::Update(InputCommands InputCommands)
 void Camera::FreeCamUpdate(InputCommands InputCommands)
 {
 	// Mouse Rotation Input
-	if (InputCommands.mouse_RB_Down)
+	if (InputCommands.mouse_RB == Down)
 	{
 		int dx = InputCommands.mouse_Y - InputCommands.mouse_Y_Last;
 		int dy = InputCommands.mouse_X - InputCommands.mouse_X_Last;
@@ -85,27 +85,27 @@ void Camera::FreeCamUpdate(InputCommands InputCommands)
 	m_camLookDirection.Cross(m_camUp, m_camRight);
 
 	//process input and update stuff
-	if (InputCommands.forward)
+	if (InputCommands.forward == Down)
 	{
 		m_camPosition += m_camLookDirection * m_camMoveSpeed;
 	}
-	if (InputCommands.back)
+	if (InputCommands.back == Down)
 	{
 		m_camPosition -= m_camLookDirection * m_camMoveSpeed;
 	}
-	if (InputCommands.right)
+	if (InputCommands.right == Down)
 	{
 		m_camPosition += m_camRight * m_camMoveSpeed;
 	}
-	if (InputCommands.left)
+	if (InputCommands.left == Down)
 	{
 		m_camPosition -= m_camRight * m_camMoveSpeed;
 	}
-	if (InputCommands.up)
+	if (InputCommands.up == Down)
 	{
 		m_camPosition += m_camUp * m_camMoveSpeed;
 	}
-	if (InputCommands.down)
+	if (InputCommands.down == Down)
 	{
 		m_camPosition -= m_camUp * m_camMoveSpeed;
 	}
@@ -117,11 +117,11 @@ void Camera::FreeCamUpdate(InputCommands InputCommands)
 void Camera::OrbitCamUpdate(InputCommands InputCommands)
 {
 	//process input and update stuff
-	if (InputCommands.forward)
+	if (InputCommands.forward == Down)
 	{
 		m_camDistance -= m_camMoveSpeed;
 	}
-	if (InputCommands.back)
+	if (InputCommands.back == Down)
 	{
 		m_camDistance += m_camMoveSpeed;
 	}
@@ -129,19 +129,19 @@ void Camera::OrbitCamUpdate(InputCommands InputCommands)
 	if (m_camDistance < 0.1f)
 		m_camDistance = 0.1f;
 
-	if (InputCommands.up)
+	if (InputCommands.up == Down)
 	{
 		m_camOrientation.x -= m_camRotRate;
 	}
-	if (InputCommands.down)
+	if (InputCommands.down == Down)
 	{
 		m_camOrientation.x += m_camRotRate;
 	}
-	if (InputCommands.right)
+	if (InputCommands.right == Down)
 	{
 		m_camOrientation.y -= m_camRotRate;
 	}
-	if (InputCommands.left)
+	if (InputCommands.left == Down)
 	{
 		m_camOrientation.y += m_camRotRate;
 	}

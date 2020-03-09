@@ -116,7 +116,7 @@ void Game::Tick(InputCommands *Input)
 void Game::Update(DX::StepTimer const& timer)
 {
 	// Switch Camera Mode
-	if (m_InputCommands.switch_Cam_Mode)
+	if (m_InputCommands.switch_Cam_Mode == Pressed)
 	{
 		switch (m_cam->GetCamMode())
 		{
@@ -131,8 +131,8 @@ void Game::Update(DX::StepTimer const& timer)
 					{
 						m_cam->SetCamLookAt(display_object.m_position);
 
-						std::cout << "Object Position X: " << display_object.m_position.x << " Y: " << display_object.m_position.y << " Z: " << display_object.m_position.z << std::endl;
-						std::cout << "Camera Look At X: " << m_cam->GetCamLookAt().x << " Y: " << m_cam->GetCamLookAt().y << " Z: " << m_cam->GetCamLookAt().z << std::endl;
+						//std::cout << "Object Position X: " << display_object.m_position.x << " Y: " << display_object.m_position.y << " Z: " << display_object.m_position.z << std::endl;
+						//std::cout << "Camera Look At X: " << m_cam->GetCamLookAt().x << " Y: " << m_cam->GetCamLookAt().y << " Z: " << m_cam->GetCamLookAt().z << std::endl;
 					}
 				}
 			}
@@ -340,7 +340,7 @@ std::vector<int> Game::MousePicking(std::vector<int> currentIDs)
 
 	if (selectedID != -1)
 	{
-		if (m_InputCommands.shift_Down)
+		if (m_InputCommands.shift == Down)
 		{
 			// If object is selected remove it, else add it
 			if (isSelected)

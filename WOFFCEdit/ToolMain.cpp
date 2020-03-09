@@ -14,18 +14,18 @@ ToolMain::ToolMain()
 	m_databaseConnection = NULL;
 
 	//zero input commands
-	m_toolInputCommands.forward		= false;
-	m_toolInputCommands.back		= false;
-	m_toolInputCommands.left		= false;
-	m_toolInputCommands.right		= false;
-	m_toolInputCommands.up			= false;
-	m_toolInputCommands.down		= false;
-	m_toolInputCommands.shift_Down = false;
-	m_toolInputCommands.switch_Cam_Mode = false;
-	m_toolInputCommands.mouse_RB_Down	= false;
-	m_toolInputCommands.mouse_LB_Down	= false;
-	m_toolInputCommands.mouse_X		= 0;
-	m_toolInputCommands.mouse_Y		= 0;
+	m_toolInputCommands.forward			= Up;
+	m_toolInputCommands.back			= Up;
+	m_toolInputCommands.left			= Up;
+	m_toolInputCommands.right			= Up;
+	m_toolInputCommands.up				= Up;
+	m_toolInputCommands.down			= Up;
+	m_toolInputCommands.shift			= Up;
+	m_toolInputCommands.switch_Cam_Mode = Up;
+	m_toolInputCommands.mouse_RB		= Up;
+	m_toolInputCommands.mouse_LB		= Up;
+	m_toolInputCommands.mouse_X			= 0;
+	m_toolInputCommands.mouse_Y			= 0;
 	m_toolInputCommands.mouse_X_Last	= 0;
 	m_toolInputCommands.mouse_Y_Last	= 0;
 }
@@ -296,19 +296,19 @@ void ToolMain::Tick(MSG *msg)
 		//add to scenegraph
 		//resend scenegraph to Direct X renderer
 
-	if (m_toolInputCommands.mouse_LB_Down)
+	if (m_toolInputCommands.mouse_LB == Pressed)
 	{
 		m_selectedObjects = m_d3dRenderer.MousePicking(m_selectedObjects);
-		m_toolInputCommands.mouse_LB_Down = false;
 	}
 
 	//Renderer Update Call
 	m_d3dRenderer.Tick(&m_toolInputCommands);
+
+	UpdateStates();
 }
 
 void ToolMain::UpdateInput(MSG * msg)
 {
-
 	switch (msg->message)
 	{
 		//Global inputs,  mouse position and keys etc
@@ -330,70 +330,81 @@ void ToolMain::UpdateInput(MSG * msg)
 
 	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
 		//set some flag for the mouse button in inputcommands
-		m_toolInputCommands.mouse_LB_Down	= true;
+		m_toolInputCommands.mouse_LB = Pressed;
+		
 		break;
 
 	case WM_LBUTTONUP:
-		m_toolInputCommands.mouse_LB_Down	= false;
+		m_toolInputCommands.mouse_LB	= Up;
 		break;
 
 	case WM_RBUTTONDOWN:
-		m_toolInputCommands.mouse_RB_Down	= true;
+		m_toolInputCommands.mouse_RB = Pressed;
 		break;
 
 	case WM_RBUTTONUP:
-		m_toolInputCommands.mouse_RB_Down	= false;
+		m_toolInputCommands.mouse_RB	= Up;
 		break;
 	}
 	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
 	//WASDQE movement
 	if (m_keyArray['W'])
 	{
-		m_toolInputCommands.forward = true;
+		m_toolInputCommands.forward = Down;
 	}
-	else m_toolInputCommands.forward = false;
+	else m_toolInputCommands.forward = Up;
 	
 	if (m_keyArray['S'])
 	{
-		m_toolInputCommands.back = true;
+		m_toolInputCommands.back = Down;
 	}
-	else m_toolInputCommands.back = false;
+	else m_toolInputCommands.back = Up;
 
 	if (m_keyArray['A'])
 	{
-		m_toolInputCommands.left = true;
+		m_toolInputCommands.left = Down;
 	}
-	else m_toolInputCommands.left = false;
+	else m_toolInputCommands.left = Up;
 
 	if (m_keyArray['D'])
 	{
-		m_toolInputCommands.right = true;
+		m_toolInputCommands.right = Down;
 	}
-	else m_toolInputCommands.right = false;
+	else m_toolInputCommands.right = Up;
 
 	if (m_keyArray['Q'])
 	{
-		m_toolInputCommands.down = true;
+		m_toolInputCommands.down = Down;
 	}
-	else m_toolInputCommands.down = false;
+	else m_toolInputCommands.down = Up;
 
 	if (m_keyArray['E'])
 	{
-		m_toolInputCommands.up = true;
+		m_toolInputCommands.up = Down;
 	}
-	else m_toolInputCommands.up = false;
+	else m_toolInputCommands.up = Up;
 
 	if (m_keyArray['C'])
 	{
-		m_toolInputCommands.switch_Cam_Mode = true;
+		m_toolInputCommands.switch_Cam_Mode = Pressed;
 	}
-	else m_toolInputCommands.switch_Cam_Mode = false;
+	else m_toolInputCommands.switch_Cam_Mode = Up;
 
 	if (m_keyArray[VK_SHIFT])
 	{
-		m_toolInputCommands.shift_Down = true;
+		m_toolInputCommands.shift = Down;
 	}
-	else m_toolInputCommands.shift_Down = false;
+	else m_toolInputCommands.shift = Up;
+}
 
-	//WASD
+void ToolMain::UpdateStates()
+{
+	if (m_toolInputCommands.mouse_LB == Pressed)
+		m_toolInputCommands.mouse_LB = Down;
+
+	if (m_toolInputCommands.mouse_RB == Pressed)
+		m_toolInputCommands.mouse_RB = Down;
+
+	if (m_toolInputCommands.switch_Cam_Mode == Pressed)
+		m_toolInputCommands.switch_Cam_Mode = Down;
 }
