@@ -3,9 +3,6 @@
 #include "pch.h"
 #include "InputCommands.h"
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
 enum CameraMode
 {
 	FREE = 0, // Camera is free to move and look around
@@ -29,40 +26,6 @@ public:
 
 	~Camera();
 	void Update(InputCommands InputCommands);
-
-	inline DirectX::SimpleMath::Matrix GetCamToWorldMatrix()
-	{
-		DirectX::SimpleMath::Matrix cam_to_world = DirectX::SimpleMath::Matrix::Identity;
-
-		DirectX::SimpleMath::Vector3 scale = { 1.0f, 1.0f, 1.0f };
-
-		//convert euler angles into a quaternion for the rotation of the object
-		XMVECTOR rotate = Quaternion::CreateFromYawPitchRoll(m_camOrientation.y *3.1415 / 180,
-			m_camOrientation.x *3.1415 / 180,
-			m_camOrientation.z *3.1415 / 180);
-
-		cam_to_world = XMMatrixTransformation(g_XMZero, Quaternion::Identity, scale, g_XMZero, rotate, m_camPosition);
-
-		return cam_to_world;
-	}
-
-	inline DirectX::SimpleMath::Matrix GetWorldToCamMatrix()
-	{
-		DirectX::SimpleMath::Matrix world_to_cam = DirectX::SimpleMath::Matrix::Identity;
-
-		DirectX::SimpleMath::Vector3 scale = { 1.0f, 1.0f, 1.0f };
-
-		//convert euler angles into a quaternion for the rotation of the object
-		XMVECTOR inv_rotate = Quaternion::CreateFromYawPitchRoll(-m_camOrientation.y *3.1415 / 180,
-			-m_camOrientation.x *3.1415 / 180,
-			-m_camOrientation.z *3.1415 / 180);
-
-		DirectX::SimpleMath::Vector3 inv_position = m_camPosition * DirectX::SimpleMath::Vector3(-1.0f, -1.0f, -1.0f);
-
-		world_to_cam = XMMatrixTransformation(g_XMZero, Quaternion::Identity, scale, g_XMZero, inv_rotate, inv_position);
-
-		return world_to_cam;
-	}
 
 	inline DirectX::SimpleMath::Vector3 GetCamPosition() { return m_camPosition; };
 	inline DirectX::SimpleMath::Vector3 GetCamOrientation() { return m_camOrientation; };
