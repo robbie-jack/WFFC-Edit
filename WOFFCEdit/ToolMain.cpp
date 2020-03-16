@@ -413,3 +413,23 @@ void ToolMain::UpdateObjects()
 {
 	m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
 }
+
+void ToolMain::CreateObject()
+{
+	SceneObject newSceneObject;
+
+	// New Object ID is number of objects + 1
+	newSceneObject.ID = m_sceneGraph.size() + 1;
+	newSceneObject.model_path = "database/data/placeholder.cmo";
+	newSceneObject.tex_diffuse_path = "database/data/placeholder.dds";
+	newSceneObject.posX = 10.0f;
+	newSceneObject.posZ = 10.0f;
+	newSceneObject.scaX = 1.0f;
+	newSceneObject.scaY = 1.0f;
+	newSceneObject.scaZ = 1.0f;
+
+	// Push new object to scene graph and add to renderer display list
+	m_sceneGraph.push_back(newSceneObject);
+	//m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
+	m_d3dRenderer.AppendDisplayList(&m_sceneGraph.back());
+}

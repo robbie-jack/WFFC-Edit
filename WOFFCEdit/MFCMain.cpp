@@ -3,11 +3,12 @@
 
 
 BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
-	ON_COMMAND(ID_FILE_QUIT,	&MFCMain::MenuFileQuit)
+	ON_COMMAND(ID_FILE_QUIT, &MFCMain::MenuFileQuit)
 	ON_COMMAND(ID_FILE_SAVETERRAIN, &MFCMain::MenuFileSaveTerrain)
 	ON_COMMAND(ID_EDIT_SELECT, &MFCMain::MenuEditSelect)
-	ON_COMMAND(ID_BUTTON40001,	&MFCMain::ToolBarButton1)
+	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButton1)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
+	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -128,6 +129,11 @@ void MFCMain::ToolBarWireframe()
 	}
 
 	m_ToolSystem.UpdateObjects();
+}
+
+void MFCMain::ToolBarNewObject()
+{
+	m_ToolSystem.CreateObject();
 }
 
 MFCMain::MFCMain()

@@ -372,6 +372,7 @@ std::vector<int> Game::MousePicking(std::vector<int> currentIDs)
 
 	//if we got a hit.  return it.
 	m_currentIDs = currentIDs;
+
 	return currentIDs;
 }
 
@@ -541,7 +542,72 @@ void Game::BuildDisplayList(std::vector<SceneObject> * SceneGraph)
 
 void Game::AppendDisplayList(SceneObject* SceneObject)
 {
+	auto device = m_deviceResources->GetD3DDevice();
+	auto devicecontext = m_deviceResources->GetD3DDeviceContext();
 
+	//create a temp display object that we will populate then append to the display list.
+	DisplayObject newDisplayObject;
+
+	//load model
+	std::wstring modelwstr = StringToWCHART(SceneObject->model_path);							//convect string to Wchar
+	newDisplayObject.m_model = Model::CreateFromCMO(device, modelwstr.c_str(), *m_fxFactory, true);	//get DXSDK to load model "False" for LH coordinate system (maya)
+
+	//Load Texture
+	std::wstring texturewstr = StringToWCHART(SceneObject->tex_diffuse_path);								//convect string to Wchar
+	HRESULT rs;
+	rs = CreateDDSTextureFromFile(device, texturewstr.c_str(), nullptr, &newDisplayObject.m_texture_diffuse);	//load tex into Shader resource
+
+	//if texture fails.  load error default
+	if (rs)
+	{
+		CreateDDSTextureFromFile(device, L"database/data/Error.dds", nullptr, &newDisplayObject.m_texture_diffuse);	//load tex into Shader resource
+	}
+
+	//apply new texture to models effect
+	newDisplayObject.m_model->UpdateEffects([&](IEffect* effect) //This uses a Lambda function,  if you dont understand it: Look it up.
+		{
+			auto lights = dynamic_cast<BasicEffect*>(effect);
+			if (lights)
+			{
+				lights->SetTexture(newDisplayObject.m_texture_diffuse);
+			}
+		});
+
+	//set id
+	newDisplayObject.m_ID = SceneObject->ID;
+
+	//set position
+	newDisplayObject.m_position.x = SceneObject->posX;
+	newDisplayObject.m_position.y = SceneObject->posY;
+	newDisplayObject.m_position.z = SceneObject->posZ;
+
+	//setorientation
+	newDisplayObject.m_orientation.x = SceneObject->rotX;
+	newDisplayObject.m_orientation.y = SceneObject->rotY;
+	newDisplayObject.m_orientation.z = SceneObject->rotZ;
+
+	//set scale
+	newDisplayObject.m_scale.x = SceneObject->scaX;
+	newDisplayObject.m_scale.y = SceneObject->scaY;
+	newDisplayObject.m_scale.z = SceneObject->scaZ;
+
+	//set wireframe / render flags
+	newDisplayObject.m_render = SceneObject->editor_render;
+	newDisplayObject.m_wireframe = SceneObject->editor_wireframe;
+
+	newDisplayObject.m_light_type = SceneObject->light_type;
+	newDisplayObject.m_light_diffuse_r = SceneObject->light_diffuse_r;
+	newDisplayObject.m_light_diffuse_g = SceneObject->light_diffuse_g;
+	newDisplayObject.m_light_diffuse_b = SceneObject->light_diffuse_b;
+	newDisplayObject.m_light_specular_r = SceneObject->light_specular_r;
+	newDisplayObject.m_light_specular_g = SceneObject->light_specular_g;
+	newDisplayObject.m_light_specular_b = SceneObject->light_specular_b;
+	newDisplayObject.m_light_spot_cutoff = SceneObject->light_spot_cutoff;
+	newDisplayObject.m_light_constant = SceneObject->light_constant;
+	newDisplayObject.m_light_linear = SceneObject->light_linear;
+	newDisplayObject.m_light_quadratic = SceneObject->light_quadratic;
+
+	m_displayList.push_back(newDisplayObject);
 }
 
 void Game::BuildDisplayChunk(ChunkObject * SceneChunk)

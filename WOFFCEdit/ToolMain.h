@@ -27,6 +27,7 @@ public: //methods
 	void	UpdateInput(MSG *msg);
 	void	UpdateStates();
 	void	UpdateObjects();
+	void	CreateObject();
 
 public:	//variables
 	std::vector<SceneObject>    m_sceneGraph;	//our scenegraph storing all the objects in the current chunk
@@ -49,7 +50,5 @@ private:	//variables
 	int m_width;		//dimensions passed to directX
 	int m_height;
 	int m_currentChunk;			//the current chunk of thedatabase that we are operating on.  Dictates loading and saving. 
-	
-
 	
 };
