@@ -408,3 +408,8 @@ void ToolMain::UpdateStates()
 	if (m_toolInputCommands.switch_Cam_Mode == Pressed)
 		m_toolInputCommands.switch_Cam_Mode = Down;
 }
+
+void ToolMain::UpdateObjects()
+{
+	m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
+}
