@@ -6,6 +6,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_FILE_QUIT, &MFCMain::MenuFileQuit)
 	ON_COMMAND(ID_FILE_SAVETERRAIN, &MFCMain::MenuFileSaveTerrain)
 	ON_COMMAND(ID_EDIT_SELECT, &MFCMain::MenuEditSelect)
+	ON_COMMAND(ID_EDIT_PROPERTIES, &MFCMain::MenuEditProperties)
 	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButton1)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
@@ -114,6 +115,13 @@ void MFCMain::MenuEditSelect()
 	m_ToolSelectDialogue.Create(IDD_DIALOG1);	//Start up modeless
 	m_ToolSelectDialogue.ShowWindow(SW_SHOW);	//show modeless
 	m_ToolSelectDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_selectedObjects[0]);
+}
+
+void MFCMain::MenuEditProperties()
+{
+	m_ToolPropertiesDialogue.Create(IDD_DIALOG2);
+	m_ToolPropertiesDialogue.ShowWindow(SW_SHOW);
+	m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_selectedObjects);
 }
 
 void MFCMain::ToolBarButton1()
