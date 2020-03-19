@@ -33,7 +33,18 @@ protected:
 public:
 
 	CStatic m_static;
+	CEdit m_editPosX;
+	CEdit m_editPosY;
+	CEdit m_editPosZ;
+	std::wstring IDstring;
 	virtual BOOL OnInitDialog() override;
+	virtual void PostNcDestroy();
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnEnChangeEdit1();
+	afx_msg void OnEnChangeEditPosy();
+	afx_msg void OnEnChangeEditPosx();
+	afx_msg void OnStnClickedTextId();
+	afx_msg void OnEnChangeEditPosz();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);

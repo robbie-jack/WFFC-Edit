@@ -5,6 +5,10 @@ IMPLEMENT_DYNAMIC(PropertiesDialogue, CDialogEx)
 
 BEGIN_MESSAGE_MAP(PropertiesDialogue, CDialogEx)
 	ON_COMMAND(IDOK, &PropertiesDialogue::End)
+	ON_BN_CLICKED(IDOK, &PropertiesDialogue::OnBnClickedOk)
+	ON_EN_CHANGE(IDC_EDIT_POSY, &PropertiesDialogue::OnEnChangeEditPosy)
+	ON_EN_CHANGE(IDC_EDIT_POSX, &PropertiesDialogue::OnEnChangeEditPosx)
+	ON_EN_CHANGE(IDC_EDIT_POSZ, &PropertiesDialogue::OnEnChangeEditPosz)
 END_MESSAGE_MAP()
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* SceneGraph)		//constructor used in modal
@@ -28,14 +32,27 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std
 	m_sceneGraph = SceneGraph;
 	m_selected = Selected;
 
-	std::wstring IDstring = L"ID: " + std::to_wstring(m_sceneGraph->at(m_selected->at(0) - 1).ID);
-	m_static.SetDlgItemTextW(1, IDstring.c_str());
+	SceneObject object = m_sceneGraph->at(m_selected->at(0) - 1);
+
+	std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
+	std::wstring PosXstring = std::to_wstring(object.posX);
+	std::wstring PosYstring = std::to_wstring(object.posY);
+	std::wstring PosZstring = std::to_wstring(object.posZ);
+
+	m_static.SetWindowTextW(IDstring.c_str());
+
+	m_editPosX.SetWindowTextW(PosXstring.c_str());
+	m_editPosY.SetWindowTextW(PosYstring.c_str());
+	m_editPosZ.SetWindowTextW(PosZstring.c_str());
 }
 
 void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_STATIC, m_static);
+	DDX_Control(pDX, IDC_TEXT_ID, m_static);
+	DDX_Control(pDX, IDC_EDIT_POSX, m_editPosX);
+	DDX_Control(pDX, IDC_EDIT_POSY, m_editPosY);
+	DDX_Control(pDX, IDC_EDIT_POSZ, m_editPosZ);
 }
 
 void PropertiesDialogue::End()
@@ -59,4 +76,81 @@ BOOL PropertiesDialogue::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	return TRUE;
+}
+
+void PropertiesDialogue::PostNcDestroy()
+{
+}
+
+
+
+
+// SelectDialogue message handlers callback   - We only need this if the dailogue is being setup-with createDialogue().  We are doing
+//it manually so its better to use the messagemap
+/*INT_PTR CALLBACK SelectProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case IDOK:
+		//	EndDialog(hwndDlg, wParam);
+			DestroyWindow(hwndDlg);
+			return TRUE;
+
+
+		case IDCANCEL:
+			EndDialog(hwndDlg, wParam);
+			return TRUE;
+			break;
+		}
+	}
+
+	return INT_PTR();
+}*/
+
+
+void PropertiesDialogue::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	CDialogEx::OnOK();
+}
+
+void PropertiesDialogue::OnEnChangeEditPosx()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+
+	int i = m_selected->at(0) - 1;
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString posXText;
+	m_editPosX.GetWindowTextW(posXText);
+
+	//object->posX = _ttoi(posXText);
+}
+
+void PropertiesDialogue::OnEnChangeEditPosy()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+void PropertiesDialogue::OnEnChangeEditPosz()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }
