@@ -125,16 +125,18 @@ void Game::Update(DX::StepTimer const& timer)
 			{
 				m_cam->SetCamMode(ORBIT);
 
-				for (auto display_object : m_displayList)
-				{
-					if (display_object.m_ID == m_currentIDs[0])
-					{
-						m_cam->SetCamLookAt(display_object.m_position);
+				//for (auto display_object : m_displayList)
+				//{
+				//	if (display_object.m_ID == m_currentIDs[0])
+				//	{
+				//		m_cam->SetCamLookAt(display_object.m_position);
 
-						//std::cout << "Object Position X: " << display_object.m_position.x << " Y: " << display_object.m_position.y << " Z: " << display_object.m_position.z << std::endl;
-						//std::cout << "Camera Look At X: " << m_cam->GetCamLookAt().x << " Y: " << m_cam->GetCamLookAt().y << " Z: " << m_cam->GetCamLookAt().z << std::endl;
-					}
-				}
+				//		//std::cout << "Object Position X: " << display_object.m_position.x << " Y: " << display_object.m_position.y << " Z: " << display_object.m_position.z << std::endl;
+				//		//std::cout << "Camera Look At X: " << m_cam->GetCamLookAt().x << " Y: " << m_cam->GetCamLookAt().y << " Z: " << m_cam->GetCamLookAt().z << std::endl;
+				//	}
+				//}
+
+				m_cam->SetCamLookAt(m_displayList[m_currentIDs[0]].m_position);
 			}
 
 			break;
@@ -312,14 +314,16 @@ std::vector<int> Game::MousePicking(std::vector<int> currentIDs)
 			{
 				if (closestDistance == -1)
 				{
-					selectedID = m_displayList[i].m_ID;
+					//selectedID = m_displayList[i].m_ID;
+					selectedID = i;
 					closestDistance = pickedDistance;
 				}
 
 				// Only select if object is closer than previous object
 				if (pickedDistance < closestDistance)
 				{
-					selectedID = m_displayList[i].m_ID;
+					//selectedID = m_displayList[i].m_ID;
+					selectedID = i;
 					closestDistance = pickedDistance;
 				}
 			}

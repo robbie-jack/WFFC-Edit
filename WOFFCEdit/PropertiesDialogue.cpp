@@ -32,7 +32,7 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std
 	m_sceneGraph = SceneGraph;
 	m_selected = Selected;
 
-	SceneObject object = m_sceneGraph->at(m_selected->at(0) - 1);
+	SceneObject object = m_sceneGraph->at(m_selected->at(0));
 
 	std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
 	std::wstring PosXstring = std::to_wstring(object.posX);
@@ -126,11 +126,11 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 
 	// TODO:  Add your control notification handler code here
 
-	int i = m_selected->at(0) - 1;
-	SceneObject* object = &m_sceneGraph->at(i);
+	int i = m_selected->at(0);
+	//SceneObject* object = &m_sceneGraph->at(i);
 
-	CString posXText;
-	m_editPosX.GetWindowTextW(posXText);
+	//CString posXText;
+	//m_editPosX.GetWindowTextW(posXText);
 
 	//object->posX = _ttoi(posXText);
 }
