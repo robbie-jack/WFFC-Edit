@@ -27,12 +27,12 @@ PropertiesDialogue::~PropertiesDialogue()
 
 }
 
-void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int>* Selected)
+void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int> Selected)
 {
 	m_sceneGraph = SceneGraph;
 	m_selected = Selected;
 
-	SceneObject object = m_sceneGraph->at(m_selected->at(0));
+	SceneObject object = m_sceneGraph->at(m_selected[0]);
 
 	std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
 	std::wstring PosXstring = std::to_wstring(object.posX);
@@ -126,13 +126,13 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 
 	// TODO:  Add your control notification handler code here
 
-	int i = m_selected->at(0);
-	//SceneObject* object = &m_sceneGraph->at(i);
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
 
-	//CString posXText;
-	//m_editPosX.GetWindowTextW(posXText);
+	CString posXText;
+	m_editPosX.GetWindowTextW(posXText);
 
-	//object->posX = _ttoi(posXText);
+	object->posX = _ttoi(posXText);
 }
 
 void PropertiesDialogue::OnEnChangeEditPosy()
@@ -143,6 +143,14 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString posYText;
+	m_editPosY.GetWindowTextW(posYText);
+
+	object->posY = _ttoi(posYText);
 }
 
 void PropertiesDialogue::OnEnChangeEditPosz()
@@ -153,4 +161,12 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString posZText;
+	m_editPosZ.GetWindowTextW(posZText);
+
+	object->posZ = _ttoi(posZText);
 }

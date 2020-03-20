@@ -10,6 +10,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButton1)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
+	ON_COMMAND(ID_BUTTON40004, &MFCMain::ToolBarRefreshObjects)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -126,7 +127,7 @@ void MFCMain::MenuEditProperties()
 	m_ToolPropertiesDialogue.ShowWindow(SW_SHOW);
 
 	if (m_ToolSystem.m_selectedObjects.size() > 0)
-		m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_selectedObjects);
+		m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects);
 }
 
 void MFCMain::ToolBarButton1()
@@ -147,6 +148,11 @@ void MFCMain::ToolBarWireframe()
 void MFCMain::ToolBarNewObject()
 {
 	m_ToolSystem.CreateObject();
+}
+
+void MFCMain::ToolBarRefreshObjects()
+{
+	m_ToolSystem.UpdateObjects();
 }
 
 MFCMain::MFCMain()

@@ -14,7 +14,7 @@ public:
 	PropertiesDialogue(CWnd* parent, std::vector<SceneObject>* SceneGraph); // Modal
 	PropertiesDialogue(CWnd* parent = NULL); // Modeless
 	virtual ~PropertiesDialogue();
-	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int>* Selected);
+	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int> Selected);
 
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG2 };
@@ -27,7 +27,7 @@ protected:
 	//afx_msg void Select();	//Item has been selected
 
 	std::vector<SceneObject>* m_sceneGraph;
-	std::vector<int>* m_selected;
+	std::vector<int> m_selected;
 
 	DECLARE_MESSAGE_MAP()
 public:

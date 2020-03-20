@@ -39,7 +39,7 @@ private:
 	afx_msg	void ToolBarButton1();
 	afx_msg void ToolBarWireframe();
 	afx_msg void ToolBarNewObject();
-
+	afx_msg void ToolBarRefreshObjects();
 
 	DECLARE_MESSAGE_MAP()	// required macro for message map functionality  One per class
 };
