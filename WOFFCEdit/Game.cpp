@@ -546,6 +546,71 @@ void Game::BuildDisplayList(std::vector<SceneObject> * SceneGraph)
 	}
 }
 
+void Game::UpdateDisplayList(int i, SceneObject* SceneObject)
+{
+	auto device = m_deviceResources->GetD3DDevice();
+	auto devicecontext = m_deviceResources->GetD3DDeviceContext();
+
+	//load model
+	std::wstring modelwstr = StringToWCHART(SceneObject->model_path);							//convect string to Wchar
+	m_displayList[i].m_model = Model::CreateFromCMO(device, modelwstr.c_str(), *m_fxFactory, true);	//get DXSDK to load model "False" for LH coordinate system (maya)
+
+	//Load Texture
+	std::wstring texturewstr = StringToWCHART(SceneObject->tex_diffuse_path);								//convect string to Wchar
+	HRESULT rs;
+	rs = CreateDDSTextureFromFile(device, texturewstr.c_str(), nullptr, &m_displayList[i].m_texture_diffuse);	//load tex into Shader resource
+
+	//if texture fails.  load error default
+	if (rs)
+	{
+		CreateDDSTextureFromFile(device, L"database/data/Error.dds", nullptr, &m_displayList[i].m_texture_diffuse);	//load tex into Shader resource
+	}
+
+	//apply new texture to models effect
+	m_displayList[i].m_model->UpdateEffects([&](IEffect* effect) //This uses a Lambda function,  if you dont understand it: Look it up.
+	{
+		auto lights = dynamic_cast<BasicEffect*>(effect);
+		if (lights)
+		{
+			lights->SetTexture(m_displayList[i].m_texture_diffuse);
+		}
+	});
+
+	//set id
+	m_displayList[i].m_ID = SceneObject->ID;
+
+	//set position
+	m_displayList[i].m_position.x = SceneObject->posX;
+	m_displayList[i].m_position.y = SceneObject->posY;
+	m_displayList[i].m_position.z = SceneObject->posZ;
+
+	//setorientation
+	m_displayList[i].m_orientation.x = SceneObject->rotX;
+	m_displayList[i].m_orientation.y = SceneObject->rotY;
+	m_displayList[i].m_orientation.z = SceneObject->rotZ;
+
+	//set scale
+	m_displayList[i].m_scale.x = SceneObject->scaX;
+	m_displayList[i].m_scale.y = SceneObject->scaY;
+	m_displayList[i].m_scale.z = SceneObject->scaZ;
+
+	//set wireframe / render flags
+	m_displayList[i].m_render = SceneObject->editor_render;
+	m_displayList[i].m_wireframe = SceneObject->editor_wireframe;
+
+	m_displayList[i].m_light_type = SceneObject->light_type;
+	m_displayList[i].m_light_diffuse_r = SceneObject->light_diffuse_r;
+	m_displayList[i].m_light_diffuse_g = SceneObject->light_diffuse_g;
+	m_displayList[i].m_light_diffuse_b = SceneObject->light_diffuse_b;
+	m_displayList[i].m_light_specular_r = SceneObject->light_specular_r;
+	m_displayList[i].m_light_specular_g = SceneObject->light_specular_g;
+	m_displayList[i].m_light_specular_b = SceneObject->light_specular_b;
+	m_displayList[i].m_light_spot_cutoff = SceneObject->light_spot_cutoff;
+	m_displayList[i].m_light_constant = SceneObject->light_constant;
+	m_displayList[i].m_light_linear = SceneObject->light_linear;
+	m_displayList[i].m_light_quadratic = SceneObject->light_quadratic;
+}
+
 void Game::AppendDisplayList(SceneObject* SceneObject)
 {
 	auto device = m_deviceResources->GetD3DDevice();

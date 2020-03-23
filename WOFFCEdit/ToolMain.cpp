@@ -409,9 +409,14 @@ void ToolMain::UpdateStates()
 		m_toolInputCommands.switch_Cam_Mode = Down;
 }
 
-void ToolMain::UpdateObjects()
+void ToolMain::UpdateAllObjects()
 {
 	m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
+}
+
+void ToolMain::UpdateObject(int i)
+{
+	m_d3dRenderer.UpdateDisplayList(i, &m_sceneGraph[i]);
 }
 
 void ToolMain::CreateObject()

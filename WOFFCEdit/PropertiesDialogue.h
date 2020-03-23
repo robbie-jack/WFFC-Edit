@@ -16,6 +16,10 @@ public:
 	virtual ~PropertiesDialogue();
 	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int> Selected);
 
+	inline bool IsActive() { return m_isActive; };
+	inline bool ShouldUpdate() { return m_shouldUpdate; m_shouldUpdate = false; };
+	inline std::vector<int> GetSelected() { return m_selected; };
+
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG2 };
 #endif
@@ -29,6 +33,9 @@ protected:
 	std::vector<SceneObject>* m_sceneGraph;
 	std::vector<int> m_selected;
 
+	bool m_isActive;
+	bool m_shouldUpdate;
+
 	DECLARE_MESSAGE_MAP()
 public:
 
@@ -40,11 +47,10 @@ public:
 	virtual BOOL OnInitDialog() override;
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnEnChangeEditPosy();
 	afx_msg void OnEnChangeEditPosx();
-	afx_msg void OnStnClickedTextId();
 	afx_msg void OnEnChangeEditPosz();
+	afx_msg void OnStnClickedTextId();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);

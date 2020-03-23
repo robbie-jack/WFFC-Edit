@@ -50,6 +50,7 @@ public:
 
 	//tool specific
 	void BuildDisplayList(std::vector<SceneObject> * SceneGraph); //note vector passed by reference 
+	void UpdateDisplayList(int i, SceneObject* sceneObject); // Function to update specific object
 	void AppendDisplayList(SceneObject* SceneObject); // Function to add new object to display list
 	void BuildDisplayChunk(ChunkObject *SceneChunk);
 	void SaveDisplayChunk(ChunkObject *SceneChunk);	//saves geometry et al

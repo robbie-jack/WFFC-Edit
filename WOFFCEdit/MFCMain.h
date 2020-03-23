@@ -30,6 +30,8 @@ private:
 
 	int m_width;		
 	int m_height;
+
+	void UpdatePropertiesDialogue();
 	
 	//Interface funtions for menu and toolbar etc requires
 	afx_msg void MenuFileQuit();

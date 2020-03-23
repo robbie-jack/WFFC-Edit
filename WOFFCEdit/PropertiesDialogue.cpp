@@ -15,11 +15,16 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* 
 	: CDialogEx(IDD_DIALOG2, pParent)
 {
 	m_sceneGraph = SceneGraph;
+	m_isActive = false;
+	m_shouldUpdate = false;
+
 }
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in modeless
 	: CDialogEx(IDD_DIALOG2, pParent)
 {
+	m_isActive = false;
+	m_shouldUpdate = false;
 }
 
 PropertiesDialogue::~PropertiesDialogue()
@@ -57,7 +62,8 @@ void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
 
 void PropertiesDialogue::End()
 {
-	DestroyWindow();	//destory the window properly.  INcluding the links and pointers created.  THis is so the dialogue can start again. 
+	DestroyWindow();	//destory the window properly.  INcluding the links and pointers created.  THis is so the dialogue can start again.
+	m_isActive = false;
 }
 
 //void PropertiesDialogue::Select()
@@ -133,6 +139,8 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 	m_editPosX.GetWindowTextW(posXText);
 
 	object->posX = _ttoi(posXText);
+
+	m_shouldUpdate = true;
 }
 
 void PropertiesDialogue::OnEnChangeEditPosy()
@@ -151,6 +159,8 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 	m_editPosY.GetWindowTextW(posYText);
 
 	object->posY = _ttoi(posYText);
+
+	m_shouldUpdate = true;
 }
 
 void PropertiesDialogue::OnEnChangeEditPosz()
@@ -169,4 +179,6 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 	m_editPosZ.GetWindowTextW(posZText);
 
 	object->posZ = _ttoi(posZText);
+
+	m_shouldUpdate = true;
 }

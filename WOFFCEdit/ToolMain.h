@@ -26,7 +26,8 @@ public: //methods
 	void	Tick(MSG *msg);
 	void	UpdateInput(MSG *msg);
 	void	UpdateStates();
-	void	UpdateObjects();
+	void	UpdateAllObjects();
+	void	UpdateObject(int i);
 	void	CreateObject();
 
 public:	//variables

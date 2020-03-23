@@ -89,6 +89,8 @@ int MFCMain::Run()
 
 			m_ToolSystem.Tick(&msg);
 
+			UpdatePropertiesDialogue();
+
 			//send current object ID to status bar in The main frame
 			m_frame->m_wndStatusBar.SetPaneText(1, statusString.c_str(), 1);
 		}
@@ -123,11 +125,26 @@ void MFCMain::MenuEditSelect()
 
 void MFCMain::MenuEditProperties()
 {
-	m_ToolPropertiesDialogue.Create(IDD_DIALOG2);
-	m_ToolPropertiesDialogue.ShowWindow(SW_SHOW);
+	if (!m_ToolPropertiesDialogue.IsActive())
+	{
+		m_ToolPropertiesDialogue.Create(IDD_DIALOG2);
+		m_ToolPropertiesDialogue.ShowWindow(SW_SHOW);
+	}
 
 	if (m_ToolSystem.m_selectedObjects.size() > 0)
 		m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects);
+}
+
+void MFCMain::UpdatePropertiesDialogue()
+{
+	if (m_ToolSystem.m_selectedObjects.size() > 0)
+		if (m_ToolPropertiesDialogue.GetSelected().size() > 0 && m_ToolPropertiesDialogue.GetSelected()[0] != m_ToolSystem.m_selectedObjects[0])
+			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects);
+
+	if (m_ToolPropertiesDialogue.ShouldUpdate())
+	{
+		m_ToolSystem.UpdateObject(m_ToolPropertiesDialogue.GetSelected()[0]);
+	}
 }
 
 void MFCMain::ToolBarButton1()
@@ -142,7 +159,7 @@ void MFCMain::ToolBarWireframe()
 		sceneObject.editor_wireframe = !sceneObject.editor_wireframe;
 	}
 
-	m_ToolSystem.UpdateObjects();
+	m_ToolSystem.UpdateAllObjects();
 }
 
 void MFCMain::ToolBarNewObject()
@@ -152,7 +169,7 @@ void MFCMain::ToolBarNewObject()
 
 void MFCMain::ToolBarRefreshObjects()
 {
-	m_ToolSystem.UpdateObjects();
+	m_ToolSystem.UpdateAllObjects();
 }
 
 MFCMain::MFCMain()
