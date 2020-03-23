@@ -35,20 +35,24 @@ PropertiesDialogue::~PropertiesDialogue()
 void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int> Selected)
 {
 	m_sceneGraph = SceneGraph;
-	m_selected = Selected;
 
-	SceneObject object = m_sceneGraph->at(m_selected[0]);
+	if (m_selected.size() == 0 || Selected[0] != m_selected[0])
+	{
+		m_selected = Selected;
 
-	std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
-	std::wstring PosXstring = std::to_wstring(object.posX);
-	std::wstring PosYstring = std::to_wstring(object.posY);
-	std::wstring PosZstring = std::to_wstring(object.posZ);
+		SceneObject object = m_sceneGraph->at(m_selected[0]);
 
-	m_static.SetWindowTextW(IDstring.c_str());
+		std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
+		std::wstring PosXstring = std::to_wstring(object.posX);
+		std::wstring PosYstring = std::to_wstring(object.posY);
+		std::wstring PosZstring = std::to_wstring(object.posZ);
 
-	m_editPosX.SetWindowTextW(PosXstring.c_str());
-	m_editPosY.SetWindowTextW(PosYstring.c_str());
-	m_editPosZ.SetWindowTextW(PosZstring.c_str());
+		m_static.SetWindowTextW(IDstring.c_str());
+
+		m_editPosX.SetWindowTextW(PosXstring.c_str());
+		m_editPosY.SetWindowTextW(PosYstring.c_str());
+		m_editPosZ.SetWindowTextW(PosZstring.c_str());
+	}
 }
 
 void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
@@ -80,6 +84,8 @@ void PropertiesDialogue::End()
 BOOL PropertiesDialogue::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+
+	m_isActive = true;
 
 	return TRUE;
 }

@@ -14,6 +14,7 @@ public:
 	PropertiesDialogue(CWnd* parent, std::vector<SceneObject>* SceneGraph); // Modal
 	PropertiesDialogue(CWnd* parent = NULL); // Modeless
 	virtual ~PropertiesDialogue();
+
 	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int> Selected);
 
 	inline bool IsActive() { return m_isActive; };
