@@ -9,6 +9,12 @@ BEGIN_MESSAGE_MAP(PropertiesDialogue, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_POSY, &PropertiesDialogue::OnEnChangeEditPosy)
 	ON_EN_CHANGE(IDC_EDIT_POSX, &PropertiesDialogue::OnEnChangeEditPosx)
 	ON_EN_CHANGE(IDC_EDIT_POSZ, &PropertiesDialogue::OnEnChangeEditPosz)
+	ON_EN_CHANGE(IDC_EDIT_SCAX, &PropertiesDialogue::OnEnChangeEditScax)
+	ON_EN_CHANGE(IDC_EDIT_ROTX, &PropertiesDialogue::OnEnChangeEditRotx)
+	ON_EN_CHANGE(IDC_EDIT_ROTY, &PropertiesDialogue::OnEnChangeEditRoty)
+	ON_EN_CHANGE(IDC_EDIT_ROTZ, &PropertiesDialogue::OnEnChangeEditRotz)
+	ON_EN_CHANGE(IDC_EDIT_SCAY, &PropertiesDialogue::OnEnChangeEditScay)
+	ON_EN_CHANGE(IDC_EDIT_SCAZ, &PropertiesDialogue::OnEnChangeEditScaz)
 END_MESSAGE_MAP()
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* SceneGraph)		//constructor used in modal
@@ -43,15 +49,32 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std
 		SceneObject object = m_sceneGraph->at(m_selected[0]);
 
 		std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
+
 		std::wstring PosXstring = std::to_wstring(object.posX);
 		std::wstring PosYstring = std::to_wstring(object.posY);
 		std::wstring PosZstring = std::to_wstring(object.posZ);
+
+		std::wstring RotXstring = std::to_wstring(object.rotX);
+		std::wstring RotYstring = std::to_wstring(object.rotY);
+		std::wstring RotZstring = std::to_wstring(object.rotZ);
+
+		std::wstring ScaXstring = std::to_wstring(object.scaX);
+		std::wstring ScaYstring = std::to_wstring(object.scaY);
+		std::wstring ScaZstring = std::to_wstring(object.scaZ);
 
 		m_static.SetWindowTextW(IDstring.c_str());
 
 		m_editPosX.SetWindowTextW(PosXstring.c_str());
 		m_editPosY.SetWindowTextW(PosYstring.c_str());
 		m_editPosZ.SetWindowTextW(PosZstring.c_str());
+
+		m_editRotX.SetWindowTextW(RotXstring.c_str());
+		m_editRotY.SetWindowTextW(RotYstring.c_str());
+		m_editRotZ.SetWindowTextW(RotZstring.c_str());
+
+		m_editScaX.SetWindowTextW(ScaXstring.c_str());
+		m_editScaY.SetWindowTextW(ScaYstring.c_str());
+		m_editScaZ.SetWindowTextW(ScaZstring.c_str());
 	}
 }
 
@@ -59,9 +82,18 @@ void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TEXT_ID, m_static);
+
 	DDX_Control(pDX, IDC_EDIT_POSX, m_editPosX);
 	DDX_Control(pDX, IDC_EDIT_POSY, m_editPosY);
 	DDX_Control(pDX, IDC_EDIT_POSZ, m_editPosZ);
+
+	DDX_Control(pDX, IDC_EDIT_ROTX, m_editRotX);
+	DDX_Control(pDX, IDC_EDIT_ROTY, m_editRotY);
+	DDX_Control(pDX, IDC_EDIT_ROTZ, m_editRotZ);
+
+	DDX_Control(pDX, IDC_EDIT_SCAX, m_editScaX);
+	DDX_Control(pDX, IDC_EDIT_SCAY, m_editScaY);
+	DDX_Control(pDX, IDC_EDIT_SCAZ, m_editScaZ);
 }
 
 void PropertiesDialogue::End()
@@ -94,9 +126,6 @@ void PropertiesDialogue::PostNcDestroy()
 {
 }
 
-
-
-
 // SelectDialogue message handlers callback   - We only need this if the dailogue is being setup-with createDialogue().  We are doing
 //it manually so its better to use the messagemap
 /*INT_PTR CALLBACK SelectProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -125,19 +154,11 @@ void PropertiesDialogue::PostNcDestroy()
 
 void PropertiesDialogue::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
 }
 
 void PropertiesDialogue::OnEnChangeEditPosx()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
-
 	int i = m_selected[0];
 	SceneObject* object = &m_sceneGraph->at(i);
 
@@ -151,13 +172,6 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 
 void PropertiesDialogue::OnEnChangeEditPosy()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
-
 	int i = m_selected[0];
 	SceneObject* object = &m_sceneGraph->at(i);
 
@@ -171,13 +185,6 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 
 void PropertiesDialogue::OnEnChangeEditPosz()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
-
 	int i = m_selected[0];
 	SceneObject* object = &m_sceneGraph->at(i);
 
@@ -185,6 +192,84 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 	m_editPosZ.GetWindowTextW(posZText);
 
 	object->posZ = _ttoi(posZText);
+
+	m_shouldUpdate = true;
+}
+
+void PropertiesDialogue::OnEnChangeEditRotx()
+{
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString rotXText;
+	m_editRotX.GetWindowTextW(rotXText);
+
+	object->rotX = _ttoi(rotXText);
+
+	m_shouldUpdate = true;
+}
+
+void PropertiesDialogue::OnEnChangeEditRoty()
+{
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString rotYText;
+	m_editRotY.GetWindowTextW(rotYText);
+
+	object->rotY = _ttoi(rotYText);
+
+	m_shouldUpdate = true;
+}
+
+void PropertiesDialogue::OnEnChangeEditRotz()
+{
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString rotZText;
+	m_editRotZ.GetWindowTextW(rotZText);
+
+	object->rotZ = _ttoi(rotZText);
+
+	m_shouldUpdate = true;
+}
+
+void PropertiesDialogue::OnEnChangeEditScax()
+{
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString scaXText;
+	m_editScaX.GetWindowTextW(scaXText);
+
+	object->scaX = _ttoi(scaXText);
+
+	m_shouldUpdate = true;
+}
+
+void PropertiesDialogue::OnEnChangeEditScay()
+{
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString scaYText;
+	m_editScaY.GetWindowTextW(scaYText);
+
+	object->scaY = _ttoi(scaYText);
+
+	m_shouldUpdate = true;
+}
+
+void PropertiesDialogue::OnEnChangeEditScaz()
+{
+	int i = m_selected[0];
+	SceneObject* object = &m_sceneGraph->at(i);
+
+	CString scaZText;
+	m_editScaZ.GetWindowTextW(scaZText);
+
+	object->scaZ = _ttoi(scaZText);
 
 	m_shouldUpdate = true;
 }
