@@ -15,11 +15,11 @@ public:
 	PropertiesDialogue(CWnd* parent = NULL); // Modeless
 	virtual ~PropertiesDialogue();
 
-	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int> Selected);
+	void SetObjectData(std::vector<SceneObject>* SceneGraph, int Selected);
 
 	inline bool IsActive() { return m_isActive; };
 	inline bool ShouldUpdate() { return m_shouldUpdate; m_shouldUpdate = false; };
-	inline std::vector<int> GetSelected() { return m_selected; };
+	int GetSelected() { return m_selected; };
 
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG2 };
@@ -32,7 +32,7 @@ protected:
 	//afx_msg void Select();	//Item has been selected
 
 	std::vector<SceneObject>* m_sceneGraph;
-	std::vector<int> m_selected;
+	int m_selected;
 
 	bool m_isActive;
 	bool m_shouldUpdate;

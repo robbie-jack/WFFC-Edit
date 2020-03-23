@@ -131,7 +131,7 @@ void MFCMain::MenuEditProperties()
 		m_ToolPropertiesDialogue.ShowWindow(SW_SHOW);
 
 		if (m_ToolSystem.m_selectedObjects.size() > 0)
-			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects);
+			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
 	}
 }
 
@@ -140,11 +140,13 @@ void MFCMain::UpdatePropertiesDialogue()
 	if (m_ToolPropertiesDialogue.IsActive())
 	{
 		if (m_ToolSystem.m_selectedObjects.size() > 0)
-			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects);
+			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
 
 		if (m_ToolPropertiesDialogue.ShouldUpdate())
 		{
-			m_ToolSystem.UpdateObject(m_ToolPropertiesDialogue.GetSelected()[0]);
+			int i = m_ToolPropertiesDialogue.GetSelected();
+			if (i != -1)
+				m_ToolSystem.UpdateObject(i);
 		}
 	}
 }

@@ -23,6 +23,7 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* 
 	m_sceneGraph = SceneGraph;
 	m_isActive = false;
 	m_shouldUpdate = false;
+	m_selected = -1;
 
 }
 
@@ -31,6 +32,7 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in mo
 {
 	m_isActive = false;
 	m_shouldUpdate = false;
+	m_selected = -1;
 }
 
 PropertiesDialogue::~PropertiesDialogue()
@@ -38,15 +40,15 @@ PropertiesDialogue::~PropertiesDialogue()
 
 }
 
-void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<int> Selected)
+void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, int Selected)
 {
 	m_sceneGraph = SceneGraph;
 
-	if (m_selected.size() == 0 || Selected[0] != m_selected[0])
+	if (m_selected != Selected)
 	{
 		m_selected = Selected;
 
-		SceneObject object = m_sceneGraph->at(m_selected[0]);
+		SceneObject object = m_sceneGraph->at(m_selected);
 
 		std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
 
@@ -100,6 +102,7 @@ void PropertiesDialogue::End()
 {
 	DestroyWindow();	//destory the window properly.  INcluding the links and pointers created.  THis is so the dialogue can start again.
 	m_isActive = false;
+	m_selected = -1;
 }
 
 //void PropertiesDialogue::Select()
@@ -159,117 +162,135 @@ void PropertiesDialogue::OnBnClickedOk()
 
 void PropertiesDialogue::OnEnChangeEditPosx()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString posXText;
-	m_editPosX.GetWindowTextW(posXText);
+		CString posXText;
+		m_editPosX.GetWindowTextW(posXText);
 
-	object->posX = _ttoi(posXText);
+		object->posX = _ttoi(posXText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditPosy()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString posYText;
-	m_editPosY.GetWindowTextW(posYText);
+		CString posYText;
+		m_editPosY.GetWindowTextW(posYText);
 
-	object->posY = _ttoi(posYText);
+		object->posY = _ttoi(posYText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditPosz()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString posZText;
-	m_editPosZ.GetWindowTextW(posZText);
+		CString posZText;
+		m_editPosZ.GetWindowTextW(posZText);
 
-	object->posZ = _ttoi(posZText);
+		object->posZ = _ttoi(posZText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditRotx()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString rotXText;
-	m_editRotX.GetWindowTextW(rotXText);
+		CString rotXText;
+		m_editRotX.GetWindowTextW(rotXText);
 
-	object->rotX = _ttoi(rotXText);
+		object->rotX = _ttoi(rotXText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditRoty()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString rotYText;
-	m_editRotY.GetWindowTextW(rotYText);
+		CString rotYText;
+		m_editRotY.GetWindowTextW(rotYText);
 
-	object->rotY = _ttoi(rotYText);
+		object->rotY = _ttoi(rotYText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditRotz()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString rotZText;
-	m_editRotZ.GetWindowTextW(rotZText);
+		CString rotZText;
+		m_editRotZ.GetWindowTextW(rotZText);
 
-	object->rotZ = _ttoi(rotZText);
+		object->rotZ = _ttoi(rotZText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditScax()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString scaXText;
-	m_editScaX.GetWindowTextW(scaXText);
+		CString scaXText;
+		m_editScaX.GetWindowTextW(scaXText);
 
-	object->scaX = _ttoi(scaXText);
+		object->scaX = _ttoi(scaXText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditScay()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString scaYText;
-	m_editScaY.GetWindowTextW(scaYText);
+		CString scaYText;
+		m_editScaY.GetWindowTextW(scaYText);
 
-	object->scaY = _ttoi(scaYText);
+		object->scaY = _ttoi(scaYText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
 
 void PropertiesDialogue::OnEnChangeEditScaz()
 {
-	int i = m_selected[0];
-	SceneObject* object = &m_sceneGraph->at(i);
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-	CString scaZText;
-	m_editScaZ.GetWindowTextW(scaZText);
+		CString scaZText;
+		m_editScaZ.GetWindowTextW(scaZText);
 
-	object->scaZ = _ttoi(scaZText);
+		object->scaZ = _ttoi(scaZText);
 
-	m_shouldUpdate = true;
+		m_shouldUpdate = true;
+	}
 }
