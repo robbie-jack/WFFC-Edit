@@ -15,6 +15,8 @@ BEGIN_MESSAGE_MAP(PropertiesDialogue, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_ROTZ, &PropertiesDialogue::OnEnChangeEditRotz)
 	ON_EN_CHANGE(IDC_EDIT_SCAY, &PropertiesDialogue::OnEnChangeEditScay)
 	ON_EN_CHANGE(IDC_EDIT_SCAZ, &PropertiesDialogue::OnEnChangeEditScaz)
+	ON_EN_CHANGE(IDC_EDIT_NAME, &PropertiesDialogue::OnEnChangeEditName)
+	ON_BN_CLICKED(IDC_CHECK_WIREFRAME, &PropertiesDialogue::OnBnClickedCheckWireframe)
 END_MESSAGE_MAP()
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* SceneGraph)		//constructor used in modal
@@ -66,6 +68,8 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, int
 
 		m_static.SetWindowTextW(IDstring.c_str());
 
+		//m_editName.SetWindowTextW(std::object.name);
+
 		m_editPosX.SetWindowTextW(PosXstring.c_str());
 		m_editPosY.SetWindowTextW(PosYstring.c_str());
 		m_editPosZ.SetWindowTextW(PosZstring.c_str());
@@ -77,6 +81,8 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, int
 		m_editScaX.SetWindowTextW(ScaXstring.c_str());
 		m_editScaY.SetWindowTextW(ScaYstring.c_str());
 		m_editScaZ.SetWindowTextW(ScaZstring.c_str());
+
+		m_buttonWireframe.SetCheck(object.editor_wireframe);
 	}
 }
 
@@ -96,6 +102,10 @@ void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_SCAX, m_editScaX);
 	DDX_Control(pDX, IDC_EDIT_SCAY, m_editScaY);
 	DDX_Control(pDX, IDC_EDIT_SCAZ, m_editScaZ);
+
+	DDX_Control(pDX, IDC_EDIT_NAME, m_editName);
+
+	DDX_Control(pDX, IDC_CHECK_WIREFRAME, m_buttonWireframe);
 }
 
 void PropertiesDialogue::End()
@@ -104,17 +114,6 @@ void PropertiesDialogue::End()
 	m_isActive = false;
 	m_selected = -1;
 }
-
-//void PropertiesDialogue::Select()
-//{
-//	int index = m_listBox.GetCurSel();
-//	CString currentSelectionValue;
-//
-//	m_listBox.GetText(index, currentSelectionValue);
-//
-//	*m_currentSelection = _ttoi(currentSelectionValue);
-//
-//}
 
 BOOL PropertiesDialogue::OnInitDialog()
 {
@@ -128,32 +127,6 @@ BOOL PropertiesDialogue::OnInitDialog()
 void PropertiesDialogue::PostNcDestroy()
 {
 }
-
-// SelectDialogue message handlers callback   - We only need this if the dailogue is being setup-with createDialogue().  We are doing
-//it manually so its better to use the messagemap
-/*INT_PTR CALLBACK SelectProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg)
-	{
-	case WM_COMMAND:
-		switch (LOWORD(wParam))
-		{
-		case IDOK:
-		//	EndDialog(hwndDlg, wParam);
-			DestroyWindow(hwndDlg);
-			return TRUE;
-
-
-		case IDCANCEL:
-			EndDialog(hwndDlg, wParam);
-			return TRUE;
-			break;
-		}
-	}
-
-	return INT_PTR();
-}*/
-
 
 void PropertiesDialogue::OnBnClickedOk()
 {
@@ -292,5 +265,30 @@ void PropertiesDialogue::OnEnChangeEditScaz()
 		object->scaZ = _ttoi(scaZText);
 
 		m_shouldUpdate = true;
+	}
+}
+
+void PropertiesDialogue::OnEnChangeEditName()
+{
+	/*if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
+
+		CString nameText;
+		m_editName.GetWindowTextW(nameText);
+
+		object->name = _ttoi(nameText);
+
+		m_shouldUpdate = true;
+	}*/
+}
+
+
+void PropertiesDialogue::OnBnClickedCheckWireframe()
+{
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
+		object->editor_wireframe = m_buttonWireframe.GetCheck();
 	}
 }

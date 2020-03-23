@@ -29,7 +29,6 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	afx_msg void End();		//kill the dialogue
-	//afx_msg void Select();	//Item has been selected
 
 	std::vector<SceneObject>* m_sceneGraph;
 	int m_selected;
@@ -54,12 +53,13 @@ public:
 	CEdit m_editScaY;
 	CEdit m_editScaZ;
 
-	std::wstring IDstring;
+	CEdit m_editName;
+
+	CButton m_buttonWireframe;
+
 	virtual BOOL OnInitDialog() override;
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedOk();
-
-	afx_msg void OnStnClickedTextId();
 
 	afx_msg void OnEnChangeEditPosy();
 	afx_msg void OnEnChangeEditPosx();
@@ -72,6 +72,8 @@ public:
 	afx_msg void OnEnChangeEditScax();
 	afx_msg void OnEnChangeEditScay();
 	afx_msg void OnEnChangeEditScaz();
+	afx_msg void OnEnChangeEditName();
+	afx_msg void OnBnClickedCheckWireframe();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);
