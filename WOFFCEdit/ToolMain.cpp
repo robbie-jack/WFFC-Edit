@@ -1,5 +1,7 @@
 #include "ToolMain.h"
 #include "resource.h"
+#include "River.h"
+
 #include <vector>
 #include <sstream>
 
@@ -437,4 +439,14 @@ void ToolMain::CreateObject()
 	m_sceneGraph.push_back(newSceneObject);
 	//m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
 	m_d3dRenderer.AppendDisplayList(&m_sceneGraph.back());
+}
+
+void ToolMain::GenerateRiver()
+{
+	RiverSection river;
+	river.SetPoint(0, TerrainPoint(50, 50, 0.5f));
+	river.SetPoint(1, TerrainPoint(50, 75, 0.5f));
+	river.SetPoint(2, TerrainPoint(75, 75, 0.5f));
+
+	m_d3dRenderer.BuildRiver(river);
 }

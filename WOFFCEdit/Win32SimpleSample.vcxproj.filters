@@ -65,6 +65,9 @@
     <ClCompile Include="PropertiesDialogue.cpp">
       <Filter>MFC</Filter>
     </ClCompile>
+    <ClCompile Include="River.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceResources.h">
@@ -119,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="PropertiesDialogue.h">
       <Filter>MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="River.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

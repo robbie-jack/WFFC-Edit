@@ -6,6 +6,7 @@
 #include "sqlite3.h"
 #include "SceneObject.h"
 #include "InputCommands.h"
+
 #include <vector>
 
 
@@ -29,6 +30,7 @@ public: //methods
 	void	UpdateAllObjects();
 	void	UpdateObject(int i);
 	void	CreateObject();
+	void	GenerateRiver();
 
 public:	//variables
 	std::vector<SceneObject>    m_sceneGraph;	//our scenegraph storing all the objects in the current chunk

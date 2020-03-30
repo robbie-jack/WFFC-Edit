@@ -181,6 +181,7 @@
     <ClCompile Include="SelectDialogue.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="ToolMain.cpp" />
+    <ClCompile Include="River.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="MFCMain.h" />
     <ClInclude Include="ToolMain.h" />
+    <ClInclude Include="River.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="database\data\Scene1.fbx">

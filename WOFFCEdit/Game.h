@@ -12,6 +12,8 @@
 #include "ChunkObject.h"
 #include "InputCommands.h"
 #include "Camera.h"
+#include "River.h"
+
 #include <vector>
 
 
@@ -55,6 +57,8 @@ public:
 	void BuildDisplayChunk(ChunkObject *SceneChunk);
 	void SaveDisplayChunk(ChunkObject *SceneChunk);	//saves geometry et al
 	void ClearDisplayList();
+
+	void BuildRiver(RiverSection river);
 
 #ifdef DXTK_AUDIO
 	void NewAudioDevice();

@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "DeviceResources.h"
 #include "ChunkObject.h"
+#include "River.h"
 
 //geometric resoltuion - note,  hard coded.
 #define TERRAINRESOLUTION 128
@@ -17,7 +18,8 @@ public:
 	void LoadHeightMap(std::shared_ptr<DX::DeviceResources>  DevResources);
 	void SaveHeightMap();			//saves the heigtmap back to file.
 	void UpdateTerrain();			//updates the geometry based on the heigtmap
-	void GenerateHeightmap();		//creates or alters the heightmap
+	void GenerateRiver(RiverSection river);			// Generates a river in heightmap
+	void UpdateHeightmap(TerrainPoint point);		//creates or alters the heightmap
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionNormalTexture>>  m_batch;
 	std::unique_ptr<DirectX::BasicEffect>       m_terrainEffect;
 

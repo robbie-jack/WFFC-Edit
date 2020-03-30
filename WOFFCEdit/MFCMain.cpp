@@ -11,6 +11,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
 	ON_COMMAND(ID_BUTTON40004, &MFCMain::MenuEditProperties)
+	ON_COMMAND(ID_BUTTON40005, &MFCMain::MenuEditRiver)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -133,6 +134,11 @@ void MFCMain::MenuEditProperties()
 		if (m_ToolSystem.m_selectedObjects.size() > 0)
 			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
 	}
+}
+
+void MFCMain::MenuEditRiver()
+{
+	m_ToolSystem.GenerateRiver();
 }
 
 void MFCMain::UpdatePropertiesDialogue()

@@ -1,7 +1,7 @@
-#include <string>
 #include "DisplayChunk.h"
 #include "Game.h"
 
+#include <string>
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -179,9 +179,23 @@ void DisplayChunk::UpdateTerrain()
 
 }
 
-void DisplayChunk::GenerateHeightmap()
+void DisplayChunk::GenerateRiver(RiverSection river)
 {
-	//insert how YOU want to update the heigtmap here! :D
+	// Move along curve updating heightmap
+	for (float t = 0; t < 1; t += 0.01)
+	{
+		TerrainPoint point = river.FindQuadraticPoint(t);
+		UpdateHeightmap(point);
+	}
+
+	// Rebuild terrain after all points are updated
+	UpdateTerrain();
+}
+
+void DisplayChunk::UpdateHeightmap(TerrainPoint point)
+{
+	int index = (TERRAINRESOLUTION * point.i) + point.j;
+	m_heightMap[index] = point.value;
 }
 
 void DisplayChunk::CalculateTerrainNormals()

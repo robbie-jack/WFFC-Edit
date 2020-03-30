@@ -696,6 +696,11 @@ void Game::SaveDisplayChunk(ChunkObject * SceneChunk)
 	m_displayChunk.SaveHeightMap();			//save heightmap to file.
 }
 
+void Game::BuildRiver(RiverSection river)
+{
+	m_displayChunk.GenerateRiver(river);
+}
+
 #ifdef DXTK_AUDIO
 void Game::NewAudioDevice()
 {
