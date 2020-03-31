@@ -25,7 +25,7 @@ class RiverSection
 {
 public:
 
-	RiverSection();
+	RiverSection(TerrainPoint point1 = TerrainPoint(), TerrainPoint point2 = TerrainPoint(), TerrainPoint point3 = TerrainPoint());
 	~RiverSection();
 
 	inline TerrainPoint GetPoint(int i) { return m_points[i]; };
@@ -43,6 +43,14 @@ private:
 // Class defining a river made up of river sections
 class River
 {
+public:
+
+	inline RiverSection& GetSection(int i) { return m_sections[i]; };
+
+	inline void AddSection() 
+	{
+		RiverSection section; m_sections.push_back(section);
+	}
 
 private:
 	bool m_active;

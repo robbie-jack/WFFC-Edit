@@ -11,7 +11,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
 	ON_COMMAND(ID_BUTTON40004, &MFCMain::MenuEditProperties)
-	ON_COMMAND(ID_BUTTON40005, &MFCMain::MenuEditRiver)
+	ON_COMMAND(ID_BUTTON40005, &MFCMain::ToolBarRiverGeneration)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -91,6 +91,7 @@ int MFCMain::Run()
 			m_ToolSystem.Tick(&msg);
 
 			UpdatePropertiesDialogue();
+			UpdateRiverDialogue();
 
 			//send current object ID to status bar in The main frame
 			m_frame->m_wndStatusBar.SetPaneText(1, statusString.c_str(), 1);
@@ -136,9 +137,11 @@ void MFCMain::MenuEditProperties()
 	}
 }
 
-void MFCMain::MenuEditRiver()
+void MFCMain::ToolBarRiverGeneration()
 {
-	m_ToolSystem.GenerateRiver();
+	m_ToolRiverDialogue.Create(IDD_DIALOG3);
+	m_ToolRiverDialogue.ShowWindow(SW_SHOW);
+	m_ToolRiverDialogue.SetObjectData(&m_ToolSystem.m_river);
 }
 
 void MFCMain::UpdatePropertiesDialogue()
@@ -154,6 +157,14 @@ void MFCMain::UpdatePropertiesDialogue()
 			if (i != -1)
 				m_ToolSystem.UpdateObject(i);
 		}
+	}
+}
+
+void MFCMain::UpdateRiverDialogue()
+{
+	if (m_ToolRiverDialogue.ShouldUpdate())
+	{
+		m_ToolSystem.GenerateRiver();
 	}
 }
 

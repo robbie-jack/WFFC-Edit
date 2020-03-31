@@ -68,6 +68,9 @@
     <ClCompile Include="River.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="RiverDialogue.cpp">
+      <Filter>MFC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceResources.h">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="River.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RiverDialogue.h">
+      <Filter>MFC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

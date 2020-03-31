@@ -30,6 +30,11 @@ ToolMain::ToolMain()
 	m_toolInputCommands.mouse_Y			= 0;
 	m_toolInputCommands.mouse_X_Last	= 0;
 	m_toolInputCommands.mouse_Y_Last	= 0;
+
+	m_river.AddSection();
+	m_river.GetSection(0).SetPoint(0, TerrainPoint(50, 50, 50.0f));
+	m_river.GetSection(0).SetPoint(1, TerrainPoint(50, 75, 50.0f));
+	m_river.GetSection(0).SetPoint(2, TerrainPoint(75, 75, 50.0f));
 }
 
 
@@ -443,10 +448,5 @@ void ToolMain::CreateObject()
 
 void ToolMain::GenerateRiver()
 {
-	RiverSection river;
-	river.SetPoint(0, TerrainPoint(50, 50, 0.5f));
-	river.SetPoint(1, TerrainPoint(50, 75, 0.5f));
-	river.SetPoint(2, TerrainPoint(75, 75, 0.5f));
-
-	m_d3dRenderer.BuildRiver(river);
+	m_d3dRenderer.BuildRiver(m_river.GetSection(0));
 }

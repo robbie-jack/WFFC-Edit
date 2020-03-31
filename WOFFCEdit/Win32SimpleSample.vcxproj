@@ -177,6 +177,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="MFCMain.cpp" />
     <ClCompile Include="PropertiesDialogue.cpp" />
+    <ClCompile Include="RiverDialogue.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="SelectDialogue.cpp" />
     <ClCompile Include="sqlite3.c" />
@@ -196,6 +197,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PropertiesDialogue.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RiverDialogue.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="SelectDialogue.h" />
     <ClInclude Include="sqlite3.h" />

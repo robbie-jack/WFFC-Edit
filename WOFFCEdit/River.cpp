@@ -1,8 +1,10 @@
 #include "River.h"
 
-RiverSection::RiverSection()
+RiverSection::RiverSection(TerrainPoint point1, TerrainPoint point2, TerrainPoint point3)
 {
-
+	m_points[0] = point1;
+	m_points[1] = point2;
+	m_points[2] = point3;
 }
 
 RiverSection::~RiverSection()
