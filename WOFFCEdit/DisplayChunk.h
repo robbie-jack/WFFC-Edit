@@ -20,6 +20,7 @@ public:
 	void UpdateTerrain();			//updates the geometry based on the heigtmap
 	void GenerateRiver(RiverSection river);			// Generates a river in heightmap
 	void UpdateHeightmap(TerrainPoint point);		//creates or alters the heightmap
+	void ResetHeightmap();							// Reset Heightmap to originally loaded data
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionNormalTexture>>  m_batch;
 	std::unique_ptr<DirectX::BasicEffect>       m_terrainEffect;
 
@@ -30,6 +31,7 @@ private:
 	
 	DirectX::VertexPositionNormalTexture m_terrainGeometry[TERRAINRESOLUTION][TERRAINRESOLUTION];
 	BYTE m_heightMap[TERRAINRESOLUTION*TERRAINRESOLUTION];
+	BYTE m_heightMapOriginal[TERRAINRESOLUTION * TERRAINRESOLUTION];
 	void CalculateTerrainNormals();
 
 	float	m_terrainHeightScale;

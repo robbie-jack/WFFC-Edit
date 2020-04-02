@@ -106,6 +106,16 @@ void DisplayChunk::LoadHeightMap(std::shared_ptr<DX::DeviceResources>  DevResour
 
 	fclose(pFile);
 
+	int index;
+	for (size_t i = 0; i < TERRAINRESOLUTION; i++)
+	{
+		for (size_t j = 0; j < TERRAINRESOLUTION; j++)
+		{
+			index = (TERRAINRESOLUTION * i) + j;
+			m_heightMapOriginal[index] = m_heightMap[index];
+		}
+	}
+
 	//load in texture diffuse
 	
 	//load the diffuse texture
@@ -181,6 +191,8 @@ void DisplayChunk::UpdateTerrain()
 
 void DisplayChunk::GenerateRiver(RiverSection river)
 {
+	ResetHeightmap();
+
 	// Move along curve updating heightmap
 	for (float t = 0; t < 1; t += 0.01)
 	{
@@ -196,6 +208,19 @@ void DisplayChunk::UpdateHeightmap(TerrainPoint point)
 {
 	int index = (TERRAINRESOLUTION * point.i) + point.j;
 	m_heightMap[index] = point.value;
+}
+
+void DisplayChunk::ResetHeightmap()
+{
+	int index;
+	for (size_t i = 0; i < TERRAINRESOLUTION; i++)
+	{
+		for (size_t j = 0; j < TERRAINRESOLUTION; j++)
+		{
+			index = (TERRAINRESOLUTION * i) + j;
+			m_heightMap[index] = m_heightMapOriginal[index];
+		}
+	}
 }
 
 void DisplayChunk::CalculateTerrainNormals()
