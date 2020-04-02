@@ -30,6 +30,7 @@ public: //methods
 	void	UpdateAllObjects();
 	void	UpdateObject(int i);
 	void	CreateObject();
+	void	DeleteObject(int i);
 	void	GenerateRiver();
 
 public:	//variables

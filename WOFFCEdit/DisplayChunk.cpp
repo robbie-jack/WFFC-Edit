@@ -106,6 +106,7 @@ void DisplayChunk::LoadHeightMap(std::shared_ptr<DX::DeviceResources>  DevResour
 
 	fclose(pFile);
 
+	// Store Loaded Data in a seperate array for backup
 	int index;
 	for (size_t i = 0; i < TERRAINRESOLUTION; i++)
 	{
@@ -191,17 +192,108 @@ void DisplayChunk::UpdateTerrain()
 
 void DisplayChunk::GenerateRiver(RiverSection river)
 {
+	// Reset Terrain to original state before applying new river points
 	ResetHeightmap();
 
+	std::vector<TerrainPoint> points;
+
 	// Move along curve updating heightmap
-	for (float t = 0; t < 1; t += 0.01)
+	for (float t = 0; t < 1; t += 0.005f)
 	{
 		TerrainPoint point = river.FindQuadraticPoint(t);
 		UpdateHeightmap(point);
+		points.push_back(point);
+
+		/*TerrainPoint points[5];
+
+		for (int i = 0; i < 5; i++)
+		{
+			points[i] = point;
+		}
+
+		int index;
+
+		points[1].i += 1;
+		index = (TERRAINRESOLUTION * points[1].i + 1) + points[1].j;
+		points[1].value = river.Lerp(points[0].value, m_heightMap[index], 0.5f);
+
+		points[2].i -= 1;
+		index = (TERRAINRESOLUTION * points[2].i - 1) + points[2].j;
+		points[2].value = river.Lerp(points[0].value, m_heightMap[index], 0.5f);
+
+		points[3].j += 1;
+		index = (TERRAINRESOLUTION * points[3].i) + points[3].j + 1;
+		points[3].value = river.Lerp(points[0].value, m_heightMap[index], 0.5f);
+
+		points[4].j -= 1;
+		index = (TERRAINRESOLUTION * points[4].i) + points[4].j - 1;
+		points[4].value = river.Lerp(points[0].value, m_heightMap[index], 0.5f);
+
+		
+		for (int i = 0; i < 5; i++)
+		{
+			UpdateHeightmap(points[i]);
+		}*/
+
+		/*int blend_range = 2;
+
+		CalculateRiverBlendHor(point, 1, blend_range);
+		CalculateRiverBlendHor(point, -1, blend_range);
+		CalculateRiverBlendVert(point, 1, blend_range);
+		CalculateRiverBlendVert(point, -1, blend_range);*/
+	}
+
+	for (auto point : points)
+	{
+		int blend_range = 2;
+
+		CalculateRiverBlendVert(point, 1, blend_range);
+		CalculateRiverBlendVert(point, -1, blend_range);
 	}
 
 	// Rebuild terrain after all points are updated
 	UpdateTerrain();
+}
+
+void DisplayChunk::CalculateRiverBlendHor(TerrainPoint point, int step, int iterations)
+{
+	float blend_step = 1.0f / (float)iterations;
+	float blend_val = 0.0f;;
+
+	for (int iter = 1; iter < iterations; iter++)
+	{
+		blend_val += blend_step;
+
+		TerrainPoint blend_point = point;
+		blend_point.i += iter * step;
+
+		int index = index = (TERRAINRESOLUTION * blend_point.i) + blend_point.j;
+		blend_point.value = RiverSection::Lerp(point.value, m_heightMap[index], blend_val);
+
+		UpdateHeightmap(blend_point);
+	}
+}
+
+void DisplayChunk::CalculateRiverBlendVert(TerrainPoint point, int step, int iterations)
+{
+	float blend_step = 1.0f / (float)iterations;
+	float blend_val = 0.0f;;
+
+	for (int iter = 1; iter < iterations; iter++)
+	{
+		blend_val += blend_step;
+
+		TerrainPoint blend_point = point;
+		point.j += iter * step;
+
+		int index = index = (TERRAINRESOLUTION * blend_point.i) + blend_point.j;
+		point.value = RiverSection::Lerp(point.value, m_heightMap[index], blend_val);
+
+		UpdateHeightmap(blend_point);
+
+		CalculateRiverBlendHor(blend_point, 1, iterations);
+		CalculateRiverBlendHor(blend_point, -1, iterations);
+	}
 }
 
 void DisplayChunk::UpdateHeightmap(TerrainPoint point)

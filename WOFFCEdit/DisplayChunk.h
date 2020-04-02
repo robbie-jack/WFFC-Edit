@@ -33,6 +33,8 @@ private:
 	BYTE m_heightMap[TERRAINRESOLUTION*TERRAINRESOLUTION];
 	BYTE m_heightMapOriginal[TERRAINRESOLUTION * TERRAINRESOLUTION];
 	void CalculateTerrainNormals();
+	void CalculateRiverBlendHor(TerrainPoint point, int step, int iterations);
+	void CalculateRiverBlendVert(TerrainPoint point, int step, int iterations);
 
 	float	m_terrainHeightScale;
 	int		m_terrainSize;				//size of terrain in metres

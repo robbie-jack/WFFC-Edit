@@ -17,6 +17,8 @@ BEGIN_MESSAGE_MAP(PropertiesDialogue, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_SCAZ, &PropertiesDialogue::OnEnChangeEditScaz)
 	ON_EN_CHANGE(IDC_EDIT_NAME, &PropertiesDialogue::OnEnChangeEditName)
 	ON_BN_CLICKED(IDC_CHECK_WIREFRAME, &PropertiesDialogue::OnBnClickedCheckWireframe)
+	ON_BN_CLICKED(IDC_CREATE, &PropertiesDialogue::OnBnClickedCreate)
+	ON_BN_CLICKED(IDC_DELETE, &PropertiesDialogue::OnBnClickedDelete)
 END_MESSAGE_MAP()
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* SceneGraph)		//constructor used in modal
@@ -25,6 +27,8 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* 
 	m_sceneGraph = SceneGraph;
 	m_isActive = false;
 	m_shouldUpdate = false;
+	m_shouldCreate = false;
+	m_shouldDelete = false;
 	m_selected = -1;
 
 }
@@ -34,6 +38,8 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in mo
 {
 	m_isActive = false;
 	m_shouldUpdate = false;
+	m_shouldCreate = false;
+	m_shouldDelete = false;
 	m_selected = -1;
 }
 
@@ -83,7 +89,52 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, int
 		m_editScaZ.SetWindowTextW(ScaZstring.c_str());
 
 		m_buttonWireframe.SetCheck(object.editor_wireframe);
+		m_buttonAINode.SetCheck(object.AINode);
+		m_buttonPathNode.SetCheck(object.path_node);
+		m_buttonPathNodeStart.SetCheck(object.path_node_start);
+		m_buttonPathNodeEnd.SetCheck(object.path_node_end);
 	}
+}
+
+void PropertiesDialogue::ClearData()
+{
+	std::wstring IDstring = L"";
+
+	std::wstring PosXstring = L"";
+	std::wstring PosYstring = L"";
+	std::wstring PosZstring = L"";
+
+	std::wstring RotXstring = L"";
+	std::wstring RotYstring = L"";
+	std::wstring RotZstring = L"";
+
+	std::wstring ScaXstring = L"";
+	std::wstring ScaYstring = L"";
+	std::wstring ScaZstring = L"";
+
+	m_static.SetWindowTextW(IDstring.c_str());
+
+	//m_editName.SetWindowTextW(std::object.name);
+
+	m_editPosX.SetWindowTextW(PosXstring.c_str());
+	m_editPosY.SetWindowTextW(PosYstring.c_str());
+	m_editPosZ.SetWindowTextW(PosZstring.c_str());
+
+	m_editRotX.SetWindowTextW(RotXstring.c_str());
+	m_editRotY.SetWindowTextW(RotYstring.c_str());
+	m_editRotZ.SetWindowTextW(RotZstring.c_str());
+
+	m_editScaX.SetWindowTextW(ScaXstring.c_str());
+	m_editScaY.SetWindowTextW(ScaYstring.c_str());
+	m_editScaZ.SetWindowTextW(ScaZstring.c_str());
+
+	m_buttonWireframe.SetCheck(false);
+	m_buttonAINode.SetCheck(false);
+	m_buttonPathNode.SetCheck(false);
+	m_buttonPathNodeStart.SetCheck(false);
+	m_buttonPathNodeEnd.SetCheck(false);
+
+	m_selected = -1;
 }
 
 void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
@@ -106,12 +157,19 @@ void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_NAME, m_editName);
 
 	DDX_Control(pDX, IDC_CHECK_WIREFRAME, m_buttonWireframe);
+	DDX_Control(pDX, IDC_CHECK_AI, m_buttonAINode);
+	DDX_Control(pDX, IDC_CHECK_PATH, m_buttonPathNode);
+	DDX_Control(pDX, IDC_CHECK_PATH_START, m_buttonPathNodeStart);
+	DDX_Control(pDX, IDC_CHECK_PATH_END, m_buttonPathNodeEnd);
 }
 
 void PropertiesDialogue::End()
 {
 	DestroyWindow();	//destory the window properly.  INcluding the links and pointers created.  THis is so the dialogue can start again.
 	m_isActive = false;
+	m_shouldUpdate = false;
+	m_shouldCreate = false;
+	m_shouldDelete = false;
 	m_selected = -1;
 }
 
@@ -120,6 +178,9 @@ BOOL PropertiesDialogue::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	m_isActive = true;
+	m_shouldUpdate = false;
+	m_shouldCreate = false;
+	m_shouldDelete = false;
 
 	return TRUE;
 }
@@ -290,5 +351,20 @@ void PropertiesDialogue::OnBnClickedCheckWireframe()
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 		object->editor_wireframe = m_buttonWireframe.GetCheck();
+	}
+}
+
+
+void PropertiesDialogue::OnBnClickedCreate()
+{
+	m_shouldCreate = true;
+}
+
+
+void PropertiesDialogue::OnBnClickedDelete()
+{
+	if (m_selected != -1)
+	{
+		m_shouldDelete = true;
 	}
 }

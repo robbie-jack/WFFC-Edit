@@ -442,8 +442,23 @@ void ToolMain::CreateObject()
 
 	// Push new object to scene graph and add to renderer display list
 	m_sceneGraph.push_back(newSceneObject);
-	//m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
 	m_d3dRenderer.AppendDisplayList(&m_sceneGraph.back());
+
+	m_selectedObjects.clear();
+	m_selectedObjects.push_back(m_sceneGraph.size() - 1);
+}
+
+void ToolMain::DeleteObject(int i)
+{
+	for (std::vector<SceneObject>::iterator iter = m_sceneGraph.begin(); iter != m_sceneGraph.end(); iter++)
+	{
+		if (iter->ID == m_sceneGraph.at(i).ID)
+		{
+			m_sceneGraph.erase(iter);
+			m_selectedObjects.clear();
+			break;
+		}
+	}
 }
 
 void ToolMain::GenerateRiver()

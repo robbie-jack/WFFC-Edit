@@ -34,10 +34,10 @@ public:
 	// Derive a point along the bezier curve
 	TerrainPoint FindQuadraticPoint(float t);
 
+	static int Lerp(int n1, int n2, float perc);
+
 private:
 	TerrainPoint m_points[3]; // Points to build bezier curve from
-
-	int GetLerpPoint(int n1, int n2, float perc);
 };
 
 // Class defining a river made up of river sections

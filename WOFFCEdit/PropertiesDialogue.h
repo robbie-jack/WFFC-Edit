@@ -17,9 +17,39 @@ public:
 	virtual ~PropertiesDialogue();
 
 	void SetObjectData(std::vector<SceneObject>* SceneGraph, int Selected);
+	void ClearData();
 
 	inline bool IsActive() { return m_isActive; };
-	inline bool ShouldUpdate() { return m_shouldUpdate; m_shouldUpdate = false; };
+	inline bool ShouldUpdate() 
+	{ 
+		if (m_shouldUpdate)
+		{
+			m_shouldUpdate = false;
+			return true;
+		}
+		else
+			return false;
+	};
+	inline bool ShouldCreate() 
+	{ 
+		if (m_shouldCreate)
+		{
+			m_shouldCreate = false;
+			return true;
+		}
+		else
+			return false;
+	};
+	inline bool ShouldDelete()
+	{
+		if (m_shouldDelete)
+		{
+			m_shouldDelete = false;
+			return true;
+		}
+		else
+			return false;
+	};
 	int GetSelected() { return m_selected; };
 
 #ifdef AFX_DESIGN_TIME
@@ -36,6 +66,8 @@ protected:
 
 	bool m_isActive;
 	bool m_shouldUpdate;
+	bool m_shouldCreate;
+	bool m_shouldDelete;
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -57,10 +89,16 @@ public:
 	CEdit m_editName;
 
 	CButton m_buttonWireframe;
+	CButton m_buttonAINode;
+	CButton m_buttonPathNode;
+	CButton m_buttonPathNodeStart;
+	CButton m_buttonPathNodeEnd;
 
 	virtual BOOL OnInitDialog() override;
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedCreate();
+	afx_msg void OnBnClickedDelete();
 
 	afx_msg void OnEnChangeEditPosy();
 	afx_msg void OnEnChangeEditPosx();
@@ -74,7 +112,9 @@ public:
 	afx_msg void OnEnChangeEditScay();
 	afx_msg void OnEnChangeEditScaz();
 	afx_msg void OnEnChangeEditName();
+
 	afx_msg void OnBnClickedCheckWireframe();
+	
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);

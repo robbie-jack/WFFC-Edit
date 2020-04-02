@@ -157,6 +157,20 @@ void MFCMain::UpdatePropertiesDialogue()
 			if (i != -1)
 				m_ToolSystem.UpdateObject(i);
 		}
+
+		if (m_ToolPropertiesDialogue.ShouldCreate())
+		{
+			m_ToolSystem.CreateObject();
+			
+			if (m_ToolSystem.m_selectedObjects.size() > 0)
+				m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
+		}
+
+		if (m_ToolPropertiesDialogue.ShouldDelete())
+		{
+			m_ToolSystem.DeleteObject(m_ToolPropertiesDialogue.GetSelected());
+			m_ToolPropertiesDialogue.ClearData();
+		}
 	}
 }
 
