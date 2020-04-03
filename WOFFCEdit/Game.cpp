@@ -546,7 +546,7 @@ void Game::BuildDisplayList(std::vector<SceneObject> * SceneGraph)
 	}
 }
 
-void Game::UpdateDisplayList(int i, SceneObject* SceneObject)
+void Game::UpdateDisplayObject(int i, SceneObject* SceneObject)
 {
 	auto device = m_deviceResources->GetD3DDevice();
 	auto devicecontext = m_deviceResources->GetD3DDeviceContext();
@@ -611,7 +611,7 @@ void Game::UpdateDisplayList(int i, SceneObject* SceneObject)
 	m_displayList[i].m_light_quadratic = SceneObject->light_quadratic;
 }
 
-void Game::AppendDisplayList(SceneObject* SceneObject)
+void Game::AddDisplayObject(SceneObject* SceneObject)
 {
 	auto device = m_deviceResources->GetD3DDevice();
 	auto devicecontext = m_deviceResources->GetD3DDeviceContext();
@@ -679,6 +679,11 @@ void Game::AppendDisplayList(SceneObject* SceneObject)
 	newDisplayObject.m_light_quadratic = SceneObject->light_quadratic;
 
 	m_displayList.push_back(newDisplayObject);
+}
+
+void Game::RemoveDisplayObject(int i)
+{
+	m_displayList.erase(m_displayList.begin() + i);
 }
 
 void Game::BuildDisplayChunk(ChunkObject * SceneChunk)

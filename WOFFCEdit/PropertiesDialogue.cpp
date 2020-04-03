@@ -28,7 +28,6 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* 
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_shouldDelete = false;
 	m_selected = -1;
 
 }
@@ -39,7 +38,6 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in mo
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_shouldDelete = false;
 	m_selected = -1;
 }
 
@@ -169,7 +167,6 @@ void PropertiesDialogue::End()
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_shouldDelete = false;
 	m_selected = -1;
 }
 
@@ -180,7 +177,6 @@ BOOL PropertiesDialogue::OnInitDialog()
 	m_isActive = true;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_shouldDelete = false;
 
 	return TRUE;
 }
@@ -365,6 +361,7 @@ void PropertiesDialogue::OnBnClickedDelete()
 {
 	if (m_selected != -1)
 	{
-		m_shouldDelete = true;
+		SceneObject* object = &m_sceneGraph->at(m_selected);
+		object->is_deleted = true;
 	}
 }

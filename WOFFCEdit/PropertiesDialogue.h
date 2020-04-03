@@ -40,16 +40,6 @@ public:
 		else
 			return false;
 	};
-	inline bool ShouldDelete()
-	{
-		if (m_shouldDelete)
-		{
-			m_shouldDelete = false;
-			return true;
-		}
-		else
-			return false;
-	};
 	int GetSelected() { return m_selected; };
 
 #ifdef AFX_DESIGN_TIME
@@ -67,7 +57,6 @@ protected:
 	bool m_isActive;
 	bool m_shouldUpdate;
 	bool m_shouldCreate;
-	bool m_shouldDelete;
 
 	DECLARE_MESSAGE_MAP()
 public:

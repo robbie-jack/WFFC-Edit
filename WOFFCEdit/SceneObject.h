@@ -51,6 +51,6 @@ public:
 	float light_constant;
 	float light_linear;
 	float light_quadratic;
-
+	bool is_deleted;
 };
 

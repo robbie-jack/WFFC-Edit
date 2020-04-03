@@ -30,7 +30,6 @@ public: //methods
 	void	UpdateAllObjects();
 	void	UpdateObject(int i);
 	void	CreateObject();
-	void	DeleteObject(int i);
 	void	GenerateRiver();
 
 public:	//variables
@@ -41,7 +40,7 @@ public:	//variables
 
 private:	//methods
 	void	onContentAdded();
-
+	void	DeleteObjects();
 
 		
 private:	//variables
@@ -55,4 +54,5 @@ private:	//variables
 	int m_width;		//dimensions passed to directX
 	int m_height;
 	int m_currentChunk;			//the current chunk of thedatabase that we are operating on.  Dictates loading and saving. 
+	int nextID;
 };

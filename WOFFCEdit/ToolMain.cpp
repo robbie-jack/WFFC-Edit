@@ -46,7 +46,6 @@ ToolMain::~ToolMain()
 
 std::vector<int> ToolMain::getCurrentSelectionID()
 {
-
 	return m_selectedObjects;
 }
 
@@ -158,10 +157,13 @@ void ToolMain::onActionLoad()
 		newSceneObject.light_linear = sqlite3_column_double(pResults, 54);
 		newSceneObject.light_quadratic = sqlite3_column_double(pResults, 55);
 	
+		newSceneObject.is_deleted = false;
 
 		//send completed object to scenegraph
 		m_sceneGraph.push_back(newSceneObject);
 	}
+
+	nextID = m_sceneGraph.back().ID + 1;
 
 	//THE WORLD CHUNK
 	//prepare SQL Text
@@ -311,6 +313,8 @@ void ToolMain::Tick(MSG *msg)
 	//Renderer Update Call
 	m_d3dRenderer.Tick(&m_toolInputCommands);
 
+	DeleteObjects();
+
 	UpdateStates();
 }
 
@@ -423,7 +427,7 @@ void ToolMain::UpdateAllObjects()
 
 void ToolMain::UpdateObject(int i)
 {
-	m_d3dRenderer.UpdateDisplayList(i, &m_sceneGraph[i]);
+	m_d3dRenderer.UpdateDisplayObject(i, &m_sceneGraph[i]);
 }
 
 void ToolMain::CreateObject()
@@ -431,7 +435,7 @@ void ToolMain::CreateObject()
 	SceneObject newSceneObject;
 
 	// New Object ID is number of objects + 1
-	newSceneObject.ID = m_sceneGraph.size() + 1;
+	newSceneObject.ID = nextID;
 	newSceneObject.model_path = "database/data/placeholder.cmo";
 	newSceneObject.tex_diffuse_path = "database/data/placeholder.dds";
 	newSceneObject.posX = 10.0f;
@@ -439,26 +443,35 @@ void ToolMain::CreateObject()
 	newSceneObject.scaX = 1.0f;
 	newSceneObject.scaY = 1.0f;
 	newSceneObject.scaZ = 1.0f;
+	newSceneObject.is_deleted = false;
 
 	// Push new object to scene graph and add to renderer display list
 	m_sceneGraph.push_back(newSceneObject);
-	m_d3dRenderer.AppendDisplayList(&m_sceneGraph.back());
+	m_d3dRenderer.AddDisplayObject(&m_sceneGraph.back());
 
 	m_selectedObjects.clear();
 	m_selectedObjects.push_back(m_sceneGraph.size() - 1);
+
+	nextID++;
 }
 
-void ToolMain::DeleteObject(int i)
+void ToolMain::DeleteObjects()
 {
-	for (std::vector<SceneObject>::iterator iter = m_sceneGraph.begin(); iter != m_sceneGraph.end(); iter++)
+	bool object_was_deleted = false;
+
+	for (int i = 0; i < m_sceneGraph.size(); i++)
 	{
-		if (iter->ID == m_sceneGraph.at(i).ID)
+		if (m_sceneGraph[i].is_deleted)
 		{
-			m_sceneGraph.erase(iter);
-			m_selectedObjects.clear();
-			break;
+			m_sceneGraph.erase(m_sceneGraph.begin() + i);
+			m_d3dRenderer.RemoveDisplayObject(i);
+			object_was_deleted = true;
 		}
 	}
+
+	if (object_was_deleted)
+		m_selectedObjects.clear();
+	//m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
 }
 
 void ToolMain::GenerateRiver()
