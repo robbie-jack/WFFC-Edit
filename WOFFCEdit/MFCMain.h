@@ -28,13 +28,13 @@ private:
 	CRect WindowRECT;	//Window area rectangle. 
 	SelectDialogue m_ToolSelectDialogue;			//for modeless dialogue, declare it here
 	PropertiesDialogue m_ToolPropertiesDialogue;
-	RiverDialogue m_ToolRiverDialogue;
+	//RiverDialogue m_ToolRiverDialogue;
 
 	int m_width;		
 	int m_height;
 
 	void UpdatePropertiesDialogue();
-	void UpdateRiverDialogue();
+	//void UpdateRiverDialogue();
 	
 	//Interface funtions for menu and toolbar etc requires
 	afx_msg void MenuFileQuit();
@@ -45,7 +45,7 @@ private:
 	afx_msg void ToolBarWireframe();
 	afx_msg void ToolBarNewObject();
 	afx_msg void ToolBarRefreshObjects();
-	afx_msg void ToolBarRiverGeneration();
+	//afx_msg void ToolBarRiverGeneration();
 
 	DECLARE_MESSAGE_MAP()	// required macro for message map functionality  One per class
 };

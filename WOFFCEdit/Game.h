@@ -13,6 +13,7 @@
 #include "InputCommands.h"
 #include "Camera.h"
 #include "River.h"
+#include "Path.h"
 
 #include <vector>
 
@@ -58,6 +59,8 @@ public:
 	void BuildDisplayChunk(ChunkObject *SceneChunk);
 	void SaveDisplayChunk(ChunkObject *SceneChunk);	//saves geometry et al
 	void ClearDisplayList();
+
+	void DrawPath(Path path);
 
 	void BuildRiver(RiverSection river);
 

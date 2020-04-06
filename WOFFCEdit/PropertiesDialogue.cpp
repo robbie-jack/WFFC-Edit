@@ -19,6 +19,10 @@ BEGIN_MESSAGE_MAP(PropertiesDialogue, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK_WIREFRAME, &PropertiesDialogue::OnBnClickedCheckWireframe)
 	ON_BN_CLICKED(IDC_CREATE, &PropertiesDialogue::OnBnClickedCreate)
 	ON_BN_CLICKED(IDC_DELETE, &PropertiesDialogue::OnBnClickedDelete)
+	ON_BN_CLICKED(IDC_CHECK_AI, &PropertiesDialogue::OnBnClickedCheckAI)
+	ON_BN_CLICKED(IDC_CHECK_PATH, &PropertiesDialogue::OnBnClickedCheckPath)
+	ON_BN_CLICKED(IDC_CHECK_PATH_START, &PropertiesDialogue::OnBnClickedCheckPathStart)
+	ON_BN_CLICKED(IDC_CHECK_PATH_END, &PropertiesDialogue::OnBnClickedCheckPathEnd)
 END_MESSAGE_MAP()
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* SceneGraph)		//constructor used in modal
@@ -96,48 +100,53 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, int
 
 void PropertiesDialogue::ClearData()
 {
-	std::wstring IDstring = L"";
+	if (m_selected != -1)
+	{
+		std::wstring IDstring = L"";
 
-	std::wstring PosXstring = L"";
-	std::wstring PosYstring = L"";
-	std::wstring PosZstring = L"";
+		std::wstring PosXstring = L"";
+		std::wstring PosYstring = L"";
+		std::wstring PosZstring = L"";
 
-	std::wstring RotXstring = L"";
-	std::wstring RotYstring = L"";
-	std::wstring RotZstring = L"";
+		std::wstring RotXstring = L"";
+		std::wstring RotYstring = L"";
+		std::wstring RotZstring = L"";
 
-	std::wstring ScaXstring = L"";
-	std::wstring ScaYstring = L"";
-	std::wstring ScaZstring = L"";
+		std::wstring ScaXstring = L"";
+		std::wstring ScaYstring = L"";
+		std::wstring ScaZstring = L"";
 
-	m_static.SetWindowTextW(IDstring.c_str());
+		m_static.SetWindowTextW(IDstring.c_str());
 
-	//m_editName.SetWindowTextW(std::object.name);
+		//m_editName.SetWindowTextW(std::object.name);
 
-	m_editPosX.SetWindowTextW(PosXstring.c_str());
-	m_editPosY.SetWindowTextW(PosYstring.c_str());
-	m_editPosZ.SetWindowTextW(PosZstring.c_str());
+		m_editPosX.SetWindowTextW(PosXstring.c_str());
+		m_editPosY.SetWindowTextW(PosYstring.c_str());
+		m_editPosZ.SetWindowTextW(PosZstring.c_str());
 
-	m_editRotX.SetWindowTextW(RotXstring.c_str());
-	m_editRotY.SetWindowTextW(RotYstring.c_str());
-	m_editRotZ.SetWindowTextW(RotZstring.c_str());
+		m_editRotX.SetWindowTextW(RotXstring.c_str());
+		m_editRotY.SetWindowTextW(RotYstring.c_str());
+		m_editRotZ.SetWindowTextW(RotZstring.c_str());
 
-	m_editScaX.SetWindowTextW(ScaXstring.c_str());
-	m_editScaY.SetWindowTextW(ScaYstring.c_str());
-	m_editScaZ.SetWindowTextW(ScaZstring.c_str());
+		m_editScaX.SetWindowTextW(ScaXstring.c_str());
+		m_editScaY.SetWindowTextW(ScaYstring.c_str());
+		m_editScaZ.SetWindowTextW(ScaZstring.c_str());
 
-	m_buttonWireframe.SetCheck(false);
-	m_buttonAINode.SetCheck(false);
-	m_buttonPathNode.SetCheck(false);
-	m_buttonPathNodeStart.SetCheck(false);
-	m_buttonPathNodeEnd.SetCheck(false);
+		m_buttonWireframe.SetCheck(false);
+		m_buttonAINode.SetCheck(false);
+		m_buttonPathNode.SetCheck(false);
+		m_buttonPathNodeStart.SetCheck(false);
+		m_buttonPathNodeEnd.SetCheck(false);
 
-	m_selected = -1;
+		m_selected = -1;
+		m_sceneGraph = NULL;
+	}
 }
 
 void PropertiesDialogue::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	
 	DDX_Control(pDX, IDC_TEXT_ID, m_static);
 
 	DDX_Control(pDX, IDC_EDIT_POSX, m_editPosX);
@@ -177,6 +186,7 @@ BOOL PropertiesDialogue::OnInitDialog()
 	m_isActive = true;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
+	m_selected = -1;
 
 	return TRUE;
 }
@@ -363,5 +373,83 @@ void PropertiesDialogue::OnBnClickedDelete()
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 		object->is_deleted = true;
+		//ClearData();
+	}
+}
+
+
+void PropertiesDialogue::OnBnClickedCheckAI()
+{
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
+		object->AINode = m_buttonAINode.GetCheck();
+	}
+}
+
+
+void PropertiesDialogue::OnBnClickedCheckPath()
+{
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
+		bool path_node = m_buttonPathNode.GetCheck();
+
+		// If Object is unmarked as path node it shouldn't be path node start/end either
+		if (path_node == false)
+		{
+			object->path_node_start = path_node;
+			object->path_node_end = path_node;
+
+			m_buttonPathNodeStart.SetCheck(path_node);
+			m_buttonPathNodeEnd.SetCheck(path_node);
+		}
+
+		object->path_node = path_node;
+	}
+}
+
+
+void PropertiesDialogue::OnBnClickedCheckPathStart()
+{
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
+		bool path_node_start = m_buttonPathNodeStart.GetCheck();
+
+		// If Object is marked as a Path Node Start it should also be a Path Node
+		if (path_node_start == true)
+		{
+			if (object->path_node == false)
+			{
+				object->path_node = true;
+				m_buttonPathNode.SetCheck(object->path_node);
+			}
+		}
+
+
+		object->path_node_start = path_node_start;
+	}
+}
+
+
+void PropertiesDialogue::OnBnClickedCheckPathEnd()
+{
+	if (m_selected != -1)
+	{
+		SceneObject* object = &m_sceneGraph->at(m_selected);
+		bool path_node_end = m_buttonPathNodeEnd.GetCheck();
+
+		// If Object is marked as a Path Node End it should also be a Path Node
+		if (path_node_end == true)
+		{
+			if (object->path_node == false)
+			{
+				object->path_node = true;
+				m_buttonPathNode.SetCheck(object->path_node);
+			}
+		}
+
+		object->path_node_end = path_node_end;
 	}
 }

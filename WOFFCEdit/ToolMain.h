@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "sqlite3.h"
 #include "SceneObject.h"
+#include "AIObject.h"
 #include "InputCommands.h"
 
 #include <vector>
@@ -29,14 +30,17 @@ public: //methods
 	void	UpdateStates();
 	void	UpdateAllObjects();
 	void	UpdateObject(int i);
-	void	CreateObject();
-	void	GenerateRiver();
+	SceneObject*	CreateSceneObject();
+	AIObject*		CreateAIObject();
+	//void	GenerateRiver();
 
 public:	//variables
 	std::vector<SceneObject>    m_sceneGraph;	//our scenegraph storing all the objects in the current chunk
 	ChunkObject					m_chunk;		//our landscape chunk
 	std::vector<int> m_selectedObjects;						//ID of current Selection
-	River m_river;
+	//River m_river;
+	AIObject* m_aiObject;
+	Path path;
 
 private:	//methods
 	void	onContentAdded();

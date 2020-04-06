@@ -57,6 +57,7 @@ void DisplayChunk::RenderBatch(std::shared_ptr<DX::DeviceResources>  DevResource
 			m_batch->DrawQuad(m_terrainGeometry[i][j], m_terrainGeometry[i][j+1], m_terrainGeometry[i+1][j+1], m_terrainGeometry[i+1][j]); //bottom left bottom right, top right top left.
 		}
 	}
+
 	m_batch->End();
 }
 

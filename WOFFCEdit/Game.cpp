@@ -240,6 +240,8 @@ void Game::Render()
 	//Render the batch,  This is handled in the Display chunk becuase it has the potential to get complex
 	m_displayChunk.RenderBatch(m_deviceResources);
 
+	//DrawPath(Path);
+
 	//CAMERA POSITION ON HUD
 	/*m_sprites->Begin();
 	WCHAR   Buffer[256];
@@ -249,6 +251,28 @@ void Game::Render()
 	m_sprites->End();*/
 
     m_deviceResources->Present();
+}
+
+void Game::DrawPath(Path path)
+{
+	auto context = m_deviceResources->GetD3DDeviceContext();
+
+	m_batchEffect->Apply(context);
+
+	context->IASetInputLayout(m_batchInputLayout.Get());
+
+	// Render AI Paths
+	m_batch->Begin();
+
+	Vector3 pos1 = Vector3(-512, 0.0f, -512.0f);
+	Vector3 pos2 = Vector3(512, 0.0f, 512.0f);
+
+	VertexPositionColor v1(pos1, Colors::Red);
+	VertexPositionColor v2(pos2, Colors::Red);
+
+	m_batch->DrawLine(v1, v1);
+
+	m_batch->End();
 }
 
 // Helper method to clear the back buffers.

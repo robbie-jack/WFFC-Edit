@@ -36,7 +36,7 @@ void CMyFrame::OnUpdatePage(CCmdUI * pCmdUI)
 	pCmdUI->SetText(strPage);
 }
 
-//oncretae, called after init but before window is shown. 
+//oncretae, called after init but before window is shown.
 int CMyFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1) return -1;

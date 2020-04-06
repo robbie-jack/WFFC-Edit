@@ -104,6 +104,10 @@ public:
 
 	afx_msg void OnBnClickedCheckWireframe();
 	
+	afx_msg void OnBnClickedCheckAI();
+	afx_msg void OnBnClickedCheckPath();
+	afx_msg void OnBnClickedCheckPathStart();
+	afx_msg void OnBnClickedCheckPathEnd();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);

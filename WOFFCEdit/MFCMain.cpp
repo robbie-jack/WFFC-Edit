@@ -11,7 +11,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
 	ON_COMMAND(ID_BUTTON40004, &MFCMain::MenuEditProperties)
-	ON_COMMAND(ID_BUTTON40005, &MFCMain::ToolBarRiverGeneration)
+	//ON_COMMAND(ID_BUTTON40005, &MFCMain::ToolBarRiverGeneration)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -88,10 +88,10 @@ int MFCMain::Run()
 				}
 			}
 
-			m_ToolSystem.Tick(&msg);
-
 			UpdatePropertiesDialogue();
-			UpdateRiverDialogue();
+			//UpdateRiverDialogue();
+
+			m_ToolSystem.Tick(&msg);
 
 			//send current object ID to status bar in The main frame
 			m_frame->m_wndStatusBar.SetPaneText(1, statusString.c_str(), 1);
@@ -137,12 +137,12 @@ void MFCMain::MenuEditProperties()
 	}
 }
 
-void MFCMain::ToolBarRiverGeneration()
-{
-	m_ToolRiverDialogue.Create(IDD_DIALOG3);
-	m_ToolRiverDialogue.ShowWindow(SW_SHOW);
-	m_ToolRiverDialogue.SetObjectData(&m_ToolSystem.m_river);
-}
+//void MFCMain::ToolBarRiverGeneration()
+//{
+//	m_ToolRiverDialogue.Create(IDD_DIALOG3);
+//	m_ToolRiverDialogue.ShowWindow(SW_SHOW);
+//	m_ToolRiverDialogue.SetObjectData(&m_ToolSystem.m_river);
+//}
 
 void MFCMain::UpdatePropertiesDialogue()
 {
@@ -150,6 +150,8 @@ void MFCMain::UpdatePropertiesDialogue()
 	{
 		if (m_ToolSystem.m_selectedObjects.size() > 0)
 			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
+		/*else
+			m_ToolPropertiesDialogue.ClearData();*/
 
 		if (m_ToolPropertiesDialogue.ShouldUpdate())
 		{
@@ -160,7 +162,7 @@ void MFCMain::UpdatePropertiesDialogue()
 
 		if (m_ToolPropertiesDialogue.ShouldCreate())
 		{
-			m_ToolSystem.CreateObject();
+			m_ToolSystem.CreateSceneObject();
 			
 			if (m_ToolSystem.m_selectedObjects.size() > 0)
 				m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
@@ -168,13 +170,13 @@ void MFCMain::UpdatePropertiesDialogue()
 	}
 }
 
-void MFCMain::UpdateRiverDialogue()
-{
-	if (m_ToolRiverDialogue.ShouldUpdate())
-	{
-		m_ToolSystem.GenerateRiver();
-	}
-}
+//void MFCMain::UpdateRiverDialogue()
+//{
+//	if (m_ToolRiverDialogue.ShouldUpdate())
+//	{
+//		m_ToolSystem.GenerateRiver();
+//	}
+//}
 
 void MFCMain::ToolBarButton1()
 {
@@ -193,7 +195,7 @@ void MFCMain::ToolBarWireframe()
 
 void MFCMain::ToolBarNewObject()
 {
-	m_ToolSystem.CreateObject();
+	m_ToolSystem.CreateSceneObject();
 }
 
 void MFCMain::ToolBarRefreshObjects()

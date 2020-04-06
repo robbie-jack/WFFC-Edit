@@ -31,10 +31,10 @@ ToolMain::ToolMain()
 	m_toolInputCommands.mouse_X_Last	= 0;
 	m_toolInputCommands.mouse_Y_Last	= 0;
 
-	m_river.AddSection();
+	/*m_river.AddSection();
 	m_river.GetSection(0).SetPoint(0, TerrainPoint(50, 50, 50.0f));
 	m_river.GetSection(0).SetPoint(1, TerrainPoint(50, 75, 50.0f));
-	m_river.GetSection(0).SetPoint(2, TerrainPoint(75, 75, 50.0f));
+	m_river.GetSection(0).SetPoint(2, TerrainPoint(75, 75, 50.0f));*/
 }
 
 
@@ -72,6 +72,9 @@ void ToolMain::onActionInitialise(HWND handle, int width, int height)
 	}
 
 	onActionLoad();
+
+	m_aiObject = CreateAIObject();
+	//m_aiObject->path.AddSegment(&m_sceneGraph[17], &m_sceneGraph[18], &m_sceneGraph[19], &m_sceneGraph[20]);
 }
 
 void ToolMain::onActionLoad()
@@ -430,7 +433,7 @@ void ToolMain::UpdateObject(int i)
 	m_d3dRenderer.UpdateDisplayObject(i, &m_sceneGraph[i]);
 }
 
-void ToolMain::CreateObject()
+SceneObject* ToolMain::CreateSceneObject()
 {
 	SceneObject newSceneObject;
 
@@ -453,6 +456,36 @@ void ToolMain::CreateObject()
 	m_selectedObjects.push_back(m_sceneGraph.size() - 1);
 
 	nextID++;
+
+	return &m_sceneGraph.back();
+}
+
+AIObject* ToolMain::CreateAIObject()
+{
+	AIObject newAIObject;
+
+	// New Object ID is number of objects + 1
+	newAIObject.ID = nextID;
+	newAIObject.model_path = "database/data/placeholder.cmo";
+	newAIObject.tex_diffuse_path = "database/data/placeholder.dds";
+	newAIObject.posX = 10.0f;
+	newAIObject.posZ = 10.0f;
+	newAIObject.scaX = 1.0f;
+	newAIObject.scaY = 1.0f;
+	newAIObject.scaZ = 1.0f;
+	newAIObject.is_deleted = false;
+	newAIObject.AINode = true;
+
+	// Push new object to scene graph and add to renderer display list
+	m_sceneGraph.push_back(newAIObject);
+	m_d3dRenderer.AddDisplayObject(&m_sceneGraph.back());
+
+	m_selectedObjects.clear();
+	m_selectedObjects.push_back(m_sceneGraph.size() - 1);
+
+	nextID++;
+
+	return (AIObject*)&m_sceneGraph.back();
 }
 
 void ToolMain::DeleteObjects()
@@ -470,11 +503,13 @@ void ToolMain::DeleteObjects()
 	}
 
 	if (object_was_deleted)
+	{
 		m_selectedObjects.clear();
-	//m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
+		//m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
+	}
 }
 
-void ToolMain::GenerateRiver()
-{
-	m_d3dRenderer.BuildRiver(m_river.GetSection(0));
-}
+//void ToolMain::GenerateRiver()
+//{
+//	m_d3dRenderer.BuildRiver(m_river.GetSection(0));
+//}

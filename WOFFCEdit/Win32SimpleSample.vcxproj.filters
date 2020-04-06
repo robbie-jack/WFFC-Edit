@@ -17,6 +17,9 @@
     <Filter Include="SQLITE">
       <UniqueIdentifier>{a006b0b6-46b2-4c4f-808a-ec8fe3e790eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{cedd25d8-c89f-4fc9-ac41-3fd695154677}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -70,6 +73,12 @@
     </ClCompile>
     <ClCompile Include="RiverDialogue.cpp">
       <Filter>MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIObject.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +140,12 @@
     </ClInclude>
     <ClInclude Include="RiverDialogue.h">
       <Filter>MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIObject.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
