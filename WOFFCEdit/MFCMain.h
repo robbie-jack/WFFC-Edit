@@ -11,6 +11,7 @@
 #include "SelectDialogue.h"
 #include "PropertiesDialogue.h"
 #include "RiverDialogue.h"
+#include "PathEditorDialogue.h"
 
 class MFCMain : public CWinApp 
 {
@@ -28,12 +29,14 @@ private:
 	CRect WindowRECT;	//Window area rectangle. 
 	SelectDialogue m_ToolSelectDialogue;			//for modeless dialogue, declare it here
 	PropertiesDialogue m_ToolPropertiesDialogue;
+	PathEditorDialogue m_ToolPathEditorDialogue;
 	//RiverDialogue m_ToolRiverDialogue;
 
 	int m_width;		
 	int m_height;
 
 	void UpdatePropertiesDialogue();
+	void UpdatePathEditorDialogue();
 	//void UpdateRiverDialogue();
 	
 	//Interface funtions for menu and toolbar etc requires
@@ -45,6 +48,7 @@ private:
 	afx_msg void ToolBarWireframe();
 	afx_msg void ToolBarNewObject();
 	afx_msg void ToolBarRefreshObjects();
+	afx_msg void ToolBarPathEditor();
 	//afx_msg void ToolBarRiverGeneration();
 
 	DECLARE_MESSAGE_MAP()	// required macro for message map functionality  One per class

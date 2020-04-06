@@ -11,7 +11,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
 	ON_COMMAND(ID_BUTTON40004, &MFCMain::MenuEditProperties)
-	//ON_COMMAND(ID_BUTTON40005, &MFCMain::ToolBarRiverGeneration)
+	ON_COMMAND(ID_BUTTON40005, &MFCMain::ToolBarPathEditor)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -89,6 +89,7 @@ int MFCMain::Run()
 			}
 
 			UpdatePropertiesDialogue();
+			UpdatePathEditorDialogue();
 			//UpdateRiverDialogue();
 
 			m_ToolSystem.Tick(&msg);
@@ -170,6 +171,11 @@ void MFCMain::UpdatePropertiesDialogue()
 	}
 }
 
+void MFCMain::UpdatePathEditorDialogue()
+{
+
+}
+
 //void MFCMain::UpdateRiverDialogue()
 //{
 //	if (m_ToolRiverDialogue.ShouldUpdate())
@@ -201,6 +207,17 @@ void MFCMain::ToolBarNewObject()
 void MFCMain::ToolBarRefreshObjects()
 {
 	m_ToolSystem.UpdateAllObjects();
+}
+
+void MFCMain::ToolBarPathEditor()
+{
+	if (!m_ToolPathEditorDialogue.IsActive())
+	{
+		m_ToolPathEditorDialogue.Create(IDD_DIALOG4);
+		m_ToolPathEditorDialogue.ShowWindow(SW_SHOW);
+
+
+	}
 }
 
 MFCMain::MFCMain()

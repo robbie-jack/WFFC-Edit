@@ -38,6 +38,8 @@ public:	//variables
 	std::vector<SceneObject>    m_sceneGraph;	//our scenegraph storing all the objects in the current chunk
 	ChunkObject					m_chunk;		//our landscape chunk
 	std::vector<int> m_selectedObjects;						//ID of current Selection
+	std::vector<Path> m_paths;
+
 	//River m_river;
 	AIObject* m_aiObject;
 	Path path;

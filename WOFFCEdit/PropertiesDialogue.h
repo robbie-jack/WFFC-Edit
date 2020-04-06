@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "afxwin.h"
 #include "SceneObject.h"
+
 #include <vector>
 
 class PropertiesDialogue : public CDialogEx

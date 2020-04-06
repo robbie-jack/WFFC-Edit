@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include <vector>
+#include <string>
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -32,6 +33,8 @@ public:
 		segment.d = d;
 		m_segments.push_back(segment);
 	}
+
+	std::string m_name;
 
 private:
 	std::vector<PathSegment> m_segments;
