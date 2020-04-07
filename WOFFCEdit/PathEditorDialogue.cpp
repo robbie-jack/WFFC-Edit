@@ -13,8 +13,10 @@ BEGIN_MESSAGE_MAP(PathEditorDialogue, CDialogEx)
 	ON_BN_CLICKED(IDOK, &PathEditorDialogue::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &PathEditorDialogue::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_CREATE, &PathEditorDialogue::OnBnClickedButtonCreate)
-	ON_CBN_SELCHANGE(IDC_COMBO_PATH, &PathEditorDialogue::OnCbnSelchangeComboPath)
-	ON_LBN_SELCHANGE(IDC_LIST_NODE, &PathEditorDialogue::OnLbnSelchangeListNode)
+	ON_CBN_SELCHANGE(IDC_COMBO_PATH, &PathEditorDialogue::OnCbnSelChangeComboPath)
+	ON_CBN_EDITCHANGE(IDC_COMBO_PATH, &PathEditorDialogue::OnCbnEditChangeComboPath)
+	ON_CBN_KILLFOCUS(IDC_COMBO_PATH, &PathEditorDialogue::OnCbnLoseFocusComboPath)
+	ON_LBN_SELCHANGE(IDC_LIST_NODE, &PathEditorDialogue::OnLbnSelChangeListNode)
 END_MESSAGE_MAP()
 
 PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
@@ -22,12 +24,14 @@ PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
 {
 	m_isActive = false;
 	m_shouldCreatePath = false;
+	m_currentPath = -1;
 }
 
 PathEditorDialogue::~PathEditorDialogue()
 {
 	m_isActive = false;
 	m_shouldCreatePath = false;
+	m_currentPath = -1;
 }
 
 void PathEditorDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<Path>* Paths)
@@ -50,6 +54,7 @@ void PathEditorDialogue::End()
 	DestroyWindow();	//destory the window properly.  INcluding the links and pointers created.  THis is so the dialogue can start again.
 	m_isActive = false;
 	m_shouldCreatePath = false;
+	m_currentPath = -1;
 }
 
 void PathEditorDialogue::UpdatePathComboBox()
@@ -103,13 +108,27 @@ void PathEditorDialogue::OnBnClickedButtonAdd()
 
 }
 
-void PathEditorDialogue::OnCbnSelchangeComboPath()
+void PathEditorDialogue::OnCbnSelChangeComboPath()
 {
-	// TODO: Add your control notification handler code here
+	m_currentPath = m_pathComboBox.GetCurSel();
 }
 
+void PathEditorDialogue::OnCbnEditChangeComboPath()
+{
+	if (m_currentPath != -1)
+	{
+		CString editText;
+		m_pathComboBox.GetWindowTextW(editText);
+		m_paths->at(m_currentPath).m_name = editText;
+	}
+}
 
-void PathEditorDialogue::OnLbnSelchangeListNode()
+void PathEditorDialogue::OnCbnLoseFocusComboPath()
+{
+	UpdatePathComboBox();
+}
+
+void PathEditorDialogue::OnLbnSelChangeListNode()
 {
 	// TODO: Add your control notification handler code here
 }

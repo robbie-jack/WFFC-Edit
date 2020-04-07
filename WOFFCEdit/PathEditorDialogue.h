@@ -44,9 +44,12 @@ protected:
 	afx_msg void End();		//kill the dialogue
 
 	void UpdatePathComboBox();
+	void UpdateNodeListBox();
 
 	std::vector<SceneObject>* m_sceneGraph;
 	std::vector<Path>* m_paths;
+
+	int m_currentPath;
 
 	bool m_isActive;
 	bool m_shouldCreatePath;
@@ -63,8 +66,12 @@ public:
 
 	afx_msg void OnBnClickedButtonCreate();
 	afx_msg void OnBnClickedButtonAdd();
-	afx_msg void OnCbnSelchangeComboPath();
-	afx_msg void OnLbnSelchangeListNode();
+
+	afx_msg void OnCbnSelChangeComboPath();
+	afx_msg void OnCbnEditChangeComboPath();
+	afx_msg void OnCbnLoseFocusComboPath();
+
+	afx_msg void OnLbnSelChangeListNode();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);
