@@ -54,7 +54,7 @@ void PathEditorDialogue::End()
 
 void PathEditorDialogue::UpdatePathComboBox()
 {
-	m_pathComboBox.Clear();
+	m_pathComboBox.ResetContent();
 
 	int numPaths = m_paths->size();
 

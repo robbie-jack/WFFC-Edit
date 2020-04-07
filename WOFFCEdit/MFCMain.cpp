@@ -175,6 +175,8 @@ void MFCMain::UpdatePathEditorDialogue()
 {
 	if (m_ToolPathEditorDialogue.IsActive())
 	{
+		//m_ToolPathEditorDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_paths);
+
 		if (m_ToolPathEditorDialogue.ShouldCreatePath())
 		{
 
