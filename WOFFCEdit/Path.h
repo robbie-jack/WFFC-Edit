@@ -24,6 +24,7 @@ public:
 	~Path();
 
 	Vector3 GetNextPoint(float t_offset);
+
 	void AddSegment(SceneObject* a, SceneObject* b, SceneObject* c, SceneObject* d)
 	{
 		PathSegment segment;
@@ -33,6 +34,10 @@ public:
 		segment.d = d;
 		m_segments.push_back(segment);
 	}
+
+	PathSegment* GetSegment(int i) { return &m_segments.at(i); };
+
+	std::vector<PathSegment>* GetSegments() { return &m_segments; };
 
 	std::wstring m_name;
 

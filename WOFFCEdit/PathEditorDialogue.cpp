@@ -68,6 +68,30 @@ void PathEditorDialogue::UpdatePathComboBox()
 		std::wstring comboBoxEntry = m_paths->at(i).m_name;
 		m_pathComboBox.AddString(comboBoxEntry.c_str());
 	}
+
+	if (m_currentPath != -1)
+	{
+		m_pathComboBox.SetWindowTextW(m_paths->at(m_currentPath).m_name.c_str());
+	}
+}
+
+void PathEditorDialogue::UpdateNodeListBox()
+{
+	m_nodeListBox.ResetContent();
+
+	std::vector<PathSegment>* segments = m_paths->at(m_currentPath).GetSegments();
+
+	int numSegments = segments->size();
+
+	for (int i = 0; i < numSegments; i++)
+	{
+		PathSegment segment = segments->at(i);
+
+		m_nodeListBox.AddString(std::to_wstring(segment.a->ID).c_str());
+		m_nodeListBox.AddString(std::to_wstring(segment.b->ID).c_str());
+		m_nodeListBox.AddString(std::to_wstring(segment.c->ID).c_str());
+		m_nodeListBox.AddString(std::to_wstring(segment.d->ID).c_str());
+	}
 }
 
 BOOL PathEditorDialogue::OnInitDialog()
@@ -105,12 +129,17 @@ void PathEditorDialogue::OnBnClickedButtonCreate()
 
 void PathEditorDialogue::OnBnClickedButtonAdd()
 {
-
+	if (m_currentPath != -1)
+	{
+		//m_paths->at(m_currentPath).AddSegment();
+	}
 }
 
 void PathEditorDialogue::OnCbnSelChangeComboPath()
 {
 	m_currentPath = m_pathComboBox.GetCurSel();
+
+	UpdateNodeListBox();
 }
 
 void PathEditorDialogue::OnCbnEditChangeComboPath()

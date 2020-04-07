@@ -74,9 +74,9 @@ void ToolMain::onActionInitialise(HWND handle, int width, int height)
 	onActionLoad();
 
 	m_aiObject = CreateAIObject();
-	//m_aiObject->path.AddSegment(&m_sceneGraph[17], &m_sceneGraph[18], &m_sceneGraph[19], &m_sceneGraph[20]);
 	Path path;
 	path.m_name = L"Default Path";
+	path.AddSegment(&m_sceneGraph[17], &m_sceneGraph[18], &m_sceneGraph[19], &m_sceneGraph[20]);
 	m_paths.push_back(path);
 }
 
