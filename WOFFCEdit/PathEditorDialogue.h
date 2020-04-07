@@ -23,11 +23,11 @@ public:
 
 	inline bool IsActive() { return m_isActive; };
 
-	inline bool ShouldAddPath()
+	inline bool ShouldCreatePath()
 	{
-		if (m_shouldAddPath)
+		if (m_shouldCreatePath)
 		{
-			m_shouldAddPath = false;
+			m_shouldCreatePath = false;
 			return true;
 		}
 		else
@@ -43,22 +43,28 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	afx_msg void End();		//kill the dialogue
 
+	void UpdatePathComboBox();
+
 	std::vector<SceneObject>* m_sceneGraph;
 	std::vector<Path>* m_paths;
 
 	bool m_isActive;
-	bool m_shouldAddPath;
+	bool m_shouldCreatePath;
 
 	DECLARE_MESSAGE_MAP()
 public:
+
+	CListBox m_nodeListBox;
+	CComboBox m_pathComboBox;
 
 	virtual BOOL OnInitDialog() override;
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedOk();
 
-	afx_msg void OnCbnSelchangeCombo1();
-	afx_msg void OnLbnSelchangeList1();
+	afx_msg void OnBnClickedButtonCreate();
 	afx_msg void OnBnClickedButtonAdd();
+	afx_msg void OnCbnSelchangeComboPath();
+	afx_msg void OnLbnSelchangeListNode();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);

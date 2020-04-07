@@ -34,7 +34,7 @@ public:
 		m_segments.push_back(segment);
 	}
 
-	std::string m_name;
+	std::wstring m_name;
 
 private:
 	std::vector<PathSegment> m_segments;

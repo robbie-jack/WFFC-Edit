@@ -173,7 +173,13 @@ void MFCMain::UpdatePropertiesDialogue()
 
 void MFCMain::UpdatePathEditorDialogue()
 {
+	if (m_ToolPathEditorDialogue.IsActive())
+	{
+		if (m_ToolPathEditorDialogue.ShouldCreatePath())
+		{
 
+		}
+	}
 }
 
 //void MFCMain::UpdateRiverDialogue()
@@ -216,7 +222,7 @@ void MFCMain::ToolBarPathEditor()
 		m_ToolPathEditorDialogue.Create(IDD_DIALOG4);
 		m_ToolPathEditorDialogue.ShowWindow(SW_SHOW);
 
-
+		m_ToolPathEditorDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_paths);
 	}
 }
 
