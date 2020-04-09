@@ -116,18 +116,43 @@ void PathEditorDialogue::UpdateNodeListBox()
 {
 	m_nodeListBox.ResetContent();
 
-	std::vector<PathSegment>* segments = m_paths->at(m_currentPath).GetSegments();
-
-	int numSegments = segments->size();
-
-	for (int i = 0; i < numSegments; i++)
+	if (m_currentPath != -1)
 	{
-		PathSegment segment = segments->at(i);
+		std::vector<PathSegment>* segments = m_paths->at(m_currentPath).GetSegments();
 
-		m_nodeListBox.AddString(std::to_wstring(segment.a->ID).c_str());
-		m_nodeListBox.AddString(std::to_wstring(segment.b->ID).c_str());
-		m_nodeListBox.AddString(std::to_wstring(segment.c->ID).c_str());
-		m_nodeListBox.AddString(std::to_wstring(segment.d->ID).c_str());
+		int numSegments = segments->size();
+
+		for (int i = 0; i < numSegments; i++)
+		{
+			PathSegment segment = segments->at(i);
+
+			std::wstring objectAEntry, objectBEntry, objectCEntry, objectDEntry;
+
+			if (segment.a == nullptr)
+				objectAEntry = L"Nullptr";
+			else
+				objectAEntry = std::to_wstring(segment.a->ID).c_str();
+
+			if (segment.b == nullptr)
+				objectBEntry = L"Nullptr";
+			else
+				objectBEntry = std::to_wstring(segment.b->ID).c_str();
+
+			if (segment.c == nullptr)
+				objectCEntry = L"Nullptr";
+			else
+				objectCEntry = std::to_wstring(segment.c->ID).c_str();
+
+			if (segment.d == nullptr)
+				objectDEntry = L"Nullptr";
+			else
+				objectDEntry = std::to_wstring(segment.d->ID).c_str();
+
+			m_nodeListBox.AddString(objectAEntry.c_str());
+			m_nodeListBox.AddString(objectBEntry.c_str());
+			m_nodeListBox.AddString(objectCEntry.c_str());
+			m_nodeListBox.AddString(objectDEntry.c_str());
+		}
 	}
 }
 
@@ -175,10 +200,13 @@ void PathEditorDialogue::OnBnClickedButtonCreate()
 {
 	Path path;
 	path.m_name = L"New Path";
-	m_paths->push_back(path);
 	path.AddFirstSegment(nullptr, nullptr, nullptr, nullptr);
+	m_paths->push_back(path);
+
+	m_currentPath = m_paths->size() - 1;
 
 	UpdatePathComboBox();
+	UpdateNodeListBox();
 }
 
 void PathEditorDialogue::OnBnClickedButtonAdd()
@@ -186,6 +214,8 @@ void PathEditorDialogue::OnBnClickedButtonAdd()
 	if (m_currentPath != -1)
 	{
 		m_paths->at(m_currentPath).AddNextSegment(nullptr, nullptr);
+
+		UpdateNodeListBox();
 	}
 }
 

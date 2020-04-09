@@ -40,12 +40,19 @@ public:
 	// Add next segment of path, using c/d points of last segment as a/b points of new segment
 	void AddNextSegment(SceneObject* c, SceneObject* d)
 	{
-		PathSegment segment;
-		segment.a = m_segments.back().c;
-		segment.b = m_segments.back().d;
-		segment.c = c;
-		segment.d = d;
-		m_segments.push_back(segment);
+		if (m_segments.size() == 0)
+		{
+			AddFirstSegment(nullptr, nullptr, nullptr, nullptr);
+		}
+		else
+		{
+			PathSegment segment;
+			segment.a = m_segments.back().c;
+			segment.b = m_segments.back().d;
+			segment.c = c;
+			segment.d = d;
+			m_segments.push_back(segment);
+		}
 	}
 
 	inline PathSegment* GetSegment(int i) { return &m_segments.at(i); };
