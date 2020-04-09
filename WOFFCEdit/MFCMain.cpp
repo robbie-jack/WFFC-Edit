@@ -88,11 +88,14 @@ int MFCMain::Run()
 				}
 			}
 
-			UpdatePropertiesDialogue();
-			UpdatePathEditorDialogue();
-			//UpdateRiverDialogue();
+			
+			
 
-			m_ToolSystem.Tick(&msg);
+			float dt = m_ToolSystem.Tick(&msg);
+
+			UpdatePropertiesDialogue();
+			UpdatePathEditorDialogue(dt);
+			//UpdateRiverDialogue();
 
 			//send current object ID to status bar in The main frame
 			m_frame->m_wndStatusBar.SetPaneText(1, statusString.c_str(), 1);
@@ -171,15 +174,15 @@ void MFCMain::UpdatePropertiesDialogue()
 	}
 }
 
-void MFCMain::UpdatePathEditorDialogue()
+void MFCMain::UpdatePathEditorDialogue(float dt)
 {
 	if (m_ToolPathEditorDialogue.IsActive())
 	{
-		//m_ToolPathEditorDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_paths);
-
-		if (m_ToolPathEditorDialogue.ShouldCreatePath())
+		if (m_ToolPathEditorDialogue.UpdateAIObject(dt))
 		{
-
+			int i = m_ToolPathEditorDialogue.GetCurrentObject();
+			if (i != -1)
+				m_ToolSystem.UpdateObject(i);
 		}
 	}
 }

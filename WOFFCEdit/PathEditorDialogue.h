@@ -5,6 +5,7 @@
 #include "afxwin.h"
 
 #include "SceneObject.h"
+#include "AIObject.h"
 #include "Path.h"
 
 #include <vector>
@@ -20,19 +21,22 @@ public:
 	virtual ~PathEditorDialogue();
 
 	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<Path>* paths);
+	bool UpdateAIObject(float dt);
 
 	inline bool IsActive() { return m_isActive; };
 
-	inline bool ShouldCreatePath()
+	inline bool ShouldUpdate()
 	{
-		if (m_shouldCreatePath)
+		if (m_shouldUpdate)
 		{
-			m_shouldCreatePath = false;
+			m_shouldUpdate = false;
 			return true;
 		}
 		else
 			return false;
 	};
+
+	inline int GetCurrentObject() { return m_currentObject; };
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -45,20 +49,25 @@ protected:
 
 	void UpdatePathComboBox();
 	void UpdateNodeListBox();
+	void UpdateObjectComboBox();
 
 	std::vector<SceneObject>* m_sceneGraph;
+	std::vector<int> m_aiObjects;
 	std::vector<Path>* m_paths;
 
 	int m_currentPath;
+	int m_currentObject;
 
 	bool m_isActive;
-	bool m_shouldCreatePath;
+	bool m_shouldUpdate;
+	bool m_playing;
 
 	DECLARE_MESSAGE_MAP()
 public:
 
 	CListBox m_nodeListBox;
 	CComboBox m_pathComboBox;
+	CComboBox m_objectComboBox;
 
 	virtual BOOL OnInitDialog() override;
 	virtual void PostNcDestroy();
@@ -72,6 +81,9 @@ public:
 	afx_msg void OnCbnLoseFocusComboPath();
 
 	afx_msg void OnLbnSelChangeListNode();
+	afx_msg void OnCbnSelchangeComboObject();
+	afx_msg void OnBnClickedButtonStartStop();
+	afx_msg void OnBnClickedButtonReset();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);

@@ -17,21 +17,28 @@ BEGIN_MESSAGE_MAP(PathEditorDialogue, CDialogEx)
 	ON_CBN_EDITCHANGE(IDC_COMBO_PATH, &PathEditorDialogue::OnCbnEditChangeComboPath)
 	ON_CBN_KILLFOCUS(IDC_COMBO_PATH, &PathEditorDialogue::OnCbnLoseFocusComboPath)
 	ON_LBN_SELCHANGE(IDC_LIST_NODE, &PathEditorDialogue::OnLbnSelChangeListNode)
+	ON_CBN_SELCHANGE(IDC_COMBO_OBJECT, &PathEditorDialogue::OnCbnSelchangeComboObject)
+	ON_BN_CLICKED(IDC_BUTTON_STARTSTOP, &PathEditorDialogue::OnBnClickedButtonStartStop)
+	ON_BN_CLICKED(IDC_BUTTON_RESET, &PathEditorDialogue::OnBnClickedButtonReset)
 END_MESSAGE_MAP()
 
 PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG4, pParent)
 {
 	m_isActive = false;
-	m_shouldCreatePath = false;
+	m_playing = false;
+	m_shouldUpdate = false;
 	m_currentPath = -1;
+	m_currentObject = -1;
 }
 
 PathEditorDialogue::~PathEditorDialogue()
 {
 	m_isActive = false;
-	m_shouldCreatePath = false;
+	m_playing = false;
+	m_shouldUpdate = false;
 	m_currentPath = -1;
+	m_currentObject = -1;
 }
 
 void PathEditorDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<Path>* Paths)
@@ -39,7 +46,34 @@ void PathEditorDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std
 	m_sceneGraph = SceneGraph;
 	m_paths = Paths;
 
+	for (int i = 0; i < m_sceneGraph->size(); i++)
+	{
+		if (m_sceneGraph->at(i).AINode)
+		{
+			m_aiObjects.push_back(i);
+		}
+	}
+
 	UpdatePathComboBox();
+	UpdateObjectComboBox();
+}
+
+bool PathEditorDialogue::UpdateAIObject(float dt)
+{
+	if (m_currentObject != -1)
+	{
+		if (m_playing && !m_paths->at(m_currentPath).AtPathEnd())
+		{
+			Vector3 pathPosition = m_paths->at(m_currentPath).GetNextPoint(dt);
+			m_sceneGraph->at(m_currentObject).posX = pathPosition.x;
+			m_sceneGraph->at(m_currentObject).posY = pathPosition.y;
+			m_sceneGraph->at(m_currentObject).posZ = pathPosition.z;
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void PathEditorDialogue::DoDataExchange(CDataExchange* pDX)
@@ -47,14 +81,17 @@ void PathEditorDialogue::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_NODE, m_nodeListBox);
 	DDX_Control(pDX, IDC_COMBO_PATH, m_pathComboBox);
+	DDX_Control(pDX, IDC_COMBO_OBJECT, m_objectComboBox);
 }
 
 void PathEditorDialogue::End()
 {
 	DestroyWindow();	//destory the window properly.  INcluding the links and pointers created.  THis is so the dialogue can start again.
 	m_isActive = false;
-	m_shouldCreatePath = false;
+	m_playing = false;
+	m_shouldUpdate = false;
 	m_currentPath = -1;
+	m_currentObject = -1;
 }
 
 void PathEditorDialogue::UpdatePathComboBox()
@@ -94,12 +131,30 @@ void PathEditorDialogue::UpdateNodeListBox()
 	}
 }
 
+void PathEditorDialogue::UpdateObjectComboBox()
+{
+	m_objectComboBox.ResetContent();
+
+	int numObjects = m_aiObjects.size();
+
+	for (int i = 0; i < numObjects; i++)
+	{
+		int j = m_aiObjects.at(i);
+		std::wstring comboBoxEntry = L"ID: " + std::to_wstring(m_sceneGraph->at(j).ID);
+		m_objectComboBox.AddString(comboBoxEntry.c_str());
+	}
+
+	if (m_currentObject != -1)
+	{
+		m_objectComboBox.SetWindowTextW(L"ID: " + m_sceneGraph->at(m_currentObject).ID);
+	}
+}
+
 BOOL PathEditorDialogue::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
 	m_isActive = true;
-	m_shouldCreatePath = false;
 
 	return TRUE;
 }
@@ -118,11 +173,10 @@ void PathEditorDialogue::OnBnClickedOk()
 
 void PathEditorDialogue::OnBnClickedButtonCreate()
 {
-	m_shouldCreatePath = true;
-
 	Path path;
 	path.m_name = L"New Path";
 	m_paths->push_back(path);
+	path.AddFirstSegment(nullptr, nullptr, nullptr, nullptr);
 
 	UpdatePathComboBox();
 }
@@ -131,7 +185,7 @@ void PathEditorDialogue::OnBnClickedButtonAdd()
 {
 	if (m_currentPath != -1)
 	{
-		//m_paths->at(m_currentPath).AddSegment();
+		m_paths->at(m_currentPath).AddNextSegment(nullptr, nullptr);
 	}
 }
 
@@ -160,4 +214,22 @@ void PathEditorDialogue::OnCbnLoseFocusComboPath()
 void PathEditorDialogue::OnLbnSelChangeListNode()
 {
 	// TODO: Add your control notification handler code here
+}
+
+void PathEditorDialogue::OnCbnSelchangeComboObject()
+{
+	int i = m_objectComboBox.GetCurSel();
+	m_currentObject = m_aiObjects.at(i);
+}
+
+
+void PathEditorDialogue::OnBnClickedButtonStartStop()
+{
+	m_playing = !m_playing;
+}
+
+
+void PathEditorDialogue::OnBnClickedButtonReset()
+{
+	m_paths->at(m_currentPath).ResetPath();
 }

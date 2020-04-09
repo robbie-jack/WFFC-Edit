@@ -36,7 +36,7 @@ private:
 	int m_height;
 
 	void UpdatePropertiesDialogue();
-	void UpdatePathEditorDialogue();
+	void UpdatePathEditorDialogue(float dt);
 	//void UpdateRiverDialogue();
 	
 	//Interface funtions for menu and toolbar etc requires

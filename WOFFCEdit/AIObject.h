@@ -10,5 +10,5 @@ public:
 	AIObject();
 	~AIObject();
 
-	Path path;
+	Path* path;
 };

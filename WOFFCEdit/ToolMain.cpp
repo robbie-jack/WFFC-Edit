@@ -76,7 +76,7 @@ void ToolMain::onActionInitialise(HWND handle, int width, int height)
 	m_aiObject = CreateAIObject();
 	Path path;
 	path.m_name = L"Default Path";
-	path.AddSegment(&m_sceneGraph[17], &m_sceneGraph[18], &m_sceneGraph[19], &m_sceneGraph[20]);
+	path.AddFirstSegment(&m_sceneGraph[17], &m_sceneGraph[18], &m_sceneGraph[19], &m_sceneGraph[20]);
 	m_paths.push_back(path);
 }
 
@@ -302,7 +302,7 @@ void ToolMain::onActionSaveTerrain()
 	m_d3dRenderer.SaveDisplayChunk(&m_chunk);
 }
 
-void ToolMain::Tick(MSG *msg)
+float ToolMain::Tick(MSG *msg)
 {
 	//do we have a selection
 	//do we have a mode
@@ -320,19 +320,21 @@ void ToolMain::Tick(MSG *msg)
 	//Renderer Update Call
 	float dt = m_d3dRenderer.Tick(&m_toolInputCommands);
 
-	if (!m_paths[0].AtPathEnd())
+	/*if (!m_paths[0].AtPathEnd())
 	{
-		Vector3 pathPosition = m_paths[0].GetNextPoint(dt * 0.1f);
+		Vector3 pathPosition = m_paths[0].GetNextPoint(dt);
 		m_sceneGraph[21].posX = pathPosition.x;
 		m_sceneGraph[21].posY = pathPosition.y;
 		m_sceneGraph[21].posZ = pathPosition.z;
 
 		UpdateObject(21);
-	}
+	}*/
 
 	DeleteObjects();
 
 	UpdateStates();
+
+	return dt;
 }
 
 void ToolMain::UpdateInput(MSG * msg)
