@@ -32,7 +32,7 @@ public:
 	void SetGridState(bool state);
 
 	// Basic game loop
-	void Tick(InputCommands * Input);
+	float Tick(InputCommands * Input);
 	void Render();
 
 	// Rendering helpers
@@ -70,7 +70,7 @@ public:
 
 private:
 
-	void Update(DX::StepTimer const& timer);
+	float Update(DX::StepTimer const& timer);
 
 	void CreateDeviceDependentResources();
 	void CreateWindowSizeDependentResources();

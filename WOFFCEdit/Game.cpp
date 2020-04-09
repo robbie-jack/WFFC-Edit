@@ -90,13 +90,15 @@ void Game::SetGridState(bool state)
 
 #pragma region Frame Update
 // Executes the basic game loop.
-void Game::Tick(InputCommands *Input)
+float Game::Tick(InputCommands *Input)
 {
+	float dt;
+
 	//copy over the input commands so we have a local version to use elsewhere.
 	m_InputCommands = *Input;
     m_timer.Tick([&]()
     {
-        Update(m_timer);
+        dt = Update(m_timer);
     });
 
 #ifdef DXTK_AUDIO
@@ -110,11 +112,15 @@ void Game::Tick(InputCommands *Input)
 #endif
 
     Render();
+
+	return dt;
 }
 
 // Updates the world.
-void Game::Update(DX::StepTimer const& timer)
+float Game::Update(DX::StepTimer const& timer)
 {
+	float dt = float(timer.GetElapsedSeconds());
+
 	// Switch Camera Mode
 	if (m_InputCommands.switch_Cam_Mode == Pressed)
 	{
@@ -183,7 +189,7 @@ void Game::Update(DX::StepTimer const& timer)
     }
 #endif
 
-   
+	return dt;
 }
 #pragma endregion
 

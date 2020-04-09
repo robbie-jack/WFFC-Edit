@@ -164,6 +164,7 @@ void ToolMain::onActionLoad()
 		newSceneObject.light_quadratic = sqlite3_column_double(pResults, 55);
 	
 		newSceneObject.is_deleted = false;
+		newSceneObject.editor_wireframe = true;
 
 		//send completed object to scenegraph
 		m_sceneGraph.push_back(newSceneObject);
@@ -317,7 +318,17 @@ void ToolMain::Tick(MSG *msg)
 	}
 
 	//Renderer Update Call
-	m_d3dRenderer.Tick(&m_toolInputCommands);
+	float dt = m_d3dRenderer.Tick(&m_toolInputCommands);
+
+	if (!m_paths[0].AtPathEnd())
+	{
+		Vector3 pathPosition = m_paths[0].GetNextPoint(dt * 0.1f);
+		m_sceneGraph[21].posX = pathPosition.x;
+		m_sceneGraph[21].posY = pathPosition.y;
+		m_sceneGraph[21].posZ = pathPosition.z;
+
+		UpdateObject(21);
+	}
 
 	DeleteObjects();
 
