@@ -88,9 +88,6 @@ int MFCMain::Run()
 				}
 			}
 
-			
-			
-
 			float dt = m_ToolSystem.Tick(&msg);
 
 			UpdatePropertiesDialogue();

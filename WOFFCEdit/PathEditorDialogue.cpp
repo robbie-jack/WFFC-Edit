@@ -20,6 +20,7 @@ BEGIN_MESSAGE_MAP(PathEditorDialogue, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_OBJECT, &PathEditorDialogue::OnCbnSelchangeComboObject)
 	ON_BN_CLICKED(IDC_BUTTON_STARTSTOP, &PathEditorDialogue::OnBnClickedButtonStartStop)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &PathEditorDialogue::OnBnClickedButtonReset)
+	ON_CBN_SELCHANGE(IDC_COMBO_SEGMENT, &PathEditorDialogue::OnCbnSelchangeComboSegment)
 END_MESSAGE_MAP()
 
 PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
@@ -29,6 +30,8 @@ PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
 	m_playing = false;
 	m_shouldUpdate = false;
 	m_currentPath = -1;
+	m_currentSegment = -1;
+	m_currentNode = -1;
 	m_currentObject = -1;
 }
 
@@ -38,6 +41,8 @@ PathEditorDialogue::~PathEditorDialogue()
 	m_playing = false;
 	m_shouldUpdate = false;
 	m_currentPath = -1;
+	m_currentSegment = -1;
+	m_currentNode = -1;
 	m_currentObject = -1;
 }
 
@@ -81,6 +86,7 @@ void PathEditorDialogue::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_NODE, m_nodeListBox);
 	DDX_Control(pDX, IDC_COMBO_PATH, m_pathComboBox);
+	DDX_Control(pDX, IDC_COMBO_SEGMENT, m_segmentComboBox);
 	DDX_Control(pDX, IDC_COMBO_OBJECT, m_objectComboBox);
 	DDX_Control(pDX, IDC_BUTTON_STARTSTOP, m_startstopButton);
 }
@@ -92,6 +98,8 @@ void PathEditorDialogue::End()
 	m_playing = false;
 	m_shouldUpdate = false;
 	m_currentPath = -1;
+	m_currentSegment = -1;
+	m_currentNode = -1;
 	m_currentObject = -1;
 }
 
@@ -113,9 +121,9 @@ void PathEditorDialogue::UpdatePathComboBox()
 	}
 }
 
-void PathEditorDialogue::UpdateNodeListBox()
+void PathEditorDialogue::UpdateSegmentComboBox()
 {
-	m_nodeListBox.ResetContent();
+	m_segmentComboBox.ResetContent();
 
 	if (m_currentPath != -1)
 	{
@@ -125,35 +133,56 @@ void PathEditorDialogue::UpdateNodeListBox()
 
 		for (int i = 0; i < numSegments; i++)
 		{
-			PathSegment segment = segments->at(i);
-
-			std::wstring objectAEntry, objectBEntry, objectCEntry, objectDEntry;
-
-			if (segment.a == nullptr)
-				objectAEntry = L"Nullptr";
-			else
-				objectAEntry = std::to_wstring(segment.a->ID).c_str();
-
-			if (segment.b == nullptr)
-				objectBEntry = L"Nullptr";
-			else
-				objectBEntry = std::to_wstring(segment.b->ID).c_str();
-
-			if (segment.c == nullptr)
-				objectCEntry = L"Nullptr";
-			else
-				objectCEntry = std::to_wstring(segment.c->ID).c_str();
-
-			if (segment.d == nullptr)
-				objectDEntry = L"Nullptr";
-			else
-				objectDEntry = std::to_wstring(segment.d->ID).c_str();
-
-			m_nodeListBox.AddString(objectAEntry.c_str());
-			m_nodeListBox.AddString(objectBEntry.c_str());
-			m_nodeListBox.AddString(objectCEntry.c_str());
-			m_nodeListBox.AddString(objectDEntry.c_str());
+			std::wstring comboBoxEntry = L"Segment " + std::to_wstring(i);
+			m_segmentComboBox.AddString(comboBoxEntry.c_str());
 		}
+
+		if (m_currentSegment != -1)
+		{
+			std::wstring windowText = L"Segment " + std::to_wstring(m_currentSegment);
+			m_segmentComboBox.SetWindowTextW(windowText.c_str());
+		}
+	}
+}
+
+void PathEditorDialogue::UpdateNodeListBox()
+{
+	m_nodeListBox.ResetContent();
+
+	if (m_currentSegment != -1)
+	{
+		PathSegment* segment = m_paths->at(m_currentPath).GetSegment(m_currentSegment);
+
+		std::wstring objectAEntry, objectBEntry, objectCEntry, objectDEntry;
+		objectAEntry = L" Node A ID: ";
+		objectBEntry = L" Node B ID: ";
+		objectCEntry = L" Node C ID: ";
+		objectDEntry = L" Node D ID: ";
+
+		if (segment->a == nullptr)
+			objectAEntry += L"Nullptr";
+		else
+			objectAEntry += std::to_wstring(segment->a->ID).c_str();
+
+		if (segment->b == nullptr)
+			objectBEntry += L"Nullptr";
+		else
+			objectBEntry += std::to_wstring(segment->b->ID).c_str();
+
+		if (segment->c == nullptr)
+			objectCEntry += L"Nullptr";
+		else
+			objectCEntry += std::to_wstring(segment->c->ID).c_str();
+
+		if (segment->d == nullptr)
+			objectDEntry += L"Nullptr";
+		else
+			objectDEntry += std::to_wstring(segment->d->ID).c_str();
+
+		m_nodeListBox.AddString(objectAEntry.c_str());
+		m_nodeListBox.AddString(objectBEntry.c_str());
+		m_nodeListBox.AddString(objectCEntry.c_str());
+		m_nodeListBox.AddString(objectDEntry.c_str());
 	}
 }
 
@@ -205,8 +234,11 @@ void PathEditorDialogue::OnBnClickedButtonCreate()
 	m_paths->push_back(path);
 
 	m_currentPath = m_paths->size() - 1;
+	m_currentSegment = -1;
+	m_currentNode = -1;
 
 	UpdatePathComboBox();
+	UpdateSegmentComboBox();
 	UpdateNodeListBox();
 }
 
@@ -215,7 +247,10 @@ void PathEditorDialogue::OnBnClickedButtonAdd()
 	if (m_currentPath != -1)
 	{
 		m_paths->at(m_currentPath).AddNextSegment(nullptr, nullptr);
+		m_currentSegment = m_paths->at(m_currentPath).GetSegments()->size() - 1;
+		m_currentNode = -1;
 
+		UpdateSegmentComboBox();
 		UpdateNodeListBox();
 	}
 }
@@ -224,7 +259,7 @@ void PathEditorDialogue::OnCbnSelChangeComboPath()
 {
 	m_currentPath = m_pathComboBox.GetCurSel();
 
-	UpdateNodeListBox();
+	UpdateSegmentComboBox();
 }
 
 void PathEditorDialogue::OnCbnEditChangeComboPath()
@@ -242,9 +277,19 @@ void PathEditorDialogue::OnCbnLoseFocusComboPath()
 	UpdatePathComboBox();
 }
 
+void PathEditorDialogue::OnCbnSelchangeComboSegment()
+{
+	m_currentSegment = m_segmentComboBox.GetCurSel();
+
+	UpdateNodeListBox();
+}
+
 void PathEditorDialogue::OnLbnSelChangeListNode()
 {
-	// TODO: Add your control notification handler code here
+	int index = m_nodeListBox.GetCurSel();
+	CString currentNode;
+
+	m_nodeListBox.GetText(index, currentNode);
 }
 
 void PathEditorDialogue::OnCbnSelchangeComboObject()
