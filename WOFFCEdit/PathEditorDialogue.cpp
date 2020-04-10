@@ -82,6 +82,7 @@ void PathEditorDialogue::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_NODE, m_nodeListBox);
 	DDX_Control(pDX, IDC_COMBO_PATH, m_pathComboBox);
 	DDX_Control(pDX, IDC_COMBO_OBJECT, m_objectComboBox);
+	DDX_Control(pDX, IDC_BUTTON_STARTSTOP, m_startstopButton);
 }
 
 void PathEditorDialogue::End()
@@ -256,6 +257,11 @@ void PathEditorDialogue::OnCbnSelchangeComboObject()
 void PathEditorDialogue::OnBnClickedButtonStartStop()
 {
 	m_playing = !m_playing;
+
+	if (m_playing)
+		m_startstopButton.SetWindowTextW(L"Stop");
+	else
+		m_startstopButton.SetWindowTextW(L"Start");
 }
 
 

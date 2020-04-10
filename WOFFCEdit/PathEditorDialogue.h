@@ -68,6 +68,7 @@ public:
 	CListBox m_nodeListBox;
 	CComboBox m_pathComboBox;
 	CComboBox m_objectComboBox;
+	CButton m_startstopButton;
 
 	virtual BOOL OnInitDialog() override;
 	virtual void PostNcDestroy();
