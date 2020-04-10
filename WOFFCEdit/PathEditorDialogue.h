@@ -48,16 +48,14 @@ protected:
 	afx_msg void End();		//kill the dialogue
 
 	void UpdatePathComboBox();
-	void UpdateSegmentComboBox();
 	void UpdateNodeListBox();
 	void UpdateObjectComboBox();
 
 	std::vector<SceneObject>* m_sceneGraph;
-	std::vector<int> m_aiObjects;
 	std::vector<Path>* m_paths;
+	std::vector<int> m_aiObjects;
 
 	int m_currentPath;
-	int m_currentSegment;
 	int m_currentNode;
 	int m_currentObject;
 
@@ -70,7 +68,6 @@ public:
 
 	CListBox m_nodeListBox;
 	CComboBox m_pathComboBox;
-	CComboBox m_segmentComboBox;
 	CComboBox m_objectComboBox;
 	CButton m_startstopButton;
 
@@ -89,7 +86,6 @@ public:
 	afx_msg void OnCbnSelchangeComboObject();
 	afx_msg void OnBnClickedButtonStartStop();
 	afx_msg void OnBnClickedButtonReset();
-	afx_msg void OnCbnSelchangeComboSegment();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);
