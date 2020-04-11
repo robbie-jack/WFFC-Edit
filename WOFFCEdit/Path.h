@@ -19,6 +19,7 @@ public:
 	void ResetPath();
 
 	inline void AddNode(SceneObject* node) { m_nodes.push_back(node); };
+	inline void DeleteNode(int i) { m_nodes.erase(m_nodes.begin() + i); };
 
 	inline SceneObject* GetNode(int i) { return m_nodes[i]; };
 	inline std::vector<SceneObject*> GetNodes() { return m_nodes; };

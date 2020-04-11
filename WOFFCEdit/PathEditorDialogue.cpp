@@ -20,6 +20,7 @@ BEGIN_MESSAGE_MAP(PathEditorDialogue, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_OBJECT, &PathEditorDialogue::OnCbnSelchangeComboObject)
 	ON_BN_CLICKED(IDC_BUTTON_STARTSTOP, &PathEditorDialogue::OnBnClickedButtonStartStop)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &PathEditorDialogue::OnBnClickedButtonReset)
+	ON_BN_CLICKED(IDC_BUTTON_DELETE, &PathEditorDialogue::OnBnClickedButtonDelete)
 END_MESSAGE_MAP()
 
 PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
@@ -197,6 +198,8 @@ void PathEditorDialogue::OnBnClickedButtonCreate()
 	m_currentPath = m_paths->size() - 1;
 	m_currentNode = -1;
 
+	m_playing = false;
+
 	UpdatePathComboBox();
 	UpdateNodeListBox();
 }
@@ -251,7 +254,11 @@ void PathEditorDialogue::OnCbnSelchangeComboObject()
 
 void PathEditorDialogue::OnBnClickedButtonStartStop()
 {
-	m_playing = !m_playing;
+	if (m_currentPath != -1)
+		if (m_paths->at(m_currentPath).GetNodes().size() >= 4)
+			m_playing = !m_playing;
+		else
+			m_playing = false;
 
 	if (m_playing)
 		m_startstopButton.SetWindowTextW(L"Stop");
@@ -263,4 +270,14 @@ void PathEditorDialogue::OnBnClickedButtonStartStop()
 void PathEditorDialogue::OnBnClickedButtonReset()
 {
 	m_paths->at(m_currentPath).ResetPath();
+}
+
+void PathEditorDialogue::OnBnClickedButtonDelete()
+{
+	if (m_currentPath != -1 && m_currentNode != -1)
+	{
+		m_paths->at(m_currentPath).DeleteNode(m_currentNode);
+
+		UpdateNodeListBox();
+	}
 }

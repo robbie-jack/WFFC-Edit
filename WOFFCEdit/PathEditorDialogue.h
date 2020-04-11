@@ -71,6 +71,7 @@ public:
 	CListBox m_nodeListBox;
 	CComboBox m_pathComboBox;
 	CComboBox m_objectComboBox;
+
 	CButton m_startstopButton;
 
 	virtual BOOL OnInitDialog() override;
@@ -88,6 +89,7 @@ public:
 	afx_msg void OnCbnSelchangeComboObject();
 	afx_msg void OnBnClickedButtonStartStop();
 	afx_msg void OnBnClickedButtonReset();
+	afx_msg void OnBnClickedButtonDelete();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);
