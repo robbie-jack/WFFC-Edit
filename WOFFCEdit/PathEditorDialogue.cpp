@@ -28,6 +28,8 @@ PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
 	m_isActive = false;
 	m_playing = false;
 	m_shouldUpdate = false;
+
+	m_selected = -1;
 	m_currentPath = -1;
 	m_currentNode = -1;
 	m_currentObject = -1;
@@ -38,6 +40,8 @@ PathEditorDialogue::~PathEditorDialogue()
 	m_isActive = false;
 	m_playing = false;
 	m_shouldUpdate = false;
+
+	m_selected = -1;
 	m_currentPath = -1;
 	m_currentNode = -1;
 	m_currentObject = -1;
@@ -58,6 +62,14 @@ void PathEditorDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std
 
 	UpdatePathComboBox();
 	UpdateObjectComboBox();
+}
+
+void PathEditorDialogue::SetSelected(int Selected)
+{
+	if (m_selected != Selected)
+	{
+		m_selected = Selected;
+	}
 }
 
 bool PathEditorDialogue::UpdateAIObject(float dt)
@@ -93,6 +105,8 @@ void PathEditorDialogue::End()
 	m_isActive = false;
 	m_playing = false;
 	m_shouldUpdate = false;
+
+	m_selected = -1;
 	m_currentPath = -1;
 	m_currentNode = -1;
 	m_currentObject = -1;
@@ -128,7 +142,7 @@ void PathEditorDialogue::UpdateNodeListBox()
 
 		for (int i = 0; i < numNodes; i++)
 		{
-			std::wstring nodeEntry = std::to_wstring(nodes.at(i)->ID);
+			std::wstring nodeEntry = L"Node: " + std::to_wstring(i) +  L" - ID: " + std::to_wstring(nodes.at(i)->ID);
 			m_nodeListBox.AddString(nodeEntry.c_str());
 		}
 	}
@@ -178,7 +192,6 @@ void PathEditorDialogue::OnBnClickedButtonCreate()
 {
 	Path path;
 	path.m_name = L"New Path";
-	//path.AddFirstSegment(nullptr, nullptr, nullptr, nullptr);
 	m_paths->push_back(path);
 
 	m_currentPath = m_paths->size() - 1;
@@ -192,8 +205,9 @@ void PathEditorDialogue::OnBnClickedButtonAdd()
 {
 	if (m_currentPath != -1)
 	{
-		/*m_paths->at(m_currentPath).AddNextSegment(nullptr, nullptr);
-		m_currentSegment = m_paths->at(m_currentPath).GetSegments()->size() - 1;*/
+		if (m_selected != -1)
+			m_paths->at(m_currentPath).AddNode(&m_sceneGraph->at(m_selected)); // Add Currently Selected Node to Path
+
 		m_currentNode = -1;
 
 		UpdateNodeListBox();
@@ -204,7 +218,6 @@ void PathEditorDialogue::OnCbnSelChangeComboPath()
 {
 	m_currentPath = m_pathComboBox.GetCurSel();
 
-	//UpdateSegmentComboBox();
 	UpdateNodeListBox();
 }
 
@@ -226,15 +239,13 @@ void PathEditorDialogue::OnCbnLoseFocusComboPath()
 void PathEditorDialogue::OnLbnSelChangeListNode()
 {
 	int index = m_nodeListBox.GetCurSel();
-	CString currentNode;
-
-	m_nodeListBox.GetText(index, currentNode);
+	m_currentNode = index;
 }
 
 void PathEditorDialogue::OnCbnSelchangeComboObject()
 {
-	int i = m_objectComboBox.GetCurSel();
-	m_currentObject = m_aiObjects.at(i);
+	int index = m_objectComboBox.GetCurSel();
+	m_currentObject = m_aiObjects.at(index);
 }
 
 

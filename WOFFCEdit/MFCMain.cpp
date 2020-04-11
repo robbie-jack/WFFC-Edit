@@ -181,6 +181,9 @@ void MFCMain::UpdatePathEditorDialogue(float dt)
 			if (i != -1)
 				m_ToolSystem.UpdateObject(i);
 		}
+
+		if (m_ToolSystem.m_selectedObjects.size() > 0)
+			m_ToolPathEditorDialogue.SetSelected(m_ToolSystem.m_selectedObjects[0]);
 	}
 }
 
@@ -225,6 +228,9 @@ void MFCMain::ToolBarPathEditor()
 		m_ToolPathEditorDialogue.ShowWindow(SW_SHOW);
 
 		m_ToolPathEditorDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_paths);
+
+		if (m_ToolSystem.m_selectedObjects.size() > 0)
+			m_ToolPathEditorDialogue.SetSelected(m_ToolSystem.m_selectedObjects[0]);
 	}
 }
 

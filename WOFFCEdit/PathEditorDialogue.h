@@ -21,6 +21,7 @@ public:
 	virtual ~PathEditorDialogue();
 
 	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<Path>* paths);
+	void SetSelected(int Selected);
 	bool UpdateAIObject(float dt);
 
 	inline bool IsActive() { return m_isActive; };
@@ -55,6 +56,7 @@ protected:
 	std::vector<Path>* m_paths;
 	std::vector<int> m_aiObjects;
 
+	int m_selected;
 	int m_currentPath;
 	int m_currentNode;
 	int m_currentObject;
