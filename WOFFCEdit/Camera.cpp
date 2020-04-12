@@ -44,7 +44,7 @@ void Camera::Update(InputCommands InputCommands)
 void Camera::FreeCamUpdate(InputCommands InputCommands)
 {
 	// Mouse Rotation Input
-	if (InputCommands.mouse_RB == Down)
+	if (InputCommands.mouse_RB == KeyState::Down)
 	{
 		int dx = InputCommands.mouse_Y - InputCommands.mouse_Y_Last;
 		int dy = InputCommands.mouse_X - InputCommands.mouse_X_Last;
@@ -85,27 +85,27 @@ void Camera::FreeCamUpdate(InputCommands InputCommands)
 	m_camLookDirection.Cross(m_camUp, m_camRight);
 
 	//process input and update stuff
-	if (InputCommands.forward == Down)
+	if (InputCommands.forward == KeyState::Down)
 	{
 		m_camPosition += m_camLookDirection * m_camMoveSpeed;
 	}
-	if (InputCommands.back == Down)
+	if (InputCommands.back == KeyState::Down)
 	{
 		m_camPosition -= m_camLookDirection * m_camMoveSpeed;
 	}
-	if (InputCommands.right == Down)
+	if (InputCommands.right == KeyState::Down)
 	{
 		m_camPosition += m_camRight * m_camMoveSpeed;
 	}
-	if (InputCommands.left == Down)
+	if (InputCommands.left == KeyState::Down)
 	{
 		m_camPosition -= m_camRight * m_camMoveSpeed;
 	}
-	if (InputCommands.up == Down)
+	if (InputCommands.up == KeyState::Down)
 	{
 		m_camPosition += m_camUp * m_camMoveSpeed;
 	}
-	if (InputCommands.down == Down)
+	if (InputCommands.down == KeyState::Down)
 	{
 		m_camPosition -= m_camUp * m_camMoveSpeed;
 	}
@@ -117,11 +117,11 @@ void Camera::FreeCamUpdate(InputCommands InputCommands)
 void Camera::OrbitCamUpdate(InputCommands InputCommands)
 {
 	//process input and update stuff
-	if (InputCommands.forward == Down)
+	if (InputCommands.forward == KeyState::Down)
 	{
 		m_camDistance -= m_camMoveSpeed;
 	}
-	if (InputCommands.back == Down)
+	if (InputCommands.back == KeyState::Down)
 	{
 		m_camDistance += m_camMoveSpeed;
 	}
@@ -129,19 +129,19 @@ void Camera::OrbitCamUpdate(InputCommands InputCommands)
 	if (m_camDistance < 0.1f)
 		m_camDistance = 0.1f;
 
-	if (InputCommands.up == Down)
+	if (InputCommands.up == KeyState::Down)
 	{
 		m_camOrientation.x -= m_camRotRate;
 	}
-	if (InputCommands.down == Down)
+	if (InputCommands.down == KeyState::Down)
 	{
 		m_camOrientation.x += m_camRotRate;
 	}
-	if (InputCommands.right == Down)
+	if (InputCommands.right == KeyState::Down)
 	{
 		m_camOrientation.y -= m_camRotRate;
 	}
-	if (InputCommands.left == Down)
+	if (InputCommands.left == KeyState::Down)
 	{
 		m_camOrientation.y += m_camRotRate;
 	}

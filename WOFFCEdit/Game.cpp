@@ -122,7 +122,7 @@ float Game::Update(DX::StepTimer const& timer)
 	float dt = float(timer.GetElapsedSeconds());
 
 	// Switch Camera Mode
-	if (m_InputCommands.switch_Cam_Mode == Pressed)
+	if (m_InputCommands.switch_Cam_Mode == KeyState::Pressed)
 	{
 		switch (m_cam->GetCamMode())
 		{
@@ -377,7 +377,7 @@ std::vector<int> Game::MousePicking(std::vector<int> currentIDs)
 
 	if (selectedID != -1)
 	{
-		if (m_InputCommands.shift == Down)
+		if (m_InputCommands.shift == KeyState::Down)
 		{
 			// If object is selected remove it, else add it
 			if (isSelected)

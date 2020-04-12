@@ -7,7 +7,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_FILE_SAVETERRAIN, &MFCMain::MenuFileSaveTerrain)
 	ON_COMMAND(ID_EDIT_SELECT, &MFCMain::MenuEditSelect)
 	ON_COMMAND(ID_EDIT_PROPERTIES, &MFCMain::MenuEditProperties)
-	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButton1)
+	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButtonSave)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
 	ON_COMMAND(ID_BUTTON40004, &MFCMain::MenuEditProperties)
@@ -195,7 +195,7 @@ void MFCMain::UpdatePathEditorDialogue(float dt)
 //	}
 //}
 
-void MFCMain::ToolBarButton1()
+void MFCMain::ToolBarButtonSave()
 {
 	m_ToolSystem.onActionSave();
 }

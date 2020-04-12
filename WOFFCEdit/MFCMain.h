@@ -44,7 +44,7 @@ private:
 	afx_msg void MenuFileSaveTerrain();
 	afx_msg void MenuEditSelect();
 	afx_msg void MenuEditProperties();
-	afx_msg	void ToolBarButton1();
+	afx_msg	void ToolBarButtonSave();
 	afx_msg void ToolBarWireframe();
 	afx_msg void ToolBarNewObject();
 	afx_msg void ToolBarRefreshObjects();

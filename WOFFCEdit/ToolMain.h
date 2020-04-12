@@ -10,6 +10,12 @@
 
 #include <vector>
 
+enum class ObjectManipulationState
+{
+	Translate = 0,
+	Rotate = 1,
+	Scale = 2
+};
 
 class ToolMain
 {
@@ -28,6 +34,7 @@ public: //methods
 	float	Tick(MSG *msg);
 	void	UpdateInput(MSG *msg);
 	void	UpdateStates();
+	void	ManipulateObjects(float dt);
 	void	UpdateAllObjects();
 	void	UpdateObject(int i);
 	SceneObject*	CreateSceneObject();
@@ -40,14 +47,21 @@ public:	//variables
 	std::vector<int> m_selectedObjects;						//ID of current Selection
 	std::vector<Path> m_paths;
 
+	ObjectManipulationState m_manipulationState;
+	float m_translateSpeed;
+	float m_rotateSpeed;
+	float m_scaleSpeed;
+
 	//River m_river;
-	AIObject* m_aiObject;
-	Path path;
+	//AIObject* m_aiObject;
+	//Path path;
 
 private:	//methods
 	void	onContentAdded();
 	void	DeleteObjects();
-
+	void	TranslateObjects(float dt, int selected);
+	void	RotateObjects(float dt, int selected);
+	void	ScaleObjects(float dt, int selected);
 		
 private:	//variables
 	HWND	m_toolHandle;		//Handle to the  window

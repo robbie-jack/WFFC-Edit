@@ -16,20 +16,32 @@ ToolMain::ToolMain()
 	m_databaseConnection = NULL;
 
 	//zero input commands
-	m_toolInputCommands.forward			= Up;
-	m_toolInputCommands.back			= Up;
-	m_toolInputCommands.left			= Up;
-	m_toolInputCommands.right			= Up;
-	m_toolInputCommands.up				= Up;
-	m_toolInputCommands.down			= Up;
-	m_toolInputCommands.shift			= Up;
-	m_toolInputCommands.switch_Cam_Mode = Up;
-	m_toolInputCommands.mouse_RB		= Up;
-	m_toolInputCommands.mouse_LB		= Up;
-	m_toolInputCommands.mouse_X			= 0;
-	m_toolInputCommands.mouse_Y			= 0;
-	m_toolInputCommands.mouse_X_Last	= 0;
-	m_toolInputCommands.mouse_Y_Last	= 0;
+	m_toolInputCommands.forward				= KeyState::Up;
+	m_toolInputCommands.back				= KeyState::Up;
+	m_toolInputCommands.left				= KeyState::Up;
+	m_toolInputCommands.right				= KeyState::Up;
+	m_toolInputCommands.up					= KeyState::Up;
+	m_toolInputCommands.down				= KeyState::Up;
+	m_toolInputCommands.shift				= KeyState::Up;
+	m_toolInputCommands.translateForward	= KeyState::Up;
+	m_toolInputCommands.translateBackward	= KeyState::Up;
+	m_toolInputCommands.translateLeft		= KeyState::Up;
+	m_toolInputCommands.translateRight		= KeyState::Up;
+	m_toolInputCommands.translateUp			= KeyState::Up;
+	m_toolInputCommands.translateDown		= KeyState::Up;
+	m_toolInputCommands.switch_Cam_Mode		= KeyState::Up;
+	m_toolInputCommands.mouse_RB			= KeyState::Up;
+	m_toolInputCommands.mouse_LB			= KeyState::Up;
+	m_toolInputCommands.mouse_X				= 0;
+	m_toolInputCommands.mouse_Y				= 0;
+	m_toolInputCommands.mouse_X_Last		= 0;
+	m_toolInputCommands.mouse_Y_Last		= 0;
+
+	m_manipulationState = ObjectManipulationState::Translate;
+
+	m_translateSpeed = 5.0f;
+	m_rotateSpeed = 30.0f;
+	m_scaleSpeed = 5.0f;
 
 	/*m_river.AddSection();
 	m_river.GetSection(0).SetPoint(0, TerrainPoint(50, 50, 50.0f));
@@ -73,16 +85,12 @@ void ToolMain::onActionInitialise(HWND handle, int width, int height)
 
 	onActionLoad();
 
-	m_aiObject = CreateAIObject();
 	Path path;
 	path.m_name = L"Default Path";
-	//path.AddFirstSegment(&m_sceneGraph[17], &m_sceneGraph[18], &m_sceneGraph[19], &m_sceneGraph[20]);
 	path.AddNode(&m_sceneGraph[17]);
 	path.AddNode(&m_sceneGraph[18]);
 	path.AddNode(&m_sceneGraph[19]);
 	path.AddNode(&m_sceneGraph[20]);
-	//path.AddNode(&m_sceneGraph[16]);
-	//path.AddNode(&m_sceneGraph[1]);
 	m_paths.push_back(path);
 }
 
@@ -170,7 +178,6 @@ void ToolMain::onActionLoad()
 		newSceneObject.light_quadratic = sqlite3_column_double(pResults, 55);
 	
 		newSceneObject.is_deleted = false;
-		newSceneObject.editor_wireframe = true;
 
 		//send completed object to scenegraph
 		m_sceneGraph.push_back(newSceneObject);
@@ -318,23 +325,14 @@ float ToolMain::Tick(MSG *msg)
 		//add to scenegraph
 		//resend scenegraph to Direct X renderer
 
-	if (m_toolInputCommands.mouse_LB == Pressed)
+	if (m_toolInputCommands.mouse_LB == KeyState::Pressed)
 	{
 		m_selectedObjects = m_d3dRenderer.MousePicking(m_selectedObjects);
 	}
 
 	//Renderer Update Call
 	float dt = m_d3dRenderer.Tick(&m_toolInputCommands);
-
-	/*if (!m_paths[0].AtPathEnd())
-	{
-		Vector3 pathPosition = m_paths[0].GetNextPoint(dt);
-		m_sceneGraph[21].posX = pathPosition.x;
-		m_sceneGraph[21].posY = pathPosition.y;
-		m_sceneGraph[21].posZ = pathPosition.z;
-
-		UpdateObject(21);
-	}*/
+	ManipulateObjects(dt);
 
 	DeleteObjects();
 
@@ -366,83 +364,246 @@ void ToolMain::UpdateInput(MSG * msg)
 
 	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
 		//set some flag for the mouse button in inputcommands
-		m_toolInputCommands.mouse_LB = Pressed;
+		m_toolInputCommands.mouse_LB = KeyState::Pressed;
 		
 		break;
 
 	case WM_LBUTTONUP:
-		m_toolInputCommands.mouse_LB	= Up;
+		m_toolInputCommands.mouse_LB	= KeyState::Up;
 		break;
 
 	case WM_RBUTTONDOWN:
-		m_toolInputCommands.mouse_RB = Pressed;
+		m_toolInputCommands.mouse_RB = KeyState::Pressed;
 		break;
 
 	case WM_RBUTTONUP:
-		m_toolInputCommands.mouse_RB	= Up;
+		m_toolInputCommands.mouse_RB	= KeyState::Up;
 		break;
 	}
 	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
 	//WASDQE movement
 	if (m_keyArray['W'])
 	{
-		m_toolInputCommands.forward = Down;
+		m_toolInputCommands.forward = KeyState::Down;
 	}
-	else m_toolInputCommands.forward = Up;
+	else m_toolInputCommands.forward = KeyState::Up;
 	
 	if (m_keyArray['S'])
 	{
-		m_toolInputCommands.back = Down;
+		m_toolInputCommands.back = KeyState::Down;
 	}
-	else m_toolInputCommands.back = Up;
+	else m_toolInputCommands.back = KeyState::Up;
 
 	if (m_keyArray['A'])
 	{
-		m_toolInputCommands.left = Down;
+		m_toolInputCommands.left = KeyState::Down;
 	}
-	else m_toolInputCommands.left = Up;
+	else m_toolInputCommands.left = KeyState::Up;
 
 	if (m_keyArray['D'])
 	{
-		m_toolInputCommands.right = Down;
+		m_toolInputCommands.right = KeyState::Down;
 	}
-	else m_toolInputCommands.right = Up;
+	else m_toolInputCommands.right = KeyState::Up;
 
 	if (m_keyArray['Q'])
 	{
-		m_toolInputCommands.down = Down;
+		m_toolInputCommands.down = KeyState::Down;
 	}
-	else m_toolInputCommands.down = Up;
+	else m_toolInputCommands.down = KeyState::Up;
 
 	if (m_keyArray['E'])
 	{
-		m_toolInputCommands.up = Down;
+		m_toolInputCommands.up = KeyState::Down;
 	}
-	else m_toolInputCommands.up = Up;
+	else m_toolInputCommands.up = KeyState::Up;
 
+	// Switch Camera Mode
 	if (m_keyArray['C'])
 	{
-		m_toolInputCommands.switch_Cam_Mode = Pressed;
+		m_toolInputCommands.switch_Cam_Mode = KeyState::Pressed;
 	}
-	else m_toolInputCommands.switch_Cam_Mode = Up;
+	else m_toolInputCommands.switch_Cam_Mode = KeyState::Up;
+
+	// Object Translation/Rotation/Scale
+	if (m_keyArray['I'])
+	{
+		m_toolInputCommands.translateForward = KeyState::Down;
+	}
+	else m_toolInputCommands.translateForward = KeyState::Up;
+
+	if (m_keyArray['K'])
+	{
+		m_toolInputCommands.translateBackward = KeyState::Down;
+	}
+	else m_toolInputCommands.translateBackward = KeyState::Up;
+
+	if (m_keyArray['J'])
+	{
+		m_toolInputCommands.translateLeft = KeyState::Down;
+	}
+	else m_toolInputCommands.translateLeft = KeyState::Up;
+
+	if (m_keyArray['L'])
+	{
+		m_toolInputCommands.translateRight = KeyState::Down;
+	}
+	else m_toolInputCommands.translateRight = KeyState::Up;
+
+	if (m_keyArray['U'])
+	{
+		m_toolInputCommands.translateUp = KeyState::Down;
+	}
+	else m_toolInputCommands.translateUp = KeyState::Up;
+
+	if (m_keyArray['O'])
+	{
+		m_toolInputCommands.translateDown = KeyState::Down;
+	}
+	else m_toolInputCommands.translateDown = KeyState::Up;
 
 	if (m_keyArray[VK_SHIFT])
 	{
-		m_toolInputCommands.shift = Down;
+		m_toolInputCommands.shift = KeyState::Down;
 	}
-	else m_toolInputCommands.shift = Up;
+	else m_toolInputCommands.shift = KeyState::Up;
 }
 
 void ToolMain::UpdateStates()
 {
-	if (m_toolInputCommands.mouse_LB == Pressed)
-		m_toolInputCommands.mouse_LB = Down;
+	if (m_toolInputCommands.mouse_LB == KeyState::Pressed)
+		m_toolInputCommands.mouse_LB = KeyState::Down;
 
-	if (m_toolInputCommands.mouse_RB == Pressed)
-		m_toolInputCommands.mouse_RB = Down;
+	if (m_toolInputCommands.mouse_RB == KeyState::Pressed)
+		m_toolInputCommands.mouse_RB = KeyState::Down;
 
-	if (m_toolInputCommands.switch_Cam_Mode == Pressed)
-		m_toolInputCommands.switch_Cam_Mode = Down;
+	if (m_toolInputCommands.switch_Cam_Mode == KeyState::Pressed)
+		m_toolInputCommands.switch_Cam_Mode = KeyState::Down;
+}
+
+void ToolMain::ManipulateObjects(float dt)
+{
+	if (m_selectedObjects.size()  > 0)
+	{
+		int selectedSize = m_selectedObjects.size();
+
+		for (int i = 0; i < selectedSize; i++)
+		{
+			switch (m_manipulationState)
+			{
+			case ObjectManipulationState::Translate:
+				TranslateObjects(dt, m_selectedObjects[i]);
+				break;
+			case ObjectManipulationState::Rotate:
+				RotateObjects(dt, m_selectedObjects[i]);
+				break;
+			case ObjectManipulationState::Scale:
+				ScaleObjects(dt, m_selectedObjects[i]);
+				break;
+			}
+
+			UpdateObject(m_selectedObjects[i]);
+		}
+	}
+}
+
+void ToolMain::TranslateObjects(float dt, int selected)
+{
+	if (m_toolInputCommands.translateForward == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).posZ += m_translateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateBackward == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).posZ -= m_translateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateLeft == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).posX += m_translateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateRight == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).posX -= m_translateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateUp == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).posY += m_translateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateDown == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).posY -= m_translateSpeed * dt;
+	}
+}
+
+void ToolMain::RotateObjects(float dt, int selected)
+{
+	if (m_toolInputCommands.translateForward == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).rotX += m_rotateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateBackward == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).rotX -= m_rotateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateLeft == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).rotZ -= m_rotateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateRight == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).rotZ += m_rotateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateUp == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).rotY += m_rotateSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateDown == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).rotY -= m_rotateSpeed * dt;
+	}
+}
+
+void ToolMain::ScaleObjects(float dt, int selected)
+{
+	if (m_toolInputCommands.translateForward == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).scaZ += m_scaleSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateBackward == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).scaZ -= m_scaleSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateLeft == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).scaX -= m_scaleSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateRight == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).scaX += m_scaleSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateUp == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).scaY += m_scaleSpeed * dt;
+	}
+
+	if (m_toolInputCommands.translateDown == KeyState::Down)
+	{
+		m_sceneGraph.at(selected).scaY -= m_scaleSpeed * dt;
+	}
 }
 
 void ToolMain::UpdateAllObjects()

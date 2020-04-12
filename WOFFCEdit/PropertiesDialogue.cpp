@@ -357,6 +357,8 @@ void PropertiesDialogue::OnBnClickedCheckWireframe()
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 		object->editor_wireframe = m_buttonWireframe.GetCheck();
+
+		m_shouldUpdate = true;
 	}
 }
 
@@ -373,7 +375,6 @@ void PropertiesDialogue::OnBnClickedDelete()
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 		object->is_deleted = true;
-		//ClearData();
 	}
 }
 
@@ -384,6 +385,8 @@ void PropertiesDialogue::OnBnClickedCheckAI()
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 		object->AINode = m_buttonAINode.GetCheck();
+
+		m_shouldUpdate = true;
 	}
 }
 
@@ -406,6 +409,8 @@ void PropertiesDialogue::OnBnClickedCheckPath()
 		}
 
 		object->path_node = path_node;
+
+		m_shouldUpdate = true;
 	}
 }
 
@@ -429,6 +434,8 @@ void PropertiesDialogue::OnBnClickedCheckPathStart()
 
 
 		object->path_node_start = path_node_start;
+
+		m_shouldUpdate = true;
 	}
 }
 
@@ -451,5 +458,7 @@ void PropertiesDialogue::OnBnClickedCheckPathEnd()
 		}
 
 		object->path_node_end = path_node_end;
+
+		m_shouldUpdate = true;
 	}
 }

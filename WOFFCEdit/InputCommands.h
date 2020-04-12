@@ -1,6 +1,6 @@
 #pragma once
 
-enum KeyState
+enum class KeyState
 {
 	Pressed = 0,
 	Down = 1,
@@ -17,6 +17,12 @@ struct InputCommands
 	KeyState up;
 	KeyState down;
 	KeyState shift;
+	KeyState translateForward;
+	KeyState translateBackward;
+	KeyState translateLeft;
+	KeyState translateRight;
+	KeyState translateUp;
+	KeyState translateDown;
 	KeyState switch_Cam_Mode;
 	KeyState mouse_RB;
 	KeyState mouse_LB;
