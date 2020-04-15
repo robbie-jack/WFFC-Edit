@@ -35,6 +35,7 @@ public: //methods
 	void	UpdateInput(MSG *msg);
 	void	UpdateStates();
 	void	ManipulateObjects(float dt);
+	void	UpdateWindow(int width, int height);
 	void	UpdateAllObjects();
 	void	UpdateObject(int i);
 	SceneObject*	CreateSceneObject();

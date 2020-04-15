@@ -75,7 +75,19 @@ int MFCMain::Run()
 		else
 		{	
 			std::vector<int> IDs = m_ToolSystem.getCurrentSelectionID();
-			std::wstring statusString = L"Selected Object: ";
+			std::wstring statusString;
+
+			switch (m_ToolSystem.m_manipulationState)
+			{
+			case ObjectManipulationState::Translate:
+				statusString = L"Object State: Translate";
+			case ObjectManipulationState::Rotate:
+				statusString = L"Object State: Rotate";
+			case ObjectManipulationState::Scale:
+				statusString = L"Object State: Scale";
+			}
+
+			statusString += L", Selected Object: ";
 
 			if (!IDs.empty())
 			{
@@ -86,6 +98,15 @@ int MFCMain::Run()
 				{
 					statusString += (L", " + std::to_wstring(m_ToolSystem.m_sceneGraph[IDs[i]].ID));
 				}
+			}
+
+			if (m_frame->IsResized())
+			{
+				m_frame->m_DirXView.GetClientRect(&WindowRECT);
+				m_width = WindowRECT.Width();
+				m_height = WindowRECT.Height();
+
+				m_ToolSystem.UpdateWindow(m_width, m_height);
 			}
 
 			float dt = m_ToolSystem.Tick(&msg);

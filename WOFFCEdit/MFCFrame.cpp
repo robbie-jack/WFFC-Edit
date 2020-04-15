@@ -7,6 +7,7 @@ BEGIN_MESSAGE_MAP(CMyFrame, CFrameWnd)
 	
 	ON_WM_CREATE()
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -21,6 +22,7 @@ static UINT indicators[] =
 CMyFrame::CMyFrame()
 {
 	m_selectionID = 999; //an obviously wrong selection ID,  to verify its working
+	m_resized = false;
 }
 
 void CMyFrame::SetCurrentSelectionID(int ID)
@@ -34,6 +36,17 @@ void CMyFrame::OnUpdatePage(CCmdUI * pCmdUI)
 	CString strPage;
 	strPage.Format(_T("%d"), m_selectionID);
 	pCmdUI->SetText(strPage);
+}
+
+void CMyFrame::OnSize(UINT nType, int cx, int cy)
+{
+	CFrameWnd::OnSize(nType, cx, cy);
+	int width = cx;
+	int height = cy;
+	m_resized = true;
+
+	//m_DirXView.
+	//OnFrameResoze
 }
 
 //oncretae, called after init but before window is shown.

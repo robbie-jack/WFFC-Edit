@@ -63,11 +63,13 @@ std::vector<int> ToolMain::getCurrentSelectionID()
 
 void ToolMain::onActionInitialise(HWND handle, int width, int height)
 {
+	m_toolHandle = handle;
+
 	//window size, handle etc for directX
 	m_width		= width;
 	m_height	= height;
 	
-	m_d3dRenderer.Initialize(handle, m_width, m_height);
+	m_d3dRenderer.Initialize(m_toolHandle, m_width, m_height);
 
 	//database connection establish
 	int rc;
@@ -379,6 +381,20 @@ void ToolMain::UpdateInput(MSG * msg)
 	case WM_RBUTTONUP:
 		m_toolInputCommands.mouse_RB	= KeyState::Up;
 		break;
+
+	case WM_SIZING:
+		break;
+
+	case WM_SIZE:
+
+		// When window is finished resizing, get new width/height
+		int width = LOWORD(msg->lParam);
+		int height = HIWORD(msg->lParam);
+
+		//m_d3dRenderer.OnWindowSizeChanged(width, height);
+		//m_d3dRenderer.UpdateWindow(m_toolHandle, width, height);
+
+		break;
 	}
 	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
 	//WASDQE movement
@@ -658,6 +674,11 @@ void ToolMain::ScaleObjects(float dt, int selected)
 		m_sceneGraph.at(selected).scaY -= m_scaleSpeed * dt;
 		m_sceneGraph.at(selected).is_updated = true;
 	}
+}
+
+void ToolMain::UpdateWindow(int width, int height)
+{
+	m_d3dRenderer.OnWindowSizeChanged(width, height);
 }
 
 void ToolMain::UpdateAllObjects()

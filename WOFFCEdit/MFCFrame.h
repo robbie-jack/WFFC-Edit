@@ -22,10 +22,23 @@ public:
 	CMyFrame();
 	void SetCurrentSelectionID(int ID);
 	afx_msg void OnUpdatePage(CCmdUI *pCmdUI);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+
+	inline bool IsResized()
+	{
+		if (m_resized)
+		{
+			m_resized = false;
+			return true;
+		}
+		else
+			return false;
+	}
 
 
 private:	//overrides
-	int		m_selectionID;	//
+	int		m_selectionID;
+	bool	m_resized;
 
 	//note the afx_message keyword is linking this method to message map access.
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
