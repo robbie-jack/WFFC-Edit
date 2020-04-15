@@ -80,7 +80,9 @@
     <ClCompile Include="AIObject.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="PathEditorDialogue.cpp" />
+    <ClCompile Include="PathEditorDialogue.cpp">
+      <Filter>MFC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceResources.h">
@@ -148,7 +150,9 @@
     <ClInclude Include="AIObject.h">
       <Filter>AI</Filter>
     </ClInclude>
-    <ClInclude Include="PathEditorDialogue.h" />
+    <ClInclude Include="PathEditorDialogue.h">
+      <Filter>MFC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

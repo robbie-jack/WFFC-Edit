@@ -23,6 +23,9 @@ struct InputCommands
 	KeyState translateRight;
 	KeyState translateUp;
 	KeyState translateDown;
+	KeyState switchToTranslate;
+	KeyState switchToRotate;
+	KeyState switchToScale;
 	KeyState switch_Cam_Mode;
 	KeyState mouse_RB;
 	KeyState mouse_LB;

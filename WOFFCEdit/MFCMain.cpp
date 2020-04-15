@@ -151,8 +151,8 @@ void MFCMain::UpdatePropertiesDialogue()
 	{
 		if (m_ToolSystem.m_selectedObjects.size() > 0)
 			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
-		/*else
-			m_ToolPropertiesDialogue.ClearData();*/
+
+		m_ToolPropertiesDialogue.UpdateObjectData();
 
 		if (m_ToolPropertiesDialogue.ShouldUpdate())
 		{

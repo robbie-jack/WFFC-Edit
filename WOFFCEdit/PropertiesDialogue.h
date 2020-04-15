@@ -18,6 +18,7 @@ public:
 	virtual ~PropertiesDialogue();
 
 	void SetObjectData(std::vector<SceneObject>* SceneGraph, int Selected);
+	void UpdateObjectData();
 	void ClearData();
 
 	inline bool IsActive() { return m_isActive; };
@@ -55,9 +56,10 @@ protected:
 	std::vector<SceneObject>* m_sceneGraph;
 	int m_selected;
 
-	bool m_isActive;
-	bool m_shouldUpdate;
-	bool m_shouldCreate;
+	bool m_isActive;		// Is Properties Dialogue Active
+	bool m_shouldUpdate;	// Should the currently selected objetc be updated
+	bool m_shouldCreate;	// Should a new objetc be created
+	bool m_objectUpdated;	// Was yhe current object updated outside the properties window
 
 	DECLARE_MESSAGE_MAP()
 public:

@@ -5,6 +5,7 @@ IMPLEMENT_DYNAMIC(PropertiesDialogue, CDialogEx)
 
 BEGIN_MESSAGE_MAP(PropertiesDialogue, CDialogEx)
 	ON_COMMAND(IDOK, &PropertiesDialogue::End)
+	ON_COMMAND(IDCANCEL, &PropertiesDialogue::End)
 	ON_BN_CLICKED(IDOK, &PropertiesDialogue::OnBnClickedOk)
 	ON_EN_CHANGE(IDC_EDIT_POSY, &PropertiesDialogue::OnEnChangeEditPosy)
 	ON_EN_CHANGE(IDC_EDIT_POSX, &PropertiesDialogue::OnEnChangeEditPosx)
@@ -32,8 +33,8 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* 
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
+	m_objectUpdated = false;
 	m_selected = -1;
-
 }
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in modeless
@@ -58,43 +59,57 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, int
 	{
 		m_selected = Selected;
 
-		SceneObject object = m_sceneGraph->at(m_selected);
+		m_sceneGraph->at(m_selected).is_updated = true;
+		UpdateObjectData();
+	}
+}
 
-		std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
+void PropertiesDialogue::UpdateObjectData()
+{
+	if (m_sceneGraph != nullptr && m_selected != -1)
+	{
+		if (m_sceneGraph->at(m_selected).is_updated)
+		{
+			SceneObject object = m_sceneGraph->at(m_selected);
 
-		std::wstring PosXstring = std::to_wstring(object.posX);
-		std::wstring PosYstring = std::to_wstring(object.posY);
-		std::wstring PosZstring = std::to_wstring(object.posZ);
+			std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
 
-		std::wstring RotXstring = std::to_wstring(object.rotX);
-		std::wstring RotYstring = std::to_wstring(object.rotY);
-		std::wstring RotZstring = std::to_wstring(object.rotZ);
+			std::wstring PosXstring = std::to_wstring(object.posX);
+			std::wstring PosYstring = std::to_wstring(object.posY);
+			std::wstring PosZstring = std::to_wstring(object.posZ);
 
-		std::wstring ScaXstring = std::to_wstring(object.scaX);
-		std::wstring ScaYstring = std::to_wstring(object.scaY);
-		std::wstring ScaZstring = std::to_wstring(object.scaZ);
+			std::wstring RotXstring = std::to_wstring(object.rotX);
+			std::wstring RotYstring = std::to_wstring(object.rotY);
+			std::wstring RotZstring = std::to_wstring(object.rotZ);
 
-		m_static.SetWindowTextW(IDstring.c_str());
+			std::wstring ScaXstring = std::to_wstring(object.scaX);
+			std::wstring ScaYstring = std::to_wstring(object.scaY);
+			std::wstring ScaZstring = std::to_wstring(object.scaZ);
 
-		//m_editName.SetWindowTextW(std::object.name);
+			m_static.SetWindowTextW(IDstring.c_str());
 
-		m_editPosX.SetWindowTextW(PosXstring.c_str());
-		m_editPosY.SetWindowTextW(PosYstring.c_str());
-		m_editPosZ.SetWindowTextW(PosZstring.c_str());
+			//m_editName.SetWindowTextW(std::object.name);
 
-		m_editRotX.SetWindowTextW(RotXstring.c_str());
-		m_editRotY.SetWindowTextW(RotYstring.c_str());
-		m_editRotZ.SetWindowTextW(RotZstring.c_str());
+			m_editPosX.SetWindowTextW(PosXstring.c_str());
+			m_editPosY.SetWindowTextW(PosYstring.c_str());
+			m_editPosZ.SetWindowTextW(PosZstring.c_str());
 
-		m_editScaX.SetWindowTextW(ScaXstring.c_str());
-		m_editScaY.SetWindowTextW(ScaYstring.c_str());
-		m_editScaZ.SetWindowTextW(ScaZstring.c_str());
+			m_editRotX.SetWindowTextW(RotXstring.c_str());
+			m_editRotY.SetWindowTextW(RotYstring.c_str());
+			m_editRotZ.SetWindowTextW(RotZstring.c_str());
 
-		m_buttonWireframe.SetCheck(object.editor_wireframe);
-		m_buttonAINode.SetCheck(object.AINode);
-		m_buttonPathNode.SetCheck(object.path_node);
-		m_buttonPathNodeStart.SetCheck(object.path_node_start);
-		m_buttonPathNodeEnd.SetCheck(object.path_node_end);
+			m_editScaX.SetWindowTextW(ScaXstring.c_str());
+			m_editScaY.SetWindowTextW(ScaYstring.c_str());
+			m_editScaZ.SetWindowTextW(ScaZstring.c_str());
+
+			m_buttonWireframe.SetCheck(object.editor_wireframe);
+			m_buttonAINode.SetCheck(object.AINode);
+			m_buttonPathNode.SetCheck(object.path_node);
+			m_buttonPathNodeStart.SetCheck(object.path_node_start);
+			m_buttonPathNodeEnd.SetCheck(object.path_node_end);
+
+			m_sceneGraph->at(m_selected).is_updated = false;
+		}
 	}
 }
 
@@ -206,18 +221,23 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
-		CString posXText;
-		m_editPosX.GetWindowTextW(posXText);
+		if (!object->is_updated)
+		{
+			CString posXText;
+			m_editPosX.GetWindowTextW(posXText);
 
-		object->posX = _ttoi(posXText);
+			object->posX = _ttoi(posXText);
 
-		m_shouldUpdate = true;
+			m_shouldUpdate = true;
+		}
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditPosy()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
@@ -232,7 +252,9 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 
 void PropertiesDialogue::OnEnChangeEditPosz()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
@@ -247,7 +269,9 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 
 void PropertiesDialogue::OnEnChangeEditRotx()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
@@ -262,7 +286,9 @@ void PropertiesDialogue::OnEnChangeEditRotx()
 
 void PropertiesDialogue::OnEnChangeEditRoty()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
@@ -277,7 +303,9 @@ void PropertiesDialogue::OnEnChangeEditRoty()
 
 void PropertiesDialogue::OnEnChangeEditRotz()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
@@ -292,7 +320,9 @@ void PropertiesDialogue::OnEnChangeEditRotz()
 
 void PropertiesDialogue::OnEnChangeEditScax()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
@@ -307,7 +337,9 @@ void PropertiesDialogue::OnEnChangeEditScax()
 
 void PropertiesDialogue::OnEnChangeEditScay()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
@@ -322,7 +354,9 @@ void PropertiesDialogue::OnEnChangeEditScay()
 
 void PropertiesDialogue::OnEnChangeEditScaz()
 {
-	if (m_selected != -1)
+	CWnd* window = GetFocus();
+
+	if (m_selected != -1 && window == this)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 
