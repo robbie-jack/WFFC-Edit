@@ -40,6 +40,7 @@ public: //methods
 	void	UpdateObject(int i);
 	SceneObject*	CreateSceneObject();
 	AIObject*		CreateAIObject();
+	void	DrawPath(Path path);
 	//void	GenerateRiver();
 
 public:	//variables

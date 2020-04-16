@@ -24,6 +24,7 @@ Game::Game()
 	//initial Settings
 	//modes
 	m_grid = false;
+	m_drawPath = false;
 }
 
 Game::~Game()
@@ -246,9 +247,9 @@ void Game::Render()
 	//Render the batch,  This is handled in the Display chunk becuase it has the potential to get complex
 	m_displayChunk.RenderBatch(m_deviceResources);
 
-	if (m_path.m_name != L"")
+	if (m_drawPath)
 	{
-		DrawPath(m_path);
+		RenderPath(m_path);
 	}
 
 	//CAMERA POSITION ON HUD
@@ -262,7 +263,7 @@ void Game::Render()
     m_deviceResources->Present();
 }
 
-void Game::DrawPath(Path path)
+void Game::RenderPath(Path path)
 {
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
@@ -304,13 +305,15 @@ void Game::DrawPath(Path path)
 	}
 
 	path.ResetPath();
+	m_drawPath = false;
 
 	m_batch->End();
 }
 
-void Game::SetPath(Path path)
+void Game::DrawPath(Path path)
 {
 	m_path = path;
+	m_drawPath = true;
 }
 
 // Helper method to clear the back buffers.

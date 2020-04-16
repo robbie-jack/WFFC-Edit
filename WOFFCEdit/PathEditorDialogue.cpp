@@ -53,14 +53,7 @@ void PathEditorDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std
 	m_sceneGraph = SceneGraph;
 	m_paths = Paths;
 
-	for (int i = 0; i < m_sceneGraph->size(); i++)
-	{
-		if (m_sceneGraph->at(i).AINode)
-		{
-			m_aiObjects.push_back(i);
-		}
-	}
-
+	UpdateAIObjectsList();
 	UpdatePathComboBox();
 	UpdateObjectComboBox();
 }
@@ -168,6 +161,24 @@ void PathEditorDialogue::UpdateObjectComboBox()
 	}
 }
 
+void PathEditorDialogue::UpdateAIObjectsList()
+{
+	m_aiObjects.clear();
+
+	if (m_sceneGraph->size() > 0)
+	{
+		for (int i = 0; i < m_sceneGraph->size(); i++)
+		{
+			if (m_sceneGraph->at(i).AINode)
+			{
+				m_aiObjects.push_back(i);
+			}
+		}
+
+		UpdateObjectComboBox();
+	}
+}
+
 BOOL PathEditorDialogue::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -208,7 +219,7 @@ void PathEditorDialogue::OnBnClickedButtonAdd()
 {
 	if (m_currentPath != -1)
 	{
-		if (m_selected != -1)
+		if (m_selected != -1 && m_sceneGraph->at(m_selected).path_node)
 			m_paths->at(m_currentPath).AddNode(&m_sceneGraph->at(m_selected)); // Add Currently Selected Node to Path
 
 		m_currentNode = -1;

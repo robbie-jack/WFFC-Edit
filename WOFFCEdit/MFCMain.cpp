@@ -154,8 +154,7 @@ void MFCMain::MenuEditProperties()
 		m_ToolPropertiesDialogue.Create(IDD_DIALOG2);
 		m_ToolPropertiesDialogue.ShowWindow(SW_SHOW);
 
-		if (m_ToolSystem.m_selectedObjects.size() > 0)
-			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
+		m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph);
 	}
 }
 
@@ -171,7 +170,11 @@ void MFCMain::UpdatePropertiesDialogue()
 	if (m_ToolPropertiesDialogue.IsActive())
 	{
 		if (m_ToolSystem.m_selectedObjects.size() > 0)
-			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
+			m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects[0]);
+		else
+		{
+			m_ToolPropertiesDialogue.SetSelected(-1);
+		}
 
 		m_ToolPropertiesDialogue.UpdateObjectData();
 
@@ -185,9 +188,8 @@ void MFCMain::UpdatePropertiesDialogue()
 		if (m_ToolPropertiesDialogue.ShouldCreate())
 		{
 			m_ToolSystem.CreateSceneObject();
-			
-			if (m_ToolSystem.m_selectedObjects.size() > 0)
-				m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, m_ToolSystem.m_selectedObjects[0]);
+			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph);
+			m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects[0]);
 		}
 	}
 }
@@ -203,8 +205,15 @@ void MFCMain::UpdatePathEditorDialogue(float dt)
 				m_ToolSystem.UpdateObject(i);
 		}
 
+		m_ToolPathEditorDialogue.UpdateAIObjectsList();
+
 		if (m_ToolSystem.m_selectedObjects.size() > 0)
 			m_ToolPathEditorDialogue.SetSelected(m_ToolSystem.m_selectedObjects[0]);
+
+		if (m_ToolPathEditorDialogue.GetCurrentPath() != -1)
+		{
+			m_ToolSystem.DrawPath(m_ToolSystem.m_paths[m_ToolPathEditorDialogue.GetCurrentPath()]);
+		}
 	}
 }
 

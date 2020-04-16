@@ -17,7 +17,8 @@ public:
 	PropertiesDialogue(CWnd* parent = NULL); // Modeless
 	virtual ~PropertiesDialogue();
 
-	void SetObjectData(std::vector<SceneObject>* SceneGraph, int Selected);
+	void SetObjectData(std::vector<SceneObject>* SceneGraph);
+	void SetSelected(int Selected);
 	void UpdateObjectData();
 	void ClearData();
 

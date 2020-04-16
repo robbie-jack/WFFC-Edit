@@ -94,8 +94,6 @@ void ToolMain::onActionInitialise(HWND handle, int width, int height)
 	path.AddNode(&m_sceneGraph[19]);
 	path.AddNode(&m_sceneGraph[20]);
 	m_paths.push_back(path);
-
-	m_d3dRenderer.SetPath(m_paths.back());
 }
 
 void ToolMain::onActionLoad()
@@ -767,6 +765,11 @@ void ToolMain::DeleteObjects()
 		m_selectedObjects.clear();
 		//m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
 	}
+}
+
+void ToolMain::DrawPath(Path path)
+{
+	m_d3dRenderer.DrawPath(path);
 }
 
 //void ToolMain::GenerateRiver()

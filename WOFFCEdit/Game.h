@@ -61,7 +61,6 @@ public:
 	void ClearDisplayList();
 
 	void DrawPath(Path path);
-	void SetPath(Path path);
 
 	void BuildRiver(RiverSection river);
 
@@ -72,6 +71,7 @@ public:
 private:
 
 	float Update(DX::StepTimer const& timer);
+	void RenderPath(Path path);
 
 	void CreateDeviceDependentResources();
 	void CreateWindowSizeDependentResources();
@@ -89,6 +89,7 @@ private:
 	std::unique_ptr<Camera>				m_cam;
 
 	Path								m_path;
+	bool								m_drawPath;
 
 	RECT								m_ScreenDimensions;
 

@@ -22,7 +22,9 @@ public:
 
 	void SetObjectData(std::vector<SceneObject>* SceneGraph, std::vector<Path>* paths);
 	void SetSelected(int Selected);
+
 	bool UpdateAIObject(float dt);
+	void UpdateAIObjectsList();
 
 	inline bool IsActive() { return m_isActive; };
 
@@ -38,6 +40,7 @@ public:
 	};
 
 	inline int GetCurrentObject() { return m_currentObject; };
+	inline int GetCurrentPath() { return m_currentPath; };
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

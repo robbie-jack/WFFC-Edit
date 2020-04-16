@@ -51,16 +51,26 @@ PropertiesDialogue::~PropertiesDialogue()
 
 }
 
-void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, int Selected)
+void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph)
 {
 	m_sceneGraph = SceneGraph;
+}
 
+void PropertiesDialogue::SetSelected(int Selected)
+{
 	if (m_selected != Selected)
 	{
 		m_selected = Selected;
 
-		m_sceneGraph->at(m_selected).is_updated = true;
-		UpdateObjectData();
+		if (m_selected != -1)
+		{
+			m_sceneGraph->at(m_selected).is_updated = true;
+			UpdateObjectData();
+		}
+		else
+		{
+			ClearData();
+		}
 	}
 }
 
@@ -115,9 +125,9 @@ void PropertiesDialogue::UpdateObjectData()
 
 void PropertiesDialogue::ClearData()
 {
-	if (m_selected != -1)
+	if (m_selected == -1)
 	{
-		std::wstring IDstring = L"";
+		std::wstring IDstring = L"ID:";
 
 		std::wstring PosXstring = L"";
 		std::wstring PosYstring = L"";
@@ -152,9 +162,6 @@ void PropertiesDialogue::ClearData()
 		m_buttonPathNode.SetCheck(false);
 		m_buttonPathNodeStart.SetCheck(false);
 		m_buttonPathNodeEnd.SetCheck(false);
-
-		m_selected = -1;
-		m_sceneGraph = NULL;
 	}
 }
 
@@ -409,6 +416,8 @@ void PropertiesDialogue::OnBnClickedDelete()
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected);
 		object->is_deleted = true;
+		m_selected = -1;
+		ClearData();
 	}
 }
 
