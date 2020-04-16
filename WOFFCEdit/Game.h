@@ -61,6 +61,7 @@ public:
 	void ClearDisplayList();
 
 	void DrawPath(Path path);
+	void SetPath(Path path);
 
 	void BuildRiver(RiverSection river);
 
@@ -86,6 +87,8 @@ private:
 
 	//camera
 	std::unique_ptr<Camera>				m_cam;
+
+	Path								m_path;
 
 	RECT								m_ScreenDimensions;
 

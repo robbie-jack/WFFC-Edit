@@ -8,6 +8,7 @@ Path::Path()
 	m_speed = 0.2f;
 	m_currentNode = 0;
 	m_pathEnd = false;
+	m_name = L"";
 }
 
 Path::~Path()

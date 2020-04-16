@@ -246,7 +246,10 @@ void Game::Render()
 	//Render the batch,  This is handled in the Display chunk becuase it has the potential to get complex
 	m_displayChunk.RenderBatch(m_deviceResources);
 
-	//DrawPath(Path);
+	if (m_path.m_name != L"")
+	{
+		DrawPath(m_path);
+	}
 
 	//CAMERA POSITION ON HUD
 	/*m_sprites->Begin();
@@ -270,15 +273,44 @@ void Game::DrawPath(Path path)
 	// Render AI Paths
 	m_batch->Begin();
 
-	Vector3 pos1 = Vector3(-512, 0.0f, -512.0f);
-	Vector3 pos2 = Vector3(512, 0.0f, 512.0f);
+	float t = 0.1f;
 
-	VertexPositionColor v1(pos1, Colors::Red);
-	VertexPositionColor v2(pos2, Colors::Red);
+	// Draw Straight lines between path nodes
+	for (int i = 0; i < path.GetNodes().size() - 1; i++)
+	{
+		Vector3 pos1 = Vector3(path.GetNode(i)->posX, path.GetNode(i)->posY, path.GetNode(i)->posZ);
+		Vector3 pos2 = Vector3(path.GetNode(i + 1)->posX, path.GetNode(i + 1)->posY, path.GetNode(i + 1)->posZ);
 
-	m_batch->DrawLine(v1, v1);
+		VertexPositionColor v1(pos1, Colors::Red);
+		VertexPositionColor v2(pos2, Colors::Red);
+
+		m_batch->DrawLine(v1, v2);
+	}
+
+	Vector3 lastPos = path.GetNextPoint(t);
+
+	// Draw path AI node will follow
+	while (!path.AtPathEnd())
+	{
+		Vector3 pos1 = lastPos;
+		Vector3 pos2 = path.GetNextPoint(t);
+
+		VertexPositionColor v1(pos1, Colors::Green);
+		VertexPositionColor v2(pos2, Colors::Green);
+
+		m_batch->DrawLine(v1, v2);
+
+		lastPos = pos2;
+	}
+
+	path.ResetPath();
 
 	m_batch->End();
+}
+
+void Game::SetPath(Path path)
+{
+	m_path = path;
 }
 
 // Helper method to clear the back buffers.

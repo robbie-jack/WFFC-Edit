@@ -94,6 +94,8 @@ void ToolMain::onActionInitialise(HWND handle, int width, int height)
 	path.AddNode(&m_sceneGraph[19]);
 	path.AddNode(&m_sceneGraph[20]);
 	m_paths.push_back(path);
+
+	m_d3dRenderer.SetPath(m_paths.back());
 }
 
 void ToolMain::onActionLoad()
