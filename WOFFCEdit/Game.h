@@ -93,6 +93,8 @@ private:
 
 	RECT								m_ScreenDimensions;
 
+	HWND								m_windowHandle;
+
 	//control variables
 	bool m_grid;							//grid rendering on / off
 	// Device resources.

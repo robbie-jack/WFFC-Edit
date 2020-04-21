@@ -37,12 +37,13 @@ BOOL MFCMain::InitInstance()
 
 
 	//get the rect from the MFC window so we can get its dimensions
-	m_toolHandle = m_frame->m_DirXView.GetSafeHwnd();				//handle of directX child window
+	m_toolHandle = m_frame->GetSafeHwnd();
+	m_renderHandle = m_frame->m_DirXView.GetSafeHwnd();				//handle of directX child window
 	m_frame->m_DirXView.GetClientRect(&WindowRECT);
 	m_width		= WindowRECT.Width();
 	m_height	= WindowRECT.Height();
 
-	m_ToolSystem.onActionInitialise(m_toolHandle, m_width, m_height);
+	m_ToolSystem.onActionInitialise(m_toolHandle, m_renderHandle, m_width, m_height);
 
 	return TRUE;
 }
@@ -81,10 +82,13 @@ int MFCMain::Run()
 			{
 			case ObjectManipulationState::Translate:
 				statusString = L"Object State: Translate";
+				break;
 			case ObjectManipulationState::Rotate:
 				statusString = L"Object State: Rotate";
+				break;
 			case ObjectManipulationState::Scale:
 				statusString = L"Object State: Scale";
+				break;
 			}
 
 			statusString += L", Selected Object: ";

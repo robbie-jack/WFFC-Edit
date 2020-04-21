@@ -61,15 +61,15 @@ std::vector<int> ToolMain::getCurrentSelectionID()
 	return m_selectedObjects;
 }
 
-void ToolMain::onActionInitialise(HWND handle, int width, int height)
+void ToolMain::onActionInitialise(HWND toolHandle, HWND renderHandle, int width, int height)
 {
-	m_toolHandle = handle;
+	m_toolHandle = toolHandle;
 
 	//window size, handle etc for directX
 	m_width		= width;
 	m_height	= height;
 	
-	m_d3dRenderer.Initialize(m_toolHandle, m_width, m_height);
+	m_d3dRenderer.Initialize(renderHandle, m_width, m_height);
 
 	//database connection establish
 	int rc;
@@ -327,7 +327,7 @@ float ToolMain::Tick(MSG *msg)
 		//add to scenegraph
 		//resend scenegraph to Direct X renderer
 
-	if (m_toolInputCommands.mouse_LB == KeyState::Pressed)
+	if (m_toolHandle == GetForegroundWindow() && m_toolInputCommands.mouse_LB == KeyState::Pressed)
 	{
 		m_selectedObjects = m_d3dRenderer.MousePicking(m_selectedObjects);
 	}

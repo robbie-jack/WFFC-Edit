@@ -44,9 +44,6 @@ void CMyFrame::OnSize(UINT nType, int cx, int cy)
 	int width = cx;
 	int height = cy;
 	m_resized = true;
-
-	//m_DirXView.
-	//OnFrameResoze
 }
 
 //oncretae, called after init but before window is shown.

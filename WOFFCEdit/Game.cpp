@@ -8,7 +8,6 @@
 #include <string>
 #include <iostream>
 
-
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -59,6 +58,8 @@ void Game::Initialize(HWND window, int width, int height)
     CreateWindowSizeDependentResources();
 
 	GetClientRect(window, &m_ScreenDimensions);
+
+	m_windowHandle = window;
 
 #ifdef DXTK_AUDIO
     // Create DirectXTK for Audio objects
