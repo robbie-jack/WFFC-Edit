@@ -173,18 +173,21 @@ void MFCMain::UpdatePropertiesDialogue()
 {
 	if (m_ToolPropertiesDialogue.IsActive())
 	{
-		if (m_ToolSystem.m_selectedObjects.size() > 0)
-			m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects[0]);
+		/*if (m_ToolSystem.m_selectedObjects.size() > 0)
+			m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects);
 		else
 		{
-			m_ToolPropertiesDialogue.SetSelected(-1);
-		}
+			std::vector<int> emptyVector;
+			m_ToolPropertiesDialogue.SetSelected(emptyVector);
+		}*/
+
+		m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects);
 
 		m_ToolPropertiesDialogue.UpdateObjectData();
 
 		if (m_ToolPropertiesDialogue.ShouldUpdate())
 		{
-			int i = m_ToolPropertiesDialogue.GetSelected();
+			int i = m_ToolPropertiesDialogue.GetFirstSelected();
 			if (i != -1)
 				m_ToolSystem.UpdateObject(i);
 		}
@@ -193,7 +196,7 @@ void MFCMain::UpdatePropertiesDialogue()
 		{
 			m_ToolSystem.CreateSceneObject();
 			m_ToolPropertiesDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph);
-			m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects[0]);
+			m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects);
 		}
 	}
 }

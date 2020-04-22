@@ -34,7 +34,7 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* 
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
 	m_objectUpdated = false;
-	m_selected = -1;
+	m_selected.clear();
 }
 
 PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in modeless
@@ -43,7 +43,8 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in mo
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_selected = -1;
+	m_objectUpdated;
+	m_selected.clear();
 }
 
 PropertiesDialogue::~PropertiesDialogue()
@@ -56,15 +57,15 @@ void PropertiesDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph)
 	m_sceneGraph = SceneGraph;
 }
 
-void PropertiesDialogue::SetSelected(int Selected)
+void PropertiesDialogue::SetSelected(std::vector<int> Selected)
 {
 	if (m_selected != Selected)
 	{
 		m_selected = Selected;
 
-		if (m_selected != -1)
+		if (m_selected.size() > 0)
 		{
-			m_sceneGraph->at(m_selected).is_updated = true;
+			m_sceneGraph->at(m_selected[0]).is_updated = true;
 			UpdateObjectData();
 		}
 		else
@@ -76,11 +77,11 @@ void PropertiesDialogue::SetSelected(int Selected)
 
 void PropertiesDialogue::UpdateObjectData()
 {
-	if (m_sceneGraph != nullptr && m_selected != -1)
+	if (m_sceneGraph != nullptr && m_selected.size() > 0)
 	{
-		if (m_sceneGraph->at(m_selected).is_updated)
+		if (m_sceneGraph->at(m_selected[0]).is_updated)
 		{
-			SceneObject object = m_sceneGraph->at(m_selected);
+			SceneObject object = m_sceneGraph->at(m_selected[0]);
 
 			std::wstring IDstring = L"ID:" + std::to_wstring(object.ID);
 
@@ -118,14 +119,14 @@ void PropertiesDialogue::UpdateObjectData()
 			m_buttonPathNodeStart.SetCheck(object.path_node_start);
 			m_buttonPathNodeEnd.SetCheck(object.path_node_end);
 
-			m_sceneGraph->at(m_selected).is_updated = false;
+			m_sceneGraph->at(m_selected[0]).is_updated = false;
 		}
 	}
 }
 
 void PropertiesDialogue::ClearData()
 {
-	if (m_selected == -1)
+	if (m_selected.size() == 0)
 	{
 		std::wstring IDstring = L"ID:";
 
@@ -198,7 +199,17 @@ void PropertiesDialogue::End()
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_selected = -1;
+	m_selected.clear();
+}
+
+bool PropertiesDialogue::CheckFocus()
+{
+	CWnd* window = GetFocus();
+
+	if (window == this)
+		return true;
+	else
+		return false;
 }
 
 BOOL PropertiesDialogue::OnInitDialog()
@@ -208,7 +219,7 @@ BOOL PropertiesDialogue::OnInitDialog()
 	m_isActive = true;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_selected = -1;
+	m_selected.clear();
 
 	return TRUE;
 }
@@ -224,9 +235,9 @@ void PropertiesDialogue::OnBnClickedOk()
 
 void PropertiesDialogue::OnEnChangeEditPosx()
 {
-	if (m_selected != -1)
+	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		if (!object->is_updated)
 		{
@@ -242,11 +253,9 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 
 void PropertiesDialogue::OnEnChangeEditPosy()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString posYText;
 		m_editPosY.GetWindowTextW(posYText);
@@ -259,11 +268,9 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 
 void PropertiesDialogue::OnEnChangeEditPosz()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString posZText;
 		m_editPosZ.GetWindowTextW(posZText);
@@ -276,11 +283,9 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 
 void PropertiesDialogue::OnEnChangeEditRotx()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString rotXText;
 		m_editRotX.GetWindowTextW(rotXText);
@@ -293,11 +298,9 @@ void PropertiesDialogue::OnEnChangeEditRotx()
 
 void PropertiesDialogue::OnEnChangeEditRoty()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString rotYText;
 		m_editRotY.GetWindowTextW(rotYText);
@@ -310,11 +313,9 @@ void PropertiesDialogue::OnEnChangeEditRoty()
 
 void PropertiesDialogue::OnEnChangeEditRotz()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString rotZText;
 		m_editRotZ.GetWindowTextW(rotZText);
@@ -327,11 +328,9 @@ void PropertiesDialogue::OnEnChangeEditRotz()
 
 void PropertiesDialogue::OnEnChangeEditScax()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString scaXText;
 		m_editScaX.GetWindowTextW(scaXText);
@@ -344,11 +343,9 @@ void PropertiesDialogue::OnEnChangeEditScax()
 
 void PropertiesDialogue::OnEnChangeEditScay()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString scaYText;
 		m_editScaY.GetWindowTextW(scaYText);
@@ -361,11 +358,9 @@ void PropertiesDialogue::OnEnChangeEditScay()
 
 void PropertiesDialogue::OnEnChangeEditScaz()
 {
-	CWnd* window = GetFocus();
-
-	if (m_selected != -1 && window == this)
+	if (m_selected.size() > 0 && CheckFocus())
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
 		CString scaZText;
 		m_editScaZ.GetWindowTextW(scaZText);
@@ -394,9 +389,9 @@ void PropertiesDialogue::OnEnChangeEditName()
 
 void PropertiesDialogue::OnBnClickedCheckWireframe()
 {
-	if (m_selected != -1)
+	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 		object->editor_wireframe = m_buttonWireframe.GetCheck();
 
 		m_shouldUpdate = true;
@@ -412,11 +407,11 @@ void PropertiesDialogue::OnBnClickedCreate()
 
 void PropertiesDialogue::OnBnClickedDelete()
 {
-	if (m_selected != -1)
+	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 		object->is_deleted = true;
-		m_selected = -1;
+		m_selected.clear();
 		ClearData();
 	}
 }
@@ -424,9 +419,9 @@ void PropertiesDialogue::OnBnClickedDelete()
 
 void PropertiesDialogue::OnBnClickedCheckAI()
 {
-	if (m_selected != -1)
+	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 		object->AINode = m_buttonAINode.GetCheck();
 
 		m_shouldUpdate = true;
@@ -436,9 +431,9 @@ void PropertiesDialogue::OnBnClickedCheckAI()
 
 void PropertiesDialogue::OnBnClickedCheckPath()
 {
-	if (m_selected != -1)
+	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 		bool path_node = m_buttonPathNode.GetCheck();
 
 		// If Object is unmarked as path node it shouldn't be path node start/end either
@@ -460,9 +455,9 @@ void PropertiesDialogue::OnBnClickedCheckPath()
 
 void PropertiesDialogue::OnBnClickedCheckPathStart()
 {
-	if (m_selected != -1)
+	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 		bool path_node_start = m_buttonPathNodeStart.GetCheck();
 
 		// If Object is marked as a Path Node Start it should also be a Path Node
@@ -485,9 +480,9 @@ void PropertiesDialogue::OnBnClickedCheckPathStart()
 
 void PropertiesDialogue::OnBnClickedCheckPathEnd()
 {
-	if (m_selected != -1)
+	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected);
+		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 		bool path_node_end = m_buttonPathNodeEnd.GetCheck();
 
 		// If Object is marked as a Path Node End it should also be a Path Node

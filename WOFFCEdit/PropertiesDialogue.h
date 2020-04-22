@@ -18,11 +18,12 @@ public:
 	virtual ~PropertiesDialogue();
 
 	void SetObjectData(std::vector<SceneObject>* SceneGraph);
-	void SetSelected(int Selected);
+	void SetSelected(std::vector<int> Selected);
 	void UpdateObjectData();
 	void ClearData();
 
 	inline bool IsActive() { return m_isActive; };
+
 	inline bool ShouldUpdate() 
 	{ 
 		if (m_shouldUpdate)
@@ -33,6 +34,7 @@ public:
 		else
 			return false;
 	};
+
 	inline bool ShouldCreate() 
 	{ 
 		if (m_shouldCreate)
@@ -43,7 +45,15 @@ public:
 		else
 			return false;
 	};
-	int GetSelected() { return m_selected; };
+
+	int GetFirstSelected() 
+	{ 
+		if (m_selected.size() > 0)
+			return m_selected[0];
+		else
+			return -1;
+	};
+	std::vector<int> GetSelected() { return m_selected; };
 
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG2 };
@@ -54,8 +64,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	afx_msg void End();		//kill the dialogue
 
+	bool CheckFocus();
+
 	std::vector<SceneObject>* m_sceneGraph;
-	int m_selected;
+	std::vector<int> m_selected;
 
 	bool m_isActive;		// Is Properties Dialogue Active
 	bool m_shouldUpdate;	// Should the currently selected objetc be updated
