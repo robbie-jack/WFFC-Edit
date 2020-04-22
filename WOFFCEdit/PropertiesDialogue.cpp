@@ -237,10 +237,10 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 				m_editPosX.GetWindowTextW(posXText);
 
 				object->posX = _ttoi(posXText);
-
-				m_shouldUpdate = true;
 			}
 		}
+
+		m_shouldUpdate = true;
 	}
 }
 
@@ -248,12 +248,15 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString posYText;
-		m_editPosY.GetWindowTextW(posYText);
+			CString posYText;
+			m_editPosY.GetWindowTextW(posYText);
 
-		object->posY = _ttoi(posYText);
+			object->posY = _ttoi(posYText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -263,12 +266,15 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString posZText;
-		m_editPosZ.GetWindowTextW(posZText);
+			CString posZText;
+			m_editPosZ.GetWindowTextW(posZText);
 
-		object->posZ = _ttoi(posZText);
+			object->posZ = _ttoi(posZText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -278,12 +284,15 @@ void PropertiesDialogue::OnEnChangeEditRotx()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString rotXText;
-		m_editRotX.GetWindowTextW(rotXText);
+			CString rotXText;
+			m_editRotX.GetWindowTextW(rotXText);
 
-		object->rotX = _ttoi(rotXText);
+			object->rotX = _ttoi(rotXText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -293,12 +302,15 @@ void PropertiesDialogue::OnEnChangeEditRoty()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString rotYText;
-		m_editRotY.GetWindowTextW(rotYText);
+			CString rotYText;
+			m_editRotY.GetWindowTextW(rotYText);
 
-		object->rotY = _ttoi(rotYText);
+			object->rotY = _ttoi(rotYText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -308,12 +320,15 @@ void PropertiesDialogue::OnEnChangeEditRotz()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString rotZText;
-		m_editRotZ.GetWindowTextW(rotZText);
+			CString rotZText;
+			m_editRotZ.GetWindowTextW(rotZText);
 
-		object->rotZ = _ttoi(rotZText);
+			object->rotZ = _ttoi(rotZText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -323,12 +338,15 @@ void PropertiesDialogue::OnEnChangeEditScax()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString scaXText;
-		m_editScaX.GetWindowTextW(scaXText);
+			CString scaXText;
+			m_editScaX.GetWindowTextW(scaXText);
 
-		object->scaX = _ttoi(scaXText);
+			object->scaX = _ttoi(scaXText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -338,12 +356,15 @@ void PropertiesDialogue::OnEnChangeEditScay()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString scaYText;
-		m_editScaY.GetWindowTextW(scaYText);
+			CString scaYText;
+			m_editScaY.GetWindowTextW(scaYText);
 
-		object->scaY = _ttoi(scaYText);
+			object->scaY = _ttoi(scaYText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -353,12 +374,15 @@ void PropertiesDialogue::OnEnChangeEditScaz()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-		CString scaZText;
-		m_editScaZ.GetWindowTextW(scaZText);
+			CString scaZText;
+			m_editScaZ.GetWindowTextW(scaZText);
 
-		object->scaZ = _ttoi(scaZText);
+			object->scaZ = _ttoi(scaZText);
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -384,8 +408,11 @@ void PropertiesDialogue::OnBnClickedCheckWireframe()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
-		object->editor_wireframe = m_buttonWireframe.GetCheck();
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			object->editor_wireframe = m_buttonWireframe.GetCheck();
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -402,8 +429,12 @@ void PropertiesDialogue::OnBnClickedDelete()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
-		object->is_deleted = true;
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			object->is_deleted = true;
+		}
+
 		m_selected.clear();
 		ClearData();
 	}
@@ -414,8 +445,11 @@ void PropertiesDialogue::OnBnClickedCheckAI()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
-		object->AINode = m_buttonAINode.GetCheck();
+		for (int i = 0; i < m_selected.size(); i++)
+		{
+			SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+			object->AINode = m_buttonAINode.GetCheck();
+		}
 
 		m_shouldUpdate = true;
 	}
@@ -426,20 +460,23 @@ void PropertiesDialogue::OnBnClickedCheckPath()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
-		bool path_node = m_buttonPathNode.GetCheck();
-
-		// If Object is unmarked as path node it shouldn't be path node start/end either
-		if (path_node == false)
+		for (int i = 0; i < m_selected.size(); i++)
 		{
-			object->path_node_start = path_node;
-			object->path_node_end = path_node;
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			bool path_node = m_buttonPathNode.GetCheck();
 
-			m_buttonPathNodeStart.SetCheck(path_node);
-			m_buttonPathNodeEnd.SetCheck(path_node);
+			// If Object is unmarked as path node it shouldn't be path node start/end either
+			if (path_node == false)
+			{
+				object->path_node_start = path_node;
+				object->path_node_end = path_node;
+
+				m_buttonPathNodeStart.SetCheck(path_node);
+				m_buttonPathNodeEnd.SetCheck(path_node);
+			}
+
+			object->path_node = path_node;
 		}
-
-		object->path_node = path_node;
 
 		m_shouldUpdate = true;
 	}
@@ -450,21 +487,24 @@ void PropertiesDialogue::OnBnClickedCheckPathStart()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
-		bool path_node_start = m_buttonPathNodeStart.GetCheck();
-
-		// If Object is marked as a Path Node Start it should also be a Path Node
-		if (path_node_start == true)
+		for (int i = 0; i < m_selected.size(); i++)
 		{
-			if (object->path_node == false)
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			bool path_node_start = m_buttonPathNodeStart.GetCheck();
+
+			// If Object is marked as a Path Node Start it should also be a Path Node
+			if (path_node_start == true)
 			{
-				object->path_node = true;
-				m_buttonPathNode.SetCheck(object->path_node);
+				if (object->path_node == false)
+				{
+					object->path_node = true;
+					m_buttonPathNode.SetCheck(object->path_node);
+				}
 			}
+
+
+			object->path_node_start = path_node_start;
 		}
-
-
-		object->path_node_start = path_node_start;
 
 		m_shouldUpdate = true;
 	}
@@ -475,20 +515,23 @@ void PropertiesDialogue::OnBnClickedCheckPathEnd()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
-		bool path_node_end = m_buttonPathNodeEnd.GetCheck();
-
-		// If Object is marked as a Path Node End it should also be a Path Node
-		if (path_node_end == true)
+		for (int i = 0; i < m_selected.size(); i++)
 		{
-			if (object->path_node == false)
-			{
-				object->path_node = true;
-				m_buttonPathNode.SetCheck(object->path_node);
-			}
-		}
+			SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+			bool path_node_end = m_buttonPathNodeEnd.GetCheck();
 
-		object->path_node_end = path_node_end;
+			// If Object is marked as a Path Node End it should also be a Path Node
+			if (path_node_end == true)
+			{
+				if (object->path_node == false)
+				{
+					object->path_node = true;
+					m_buttonPathNode.SetCheck(object->path_node);
+				}
+			}
+
+			object->path_node_end = path_node_end;
+		}
 
 		m_shouldUpdate = true;
 	}
