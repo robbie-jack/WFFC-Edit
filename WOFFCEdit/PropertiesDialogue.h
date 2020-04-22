@@ -64,8 +64,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	afx_msg void End();		//kill the dialogue
 
-	bool CheckFocus();
-
 	std::vector<SceneObject>* m_sceneGraph;
 	std::vector<int> m_selected;
 

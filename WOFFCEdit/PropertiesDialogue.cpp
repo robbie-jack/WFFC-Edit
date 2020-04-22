@@ -202,16 +202,6 @@ void PropertiesDialogue::End()
 	m_selected.clear();
 }
 
-bool PropertiesDialogue::CheckFocus()
-{
-	CWnd* window = GetFocus();
-
-	if (window == this)
-		return true;
-	else
-		return false;
-}
-
 BOOL PropertiesDialogue::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -237,23 +227,26 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 {
 	if (m_selected.size() > 0)
 	{
-		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
-
-		if (!object->is_updated)
+		for (int i = 0; i < m_selected.size(); i++)
 		{
-			CString posXText;
-			m_editPosX.GetWindowTextW(posXText);
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			object->posX = _ttoi(posXText);
+			if (!object->is_updated)
+			{
+				CString posXText;
+				m_editPosX.GetWindowTextW(posXText);
 
-			m_shouldUpdate = true;
+				object->posX = _ttoi(posXText);
+
+				m_shouldUpdate = true;
+			}
 		}
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditPosy()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
@@ -268,7 +261,7 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 
 void PropertiesDialogue::OnEnChangeEditPosz()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
@@ -283,7 +276,7 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 
 void PropertiesDialogue::OnEnChangeEditRotx()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
@@ -298,7 +291,7 @@ void PropertiesDialogue::OnEnChangeEditRotx()
 
 void PropertiesDialogue::OnEnChangeEditRoty()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
@@ -313,7 +306,7 @@ void PropertiesDialogue::OnEnChangeEditRoty()
 
 void PropertiesDialogue::OnEnChangeEditRotz()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
@@ -328,7 +321,7 @@ void PropertiesDialogue::OnEnChangeEditRotz()
 
 void PropertiesDialogue::OnEnChangeEditScax()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
@@ -343,7 +336,7 @@ void PropertiesDialogue::OnEnChangeEditScax()
 
 void PropertiesDialogue::OnEnChangeEditScay()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
@@ -358,7 +351,7 @@ void PropertiesDialogue::OnEnChangeEditScay()
 
 void PropertiesDialogue::OnEnChangeEditScaz()
 {
-	if (m_selected.size() > 0 && CheckFocus())
+	if (m_selected.size() > 0)
 	{
 		SceneObject* object = &m_sceneGraph->at(m_selected[0]);
 
