@@ -527,7 +527,10 @@ void Game::OnWindowSizeChanged(int width, int height)
     if (!m_deviceResources->WindowSizeChanged(width, height))
         return;
 
+	m_deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
+
+	GetClientRect(m_windowHandle, &m_ScreenDimensions);
 }
 
 void Game::BuildDisplayList(std::vector<SceneObject> * SceneGraph)
