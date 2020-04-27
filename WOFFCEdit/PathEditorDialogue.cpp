@@ -163,6 +163,7 @@ void PathEditorDialogue::UpdateObjectComboBox()
 
 void PathEditorDialogue::UpdateAIObjectsList()
 {
+	std::vector<int> old_objects = m_aiObjects;
 	m_aiObjects.clear();
 
 	if (m_sceneGraph->size() > 0)
@@ -175,7 +176,8 @@ void PathEditorDialogue::UpdateAIObjectsList()
 			}
 		}
 
-		UpdateObjectComboBox();
+		if (m_aiObjects != old_objects)
+			UpdateObjectComboBox();
 	}
 }
 
