@@ -61,9 +61,18 @@ void PropertiesDialogue::SetSelected(std::vector<int> Selected)
 {
 	if (m_selected != Selected)
 	{
+		std::vector<int> old_selected = m_selected;
 		m_selected = Selected;
 
-		if (m_selected.size() > 0)
+		if (m_selected.size() > 0 && old_selected.size() > 0)
+		{
+			if (old_selected[0] != m_selected[0])
+			{
+				m_sceneGraph->at(m_selected[0]).is_updated = true;
+				UpdateObjectData();
+			}
+		}
+		else if (m_selected.size() > 0 && old_selected.size() == 0)
 		{
 			m_sceneGraph->at(m_selected[0]).is_updated = true;
 			UpdateObjectData();
@@ -73,6 +82,8 @@ void PropertiesDialogue::SetSelected(std::vector<int> Selected)
 			ClearData();
 		}
 	}
+
+
 }
 
 void PropertiesDialogue::UpdateObjectData()
@@ -163,6 +174,8 @@ void PropertiesDialogue::ClearData()
 		m_buttonPathNode.SetCheck(false);
 		m_buttonPathNodeStart.SetCheck(false);
 		m_buttonPathNodeEnd.SetCheck(false);
+
+		m_selected.clear();
 	}
 }
 
@@ -447,7 +460,7 @@ void PropertiesDialogue::OnBnClickedCheckAI()
 	{
 		for (int i = 0; i < m_selected.size(); i++)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[0]);
+			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 			object->AINode = m_buttonAINode.GetCheck();
 		}
 
