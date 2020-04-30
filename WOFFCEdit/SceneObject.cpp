@@ -49,7 +49,6 @@ SceneObject::SceneObject()
 	light_linear = 1;
 	light_quadratic = 1;
 	is_deleted = false;
-	is_updated = true;
 }
 
 

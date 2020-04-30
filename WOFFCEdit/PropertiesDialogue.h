@@ -22,6 +22,8 @@ public:
 	void UpdateObjectData();
 	void ClearData();
 
+	inline void SetChangeInCode() { m_changeInCode = true; };
+
 	inline bool IsActive() { return m_isActive; };
 
 	inline bool ShouldUpdate() 
@@ -70,7 +72,8 @@ protected:
 	bool m_isActive;		// Is Properties Dialogue Active
 	bool m_shouldUpdate;	// Should the currently selected objetc be updated
 	bool m_shouldCreate;	// Should a new objetc be created
-	bool m_objectUpdated;	// Was yhe current object updated outside the properties window
+	bool m_objectUpdated;	// Was the current object updated outside the properties window
+	bool m_changeInCode;	// Was a control changed in code or not
 
 	DECLARE_MESSAGE_MAP()
 public:

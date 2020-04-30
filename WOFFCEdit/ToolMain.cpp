@@ -43,10 +43,7 @@ ToolMain::ToolMain()
 	m_rotateSpeed = 30.0f;
 	m_scaleSpeed = 5.0f;
 
-	/*m_river.AddSection();
-	m_river.GetSection(0).SetPoint(0, TerrainPoint(50, 50, 50.0f));
-	m_river.GetSection(0).SetPoint(1, TerrainPoint(50, 75, 50.0f));
-	m_river.GetSection(0).SetPoint(2, TerrainPoint(75, 75, 50.0f));*/
+	m_objectUpdated = false;
 }
 
 
@@ -564,37 +561,37 @@ void ToolMain::TranslateObjects(float dt, int selected)
 	if (m_toolInputCommands.translateForward == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).posZ += m_translateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateBackward == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).posZ -= m_translateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateLeft == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).posX += m_translateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateRight == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).posX -= m_translateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateUp == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).posY += m_translateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateDown == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).posY -= m_translateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 }
 
@@ -603,37 +600,37 @@ void ToolMain::RotateObjects(float dt, int selected)
 	if (m_toolInputCommands.translateForward == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).rotX += m_rotateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateBackward == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).rotX -= m_rotateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateLeft == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).rotZ -= m_rotateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateRight == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).rotZ += m_rotateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateUp == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).rotY += m_rotateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateDown == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).rotY -= m_rotateSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 }
 
@@ -642,37 +639,37 @@ void ToolMain::ScaleObjects(float dt, int selected)
 	if (m_toolInputCommands.translateForward == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).scaZ += m_scaleSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateBackward == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).scaZ -= m_scaleSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateLeft == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).scaX -= m_scaleSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateRight == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).scaX += m_scaleSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateUp == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).scaY += m_scaleSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 
 	if (m_toolInputCommands.translateDown == KeyState::Down)
 	{
 		m_sceneGraph.at(selected).scaY -= m_scaleSpeed * dt;
-		m_sceneGraph.at(selected).is_updated = true;
+		m_objectUpdated = true;
 	}
 }
 

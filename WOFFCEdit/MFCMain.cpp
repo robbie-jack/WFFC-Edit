@@ -7,6 +7,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_FILE_SAVETERRAIN, &MFCMain::MenuFileSaveTerrain)
 	ON_COMMAND(ID_EDIT_SELECT, &MFCMain::MenuEditSelect)
 	ON_COMMAND(ID_EDIT_PROPERTIES, &MFCMain::MenuEditProperties)
+	ON_COMMAND(ID_EDIT_PATHEDITOR, &MFCMain::ToolBarPathEditor)
 	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButtonSave)
 	ON_COMMAND(ID_BUTTON40002, &MFCMain::ToolBarWireframe)
 	ON_COMMAND(ID_BUTTON40003, &MFCMain::ToolBarNewObject)
@@ -173,17 +174,12 @@ void MFCMain::UpdatePropertiesDialogue()
 {
 	if (m_ToolPropertiesDialogue.IsActive())
 	{
-		/*if (m_ToolSystem.m_selectedObjects.size() > 0)
-			m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects);
-		else
+		if (m_ToolSystem.ObjectUpdated())
 		{
-			std::vector<int> emptyVector;
-			m_ToolPropertiesDialogue.SetSelected(emptyVector);
-		}*/
+			m_ToolPropertiesDialogue.SetChangeInCode();
+		}
 
 		m_ToolPropertiesDialogue.SetSelected(m_ToolSystem.m_selectedObjects);
-
-		m_ToolPropertiesDialogue.UpdateObjectData();
 
 		if (m_ToolPropertiesDialogue.ShouldUpdate())
 		{

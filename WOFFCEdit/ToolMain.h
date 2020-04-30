@@ -23,6 +23,17 @@ public: //methods
 	ToolMain();
 	~ToolMain();
 
+	inline bool ObjectUpdated()
+	{
+		if (m_objectUpdated)
+		{
+			m_objectUpdated = false;
+			return true;
+		}
+		else
+			return false;
+	};
+
 	//onAction - These are the interface to MFC
 	std::vector<int>		getCurrentSelectionID();										//returns the selection number of currently selected object so that It can be displayed.
 	void	onActionInitialise(HWND toolHandle, HWND renderHandle, int width, int height);			//Passes through tool/render handles and hieght and width and initialises DirectX renderer and SQL LITE
@@ -77,4 +88,6 @@ private:	//variables
 	int m_height;
 	int m_currentChunk;			//the current chunk of thedatabase that we are operating on.  Dictates loading and saving. 
 	int nextID;
+
+	bool m_objectUpdated;
 };

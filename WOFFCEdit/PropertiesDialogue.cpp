@@ -34,6 +34,7 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent, std::vector<SceneObject>* 
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
 	m_objectUpdated = false;
+	m_changeInCode = false;
 	m_selected.clear();
 }
 
@@ -43,7 +44,8 @@ PropertiesDialogue::PropertiesDialogue(CWnd* pParent)			//constructor used in mo
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
-	m_objectUpdated;
+	m_objectUpdated = false;
+	m_changeInCode = false;
 	m_selected.clear();
 }
 
@@ -68,14 +70,12 @@ void PropertiesDialogue::SetSelected(std::vector<int> Selected)
 		{
 			if (old_selected[0] != m_selected[0])
 			{
-				m_sceneGraph->at(m_selected[0]).is_updated = true;
-				UpdateObjectData();
+				m_changeInCode = true;
 			}
 		}
 		else if (m_selected.size() > 0 && old_selected.size() == 0)
 		{
-			m_sceneGraph->at(m_selected[0]).is_updated = true;
-			UpdateObjectData();
+			m_changeInCode = true;
 		}
 		else
 		{
@@ -83,14 +83,14 @@ void PropertiesDialogue::SetSelected(std::vector<int> Selected)
 		}
 	}
 
-
+	UpdateObjectData();
 }
 
 void PropertiesDialogue::UpdateObjectData()
 {
 	if (m_sceneGraph != nullptr && m_selected.size() > 0)
 	{
-		if (m_sceneGraph->at(m_selected[0]).is_updated)
+		if (m_changeInCode)
 		{
 			SceneObject object = m_sceneGraph->at(m_selected[0]);
 
@@ -130,7 +130,7 @@ void PropertiesDialogue::UpdateObjectData()
 			m_buttonPathNodeStart.SetCheck(object.path_node_start);
 			m_buttonPathNodeEnd.SetCheck(object.path_node_end);
 
-			m_sceneGraph->at(m_selected[0]).is_updated = false;
+			m_changeInCode = false;
 		}
 	}
 }
@@ -212,6 +212,7 @@ void PropertiesDialogue::End()
 	m_isActive = false;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
+	m_changeInCode = false;
 	m_selected.clear();
 }
 
@@ -222,6 +223,7 @@ BOOL PropertiesDialogue::OnInitDialog()
 	m_isActive = true;
 	m_shouldUpdate = false;
 	m_shouldCreate = false;
+	m_changeInCode = false;
 	m_selected.clear();
 
 	return TRUE;
@@ -238,166 +240,190 @@ void PropertiesDialogue::OnBnClickedOk()
 
 void PropertiesDialogue::OnEnChangeEditPosx()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
-
-			if (!object->is_updated)
+			for (int i = 0; i < m_selected.size(); i++)
 			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+
 				CString posXText;
 				m_editPosX.GetWindowTextW(posXText);
 
 				object->posX = _ttoi(posXText);
 			}
-		}
 
-		m_shouldUpdate = true;
+			m_shouldUpdate = true;
+		}
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditPosy()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString posYText;
-			m_editPosY.GetWindowTextW(posYText);
+				CString posYText;
+				m_editPosY.GetWindowTextW(posYText);
 
-			object->posY = _ttoi(posYText);
+				object->posY = _ttoi(posYText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditPosz()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString posZText;
-			m_editPosZ.GetWindowTextW(posZText);
+				CString posZText;
+				m_editPosZ.GetWindowTextW(posZText);
 
-			object->posZ = _ttoi(posZText);
+				object->posZ = _ttoi(posZText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditRotx()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString rotXText;
-			m_editRotX.GetWindowTextW(rotXText);
+				CString rotXText;
+				m_editRotX.GetWindowTextW(rotXText);
 
-			object->rotX = _ttoi(rotXText);
+				object->rotX = _ttoi(rotXText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditRoty()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString rotYText;
-			m_editRotY.GetWindowTextW(rotYText);
+				CString rotYText;
+				m_editRotY.GetWindowTextW(rotYText);
 
-			object->rotY = _ttoi(rotYText);
+				object->rotY = _ttoi(rotYText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditRotz()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString rotZText;
-			m_editRotZ.GetWindowTextW(rotZText);
+				CString rotZText;
+				m_editRotZ.GetWindowTextW(rotZText);
 
-			object->rotZ = _ttoi(rotZText);
+				object->rotZ = _ttoi(rotZText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditScax()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString scaXText;
-			m_editScaX.GetWindowTextW(scaXText);
+				CString scaXText;
+				m_editScaX.GetWindowTextW(scaXText);
 
-			object->scaX = _ttoi(scaXText);
+				object->scaX = _ttoi(scaXText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditScay()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString scaYText;
-			m_editScaY.GetWindowTextW(scaYText);
+				CString scaYText;
+				m_editScaY.GetWindowTextW(scaYText);
 
-			object->scaY = _ttoi(scaYText);
+				object->scaY = _ttoi(scaYText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
 void PropertiesDialogue::OnEnChangeEditScaz()
 {
-	if (m_selected.size() > 0)
+	if (!m_changeInCode)
 	{
-		for (int i = 0; i < m_selected.size(); i++)
+		if (m_selected.size() > 0)
 		{
-			SceneObject* object = &m_sceneGraph->at(m_selected[i]);
+			for (int i = 0; i < m_selected.size(); i++)
+			{
+				SceneObject* object = &m_sceneGraph->at(m_selected[i]);
 
-			CString scaZText;
-			m_editScaZ.GetWindowTextW(scaZText);
+				CString scaZText;
+				m_editScaZ.GetWindowTextW(scaZText);
 
-			object->scaZ = _ttoi(scaZText);
+				object->scaZ = _ttoi(scaZText);
+			}
+
+			m_shouldUpdate = true;
 		}
-
-		m_shouldUpdate = true;
 	}
 }
 
