@@ -206,6 +206,10 @@ void MFCMain::UpdatePathEditorDialogue(float dt)
 			int i = m_ToolPathEditorDialogue.GetCurrentObject();
 			if (i != -1)
 				m_ToolSystem.UpdateObject(i);
+
+			// Let Properties Dialogue Know to Update Display
+			if (m_ToolPropertiesDialogue.IsActive())
+				m_ToolPropertiesDialogue.SetChangeInCode();
 		}
 
 		m_ToolPathEditorDialogue.UpdateAIObjectsList();
