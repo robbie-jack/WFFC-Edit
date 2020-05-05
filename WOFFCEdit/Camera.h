@@ -6,7 +6,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-enum CameraMode
+enum class CameraMode
 {
 	FREE = 0, // Camera is free to move and look around
 	ORBIT = 1 // Camera View is locked to object and will orbit arount it when moving
@@ -15,7 +15,7 @@ enum CameraMode
 class Camera
 {
 public:
-	Camera(	CameraMode camMode = FREE,
+	Camera(	CameraMode camMode = CameraMode::FREE,
 			float camMoveSpeed = 0.50f,
 			float camRotRate = 3.0f,
 			float camSensitivity = 0.5f,

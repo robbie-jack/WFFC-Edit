@@ -128,10 +128,10 @@ float Game::Update(DX::StepTimer const& timer)
 	{
 		switch (m_cam->GetCamMode())
 		{
-		case FREE:
+		case CameraMode::FREE:
 			if (!m_currentIDs.empty())
 			{
-				m_cam->SetCamMode(ORBIT);
+				m_cam->SetCamMode(CameraMode::ORBIT);
 
 				//for (auto display_object : m_displayList)
 				//{
@@ -148,10 +148,17 @@ float Game::Update(DX::StepTimer const& timer)
 			}
 
 			break;
-		case ORBIT:
-			m_cam->SetCamMode(FREE);
+		case CameraMode::ORBIT:
+			m_cam->SetCamMode(CameraMode::FREE);
 			break;
 		}
+	}
+
+	switch (m_cam->GetCamMode())
+	{
+	case CameraMode::ORBIT:
+		m_cam->SetCamLookAt(m_displayList[m_currentIDs[0]].m_position);
+		break;
 	}
 
 	// Update Camera

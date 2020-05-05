@@ -31,11 +31,11 @@ void Camera::Update(InputCommands InputCommands)
 {
 	switch (m_camMode)
 	{
-	case FREE:
+	case CameraMode::FREE:
 		FreeCamUpdate(InputCommands);
 		break;
 
-	case ORBIT:
+	case CameraMode::ORBIT:
 		OrbitCamUpdate(InputCommands);
 		break;
 	}
