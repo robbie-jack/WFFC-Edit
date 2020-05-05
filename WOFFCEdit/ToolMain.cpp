@@ -90,6 +90,7 @@ void ToolMain::onActionInitialise(HWND toolHandle, HWND renderHandle, int width,
 	path.AddNode(&m_sceneGraph[18]);
 	path.AddNode(&m_sceneGraph[19]);
 	path.AddNode(&m_sceneGraph[20]);
+	path.ResetPath();
 	m_paths.push_back(path);
 }
 

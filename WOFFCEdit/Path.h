@@ -38,6 +38,12 @@ private:
 	int m_currentNode;		// Start Node for current spline segment
 	bool m_pathEnd;			// Whether the end of the path has been reached
 
-	//Vector3 GetPointAlongCurrentSegment();
+	Vector3 p0;
+	Vector3 p1;
+	Vector3 p2;
+	Vector3 p3;
+
+	void PrecalculateCatmullRom(Vector3 a, Vector3 b, Vector3 c, Vector3 d);
+	Vector3 GetNextCatmullRomPoint(float t);
 };
 

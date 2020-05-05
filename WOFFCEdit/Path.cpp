@@ -28,6 +28,13 @@ Vector3 Path::GetNextPoint(float t_offset)
 		{
 			m_currentNode++;
 			m_t = new_offset;
+
+			Vector3 a = Vector3(m_nodes.at(m_currentNode)->posX, m_nodes.at(m_currentNode)->posY, m_nodes.at(m_currentNode)->posZ);
+			Vector3 b = Vector3(m_nodes.at(m_currentNode + 1)->posX, m_nodes.at(m_currentNode + 1)->posY, m_nodes.at(m_currentNode + 1)->posZ);
+			Vector3 c = Vector3(m_nodes.at(m_currentNode + 2)->posX, m_nodes.at(m_currentNode + 2)->posY, m_nodes.at(m_currentNode + 2)->posZ);
+			Vector3 d = Vector3(m_nodes.at(m_currentNode + 3)->posX, m_nodes.at(m_currentNode + 3)->posY, m_nodes.at(m_currentNode + 3)->posZ);
+
+			PrecalculateCatmullRom(a, b, c, d);
 		}
 		else
 		{
@@ -35,12 +42,8 @@ Vector3 Path::GetNextPoint(float t_offset)
 		}
 	}
 
-	Vector3 a = Vector3(m_nodes.at(m_currentNode)->posX, m_nodes.at(m_currentNode)->posY, m_nodes.at(m_currentNode)->posZ);
-	Vector3 b = Vector3(m_nodes.at(m_currentNode + 1)->posX, m_nodes.at(m_currentNode + 1)->posY, m_nodes.at(m_currentNode + 1)->posZ);
-	Vector3 c = Vector3(m_nodes.at(m_currentNode + 2)->posX, m_nodes.at(m_currentNode + 2)->posY, m_nodes.at(m_currentNode + 2)->posZ);
-	Vector3 d = Vector3(m_nodes.at(m_currentNode + 3)->posX, m_nodes.at(m_currentNode + 3)->posY, m_nodes.at(m_currentNode + 3)->posZ);
-
-	return Vector3::CatmullRom(a, b, c, d, m_t);
+	return GetNextCatmullRomPoint(m_t);
+	//return Vector3::CatmullRom(a, b, c, d, m_t);
 }
 
 void Path::ResetPath()
@@ -48,19 +51,35 @@ void Path::ResetPath()
 	m_pathEnd = false;
 	m_t = 0.0f;
 	m_currentNode = 0;
+
+	Vector3 a = Vector3(m_nodes.at(m_currentNode)->posX, m_nodes.at(m_currentNode)->posY, m_nodes.at(m_currentNode)->posZ);
+	Vector3 b = Vector3(m_nodes.at(m_currentNode + 1)->posX, m_nodes.at(m_currentNode + 1)->posY, m_nodes.at(m_currentNode + 1)->posZ);
+	Vector3 c = Vector3(m_nodes.at(m_currentNode + 2)->posX, m_nodes.at(m_currentNode + 2)->posY, m_nodes.at(m_currentNode + 2)->posZ);
+	Vector3 d = Vector3(m_nodes.at(m_currentNode + 3)->posX, m_nodes.at(m_currentNode + 3)->posY, m_nodes.at(m_currentNode + 3)->posZ);
+
+	PrecalculateCatmullRom(a, b, c, d);
 }
 
-//Vector3 Path::GetPointAlongCurrentSegment()
-//{
-//	Vector3 pos0 = Vector3(m_segments[m_currentSegment].a->posX, m_segments[m_currentSegment].a->posY, m_segments[m_currentSegment].a->posZ);
-//	Vector3 pos1 = Vector3(m_segments[m_currentSegment].b->posX, m_segments[m_currentSegment].b->posY, m_segments[m_currentSegment].b->posZ);
-//	Vector3 pos2 = Vector3(m_segments[m_currentSegment].c->posX, m_segments[m_currentSegment].c->posY, m_segments[m_currentSegment].c->posZ);
-//	Vector3 pos3 = Vector3(m_segments[m_currentSegment].d->posX, m_segments[m_currentSegment].d->posY, m_segments[m_currentSegment].d->posZ);
-//
-//	float t01 = pow(Vector3::Distance(pos0, pos1), m_alpha);
-//	float t12 = pow(Vector3::Distance(pos1, pos2), m_alpha);
-//	float t23 = pow(Vector3::Distance(pos2, pos3), m_alpha);
-//
-//	Vector3 m1 = (1.0f - m_tension) * 
-//		(pos2 - pos1 + t12 * ((pos1 - pos0) / t01 - (pos2 - pos0) / (t01 + t12)));
-//}
+void Path::PrecalculateCatmullRom(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+{
+	float t0 = 0.0f;
+	float t1 = t0 + pow(Vector3::Distance(a, b), m_alpha);
+	float t2 = t1 + pow(Vector3::Distance(b, c), m_alpha);
+	float t3 = t2 + pow(Vector3::Distance(c, d), m_alpha);
+
+	Vector3 m1 = (1.0f - m_tension) * (t2 - t1) * ((b - a) / (t1 - t0) - (c - a) / (t2 - t0) + (c - b) / (t2 - t1));
+	Vector3 m2 = (1.0f - m_tension) * (t2 - t1) * ((c - b) / (t2 - t1) - (d - b) / (t3 - t1) + (d - c) / (t3 - t2));
+
+	p0 = 2.0f * (b - c) + m1 + m2;
+	p1 = -3.0f * (b - c) - m1 - m1 - m2;
+	p2 = m1;
+	p3 = b;
+}
+
+Vector3 Path::GetNextCatmullRomPoint(float t)
+{
+	return p0 * t * t * t +
+		p1 * t * t +
+		p2 * t +
+		p3;
+}
