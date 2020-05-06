@@ -251,7 +251,7 @@ void PropertiesDialogue::OnEnChangeEditPosx()
 				CString posXText;
 				m_editPosX.GetWindowTextW(posXText);
 
-				object->posX = _ttoi(posXText);
+				object->posX = _ttof(posXText);
 			}
 
 			m_shouldUpdate = true;
@@ -272,7 +272,7 @@ void PropertiesDialogue::OnEnChangeEditPosy()
 				CString posYText;
 				m_editPosY.GetWindowTextW(posYText);
 
-				object->posY = _ttoi(posYText);
+				object->posY = _ttof(posYText);
 			}
 
 			m_shouldUpdate = true;
@@ -293,7 +293,7 @@ void PropertiesDialogue::OnEnChangeEditPosz()
 				CString posZText;
 				m_editPosZ.GetWindowTextW(posZText);
 
-				object->posZ = _ttoi(posZText);
+				object->posZ = _ttof(posZText);
 			}
 
 			m_shouldUpdate = true;
@@ -314,7 +314,7 @@ void PropertiesDialogue::OnEnChangeEditRotx()
 				CString rotXText;
 				m_editRotX.GetWindowTextW(rotXText);
 
-				object->rotX = _ttoi(rotXText);
+				object->rotX = _ttof(rotXText);
 			}
 
 			m_shouldUpdate = true;
@@ -335,7 +335,7 @@ void PropertiesDialogue::OnEnChangeEditRoty()
 				CString rotYText;
 				m_editRotY.GetWindowTextW(rotYText);
 
-				object->rotY = _ttoi(rotYText);
+				object->rotY = _ttof(rotYText);
 			}
 
 			m_shouldUpdate = true;
@@ -356,7 +356,7 @@ void PropertiesDialogue::OnEnChangeEditRotz()
 				CString rotZText;
 				m_editRotZ.GetWindowTextW(rotZText);
 
-				object->rotZ = _ttoi(rotZText);
+				object->rotZ = _ttof(rotZText);
 			}
 
 			m_shouldUpdate = true;
@@ -377,7 +377,7 @@ void PropertiesDialogue::OnEnChangeEditScax()
 				CString scaXText;
 				m_editScaX.GetWindowTextW(scaXText);
 
-				object->scaX = _ttoi(scaXText);
+				object->scaX = _ttof(scaXText);
 			}
 
 			m_shouldUpdate = true;
@@ -398,7 +398,7 @@ void PropertiesDialogue::OnEnChangeEditScay()
 				CString scaYText;
 				m_editScaY.GetWindowTextW(scaYText);
 
-				object->scaY = _ttoi(scaYText);
+				object->scaY = _ttof(scaYText);
 			}
 
 			m_shouldUpdate = true;
@@ -419,7 +419,7 @@ void PropertiesDialogue::OnEnChangeEditScaz()
 				CString scaZText;
 				m_editScaZ.GetWindowTextW(scaZText);
 
-				object->scaZ = _ttoi(scaZText);
+				object->scaZ = _ttof(scaZText);
 			}
 
 			m_shouldUpdate = true;
