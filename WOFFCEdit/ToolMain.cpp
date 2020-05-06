@@ -23,6 +23,7 @@ ToolMain::ToolMain()
 	m_toolInputCommands.up					= KeyState::Up;
 	m_toolInputCommands.down				= KeyState::Up;
 	m_toolInputCommands.shift				= KeyState::Up;
+	m_toolInputCommands.focus				= KeyState::Up;
 	m_toolInputCommands.translateForward	= KeyState::Up;
 	m_toolInputCommands.translateBackward	= KeyState::Up;
 	m_toolInputCommands.translateLeft		= KeyState::Up;
@@ -389,12 +390,11 @@ void ToolMain::UpdateInput(MSG * msg)
 		int width = LOWORD(msg->lParam);
 		int height = HIWORD(msg->lParam);
 
-		//m_d3dRenderer.OnWindowSizeChanged(width, height);
-		//m_d3dRenderer.UpdateWindow(m_toolHandle, width, height);
-
 		break;
 	}
-	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
+
+	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement, etc)
+
 	//WASDQE movement
 	if (m_keyArray['W'])
 	{
@@ -500,6 +500,12 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.shift = KeyState::Down;
 	}
 	else m_toolInputCommands.shift = KeyState::Up;
+
+	if (m_keyArray['F'])
+	{
+		m_toolInputCommands.focus = KeyState::Pressed;
+	}
+	else m_toolInputCommands.focus = KeyState::Up;
 }
 
 void ToolMain::UpdateStates()

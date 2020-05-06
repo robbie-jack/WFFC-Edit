@@ -159,6 +159,14 @@ float Game::Update(DX::StepTimer const& timer)
 	case CameraMode::ORBIT:
 		m_cam->SetCamLookAt(m_displayList[m_currentIDs[0]].m_position);
 		break;
+	case CameraMode::FREE:
+
+		if (m_InputCommands.focus == KeyState::Pressed)
+		{
+			m_cam->SetCamLookAt(m_displayList[m_currentIDs[0]].m_position);
+		}
+
+		break;
 	}
 
 	// Update Camera

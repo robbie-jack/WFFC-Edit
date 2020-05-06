@@ -17,6 +17,7 @@ struct InputCommands
 	KeyState up;
 	KeyState down;
 	KeyState shift;
+	KeyState focus;
 	KeyState translateForward;
 	KeyState translateBackward;
 	KeyState translateLeft;
