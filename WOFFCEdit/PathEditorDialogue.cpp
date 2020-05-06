@@ -326,7 +326,7 @@ void PathEditorDialogue::OnEnChangeEditTension()
 		CString tensionText;
 		m_editTension.GetWindowTextW(tensionText);
 
-		m_paths->at(m_currentPath).SetTension(_ttoi(tensionText));
+		m_paths->at(m_currentPath).SetTension(_ttof(tensionText));
 		m_paths->at(m_currentPath).ResetPath();
 	}
 }
@@ -336,9 +336,9 @@ void PathEditorDialogue::OnEnChangeEditAlpha()
 	if (m_currentPath != -1)
 	{
 		CString alphaText;
-		m_editTension.GetWindowTextW(alphaText);
+		m_editAlpha.GetWindowTextW(alphaText);
 
-		m_paths->at(m_currentPath).SetTension(_ttoi(alphaText));
+		m_paths->at(m_currentPath).SetAlpha(_ttof(alphaText));
 		m_paths->at(m_currentPath).ResetPath();
 	}
 }

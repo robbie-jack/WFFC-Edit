@@ -3,7 +3,7 @@
 Path::Path()
 {
 	m_tension = 0.0f;
-	m_alpha = 0.5f;
+	m_alpha = 1.0f;
 	m_t = 0.0f;
 	m_speed = 0.2f;
 	m_currentNode = 0;
