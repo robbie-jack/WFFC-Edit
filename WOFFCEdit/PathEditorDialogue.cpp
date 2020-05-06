@@ -21,6 +21,8 @@ BEGIN_MESSAGE_MAP(PathEditorDialogue, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_STARTSTOP, &PathEditorDialogue::OnBnClickedButtonStartStop)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &PathEditorDialogue::OnBnClickedButtonReset)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &PathEditorDialogue::OnBnClickedButtonDelete)
+	ON_EN_CHANGE(IDC_EDIT_TENSION, &PathEditorDialogue::OnEnChangeEditTension)
+	ON_EN_CHANGE(IDC_EDIT_ALPHA, &PathEditorDialogue::OnEnChangeEditAlpha)
 END_MESSAGE_MAP()
 
 PathEditorDialogue::PathEditorDialogue(CWnd* pParent /*=nullptr*/)
@@ -56,6 +58,7 @@ void PathEditorDialogue::SetObjectData(std::vector<SceneObject>* SceneGraph, std
 	UpdateAIObjectsList();
 	UpdatePathComboBox();
 	UpdateObjectComboBox();
+	UpdateAlphaTensionEdits();
 }
 
 void PathEditorDialogue::SetSelected(int Selected)
@@ -91,6 +94,8 @@ void PathEditorDialogue::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_PATH, m_pathComboBox);
 	DDX_Control(pDX, IDC_COMBO_OBJECT, m_objectComboBox);
 	DDX_Control(pDX, IDC_BUTTON_STARTSTOP, m_startstopButton);
+	DDX_Control(pDX, IDC_EDIT_TENSION, m_editTension);
+	DDX_Control(pDX, IDC_EDIT_ALPHA, m_editAlpha);
 }
 
 void PathEditorDialogue::End()
@@ -181,6 +186,21 @@ void PathEditorDialogue::UpdateAIObjectsList()
 	}
 }
 
+void PathEditorDialogue::UpdateAlphaTensionEdits()
+{
+	m_editTension.Clear();
+	m_editAlpha.Clear();
+
+	if (m_currentPath != -1)
+	{
+		std::wstring TensionString = std::to_wstring(m_paths->at(m_currentPath).GetTension());
+		std::wstring AlphaString = std::to_wstring(m_paths->at(m_currentPath).GetAlpha());
+
+		m_editTension.SetWindowTextW(TensionString.c_str());
+		m_editAlpha.SetWindowTextW(AlphaString.c_str());
+	}
+}
+
 BOOL PathEditorDialogue::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -215,6 +235,7 @@ void PathEditorDialogue::OnBnClickedButtonCreate()
 
 	UpdatePathComboBox();
 	UpdateNodeListBox();
+	UpdateAlphaTensionEdits();
 }
 
 void PathEditorDialogue::OnBnClickedButtonAdd()
@@ -225,8 +246,10 @@ void PathEditorDialogue::OnBnClickedButtonAdd()
 			m_paths->at(m_currentPath).AddNode(&m_sceneGraph->at(m_selected)); // Add Currently Selected Node to Path
 
 		m_currentNode = -1;
+		m_paths->at(m_currentPath).ResetPath();
 
 		UpdateNodeListBox();
+		UpdateAlphaTensionEdits();
 	}
 }
 
@@ -235,6 +258,7 @@ void PathEditorDialogue::OnCbnSelChangeComboPath()
 	m_currentPath = m_pathComboBox.GetCurSel();
 
 	UpdateNodeListBox();
+	UpdateAlphaTensionEdits();
 }
 
 void PathEditorDialogue::OnCbnEditChangeComboPath()
@@ -292,5 +316,29 @@ void PathEditorDialogue::OnBnClickedButtonDelete()
 		m_paths->at(m_currentPath).DeleteNode(m_currentNode);
 
 		UpdateNodeListBox();
+	}
+}
+
+void PathEditorDialogue::OnEnChangeEditTension()
+{
+	if (m_currentPath != -1)
+	{
+		CString tensionText;
+		m_editTension.GetWindowTextW(tensionText);
+
+		m_paths->at(m_currentPath).SetTension(_ttoi(tensionText));
+		m_paths->at(m_currentPath).ResetPath();
+	}
+}
+
+void PathEditorDialogue::OnEnChangeEditAlpha()
+{
+	if (m_currentPath != -1)
+	{
+		CString alphaText;
+		m_editTension.GetWindowTextW(alphaText);
+
+		m_paths->at(m_currentPath).SetTension(_ttoi(alphaText));
+		m_paths->at(m_currentPath).ResetPath();
 	}
 }

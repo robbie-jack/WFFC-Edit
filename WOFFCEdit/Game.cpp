@@ -290,37 +290,44 @@ void Game::RenderPath(Path path)
 	// Render AI Paths
 	m_batch->Begin();
 
-	float t = 0.1f;
-
 	// Draw Straight lines between path nodes
-	for (int i = 0; i < path.GetNodes().size() - 1; i++)
+	if (path.GetNodes().size() >= 2)
 	{
-		Vector3 pos1 = Vector3(path.GetNode(i)->posX, path.GetNode(i)->posY, path.GetNode(i)->posZ);
-		Vector3 pos2 = Vector3(path.GetNode(i + 1)->posX, path.GetNode(i + 1)->posY, path.GetNode(i + 1)->posZ);
+		for (int i = 0; i < path.GetNodes().size() - 1; i++)
+		{
+			Vector3 pos1 = Vector3(path.GetNode(i)->posX, path.GetNode(i)->posY, path.GetNode(i)->posZ);
+			Vector3 pos2 = Vector3(path.GetNode(i + 1)->posX, path.GetNode(i + 1)->posY, path.GetNode(i + 1)->posZ);
 
-		VertexPositionColor v1(pos1, Colors::Red);
-		VertexPositionColor v2(pos2, Colors::Red);
+			VertexPositionColor v1(pos1, Colors::Red);
+			VertexPositionColor v2(pos2, Colors::Red);
 
-		m_batch->DrawLine(v1, v2);
+			m_batch->DrawLine(v1, v2);
+		}
 	}
-
-	Vector3 lastPos = path.GetNextPoint(t);
 
 	// Draw path AI node will follow
-	while (!path.AtPathEnd())
+	if (path.GetNodes().size() >= 4)
 	{
-		Vector3 pos1 = lastPos;
-		Vector3 pos2 = path.GetNextPoint(t);
+		float t = 0.1f;
+		Vector3 lastPos = path.GetNextPoint(t);
 
-		VertexPositionColor v1(pos1, Colors::Green);
-		VertexPositionColor v2(pos2, Colors::Green);
+		// Draw Each Segment of Path
+		while (!path.AtPathEnd())
+		{
+			Vector3 pos1 = lastPos;
+			Vector3 pos2 = path.GetNextPoint(t);
 
-		m_batch->DrawLine(v1, v2);
+			VertexPositionColor v1(pos1, Colors::Green);
+			VertexPositionColor v2(pos2, Colors::Green);
 
-		lastPos = pos2;
+			m_batch->DrawLine(v1, v2);
+
+			lastPos = pos2;
+		}
+
+		path.ResetPath();
 	}
 
-	path.ResetPath();
 	m_drawPath = false;
 
 	m_batch->End();

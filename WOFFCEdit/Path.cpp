@@ -52,12 +52,15 @@ void Path::ResetPath()
 	m_t = 0.0f;
 	m_currentNode = 0;
 
-	Vector3 a = Vector3(m_nodes.at(m_currentNode)->posX, m_nodes.at(m_currentNode)->posY, m_nodes.at(m_currentNode)->posZ);
-	Vector3 b = Vector3(m_nodes.at(m_currentNode + 1)->posX, m_nodes.at(m_currentNode + 1)->posY, m_nodes.at(m_currentNode + 1)->posZ);
-	Vector3 c = Vector3(m_nodes.at(m_currentNode + 2)->posX, m_nodes.at(m_currentNode + 2)->posY, m_nodes.at(m_currentNode + 2)->posZ);
-	Vector3 d = Vector3(m_nodes.at(m_currentNode + 3)->posX, m_nodes.at(m_currentNode + 3)->posY, m_nodes.at(m_currentNode + 3)->posZ);
+	if (m_nodes.size() >= 4)
+	{
+		Vector3 a = Vector3(m_nodes.at(m_currentNode)->posX, m_nodes.at(m_currentNode)->posY, m_nodes.at(m_currentNode)->posZ);
+		Vector3 b = Vector3(m_nodes.at(m_currentNode + 1)->posX, m_nodes.at(m_currentNode + 1)->posY, m_nodes.at(m_currentNode + 1)->posZ);
+		Vector3 c = Vector3(m_nodes.at(m_currentNode + 2)->posX, m_nodes.at(m_currentNode + 2)->posY, m_nodes.at(m_currentNode + 2)->posZ);
+		Vector3 d = Vector3(m_nodes.at(m_currentNode + 3)->posX, m_nodes.at(m_currentNode + 3)->posY, m_nodes.at(m_currentNode + 3)->posZ);
 
-	PrecalculateCatmullRom(a, b, c, d);
+		PrecalculateCatmullRom(a, b, c, d);
+	}
 }
 
 void Path::PrecalculateCatmullRom(Vector3 a, Vector3 b, Vector3 c, Vector3 d)

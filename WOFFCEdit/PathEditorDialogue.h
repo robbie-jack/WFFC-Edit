@@ -54,6 +54,7 @@ protected:
 	void UpdatePathComboBox();
 	void UpdateNodeListBox();
 	void UpdateObjectComboBox();
+	void UpdateAlphaTensionEdits();
 
 	std::vector<SceneObject>* m_sceneGraph;
 	std::vector<Path>* m_paths;
@@ -77,6 +78,9 @@ public:
 
 	CButton m_startstopButton;
 
+	CEdit m_editTension;
+	CEdit m_editAlpha;
+
 	virtual BOOL OnInitDialog() override;
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedOk();
@@ -93,6 +97,8 @@ public:
 	afx_msg void OnBnClickedButtonStartStop();
 	afx_msg void OnBnClickedButtonReset();
 	afx_msg void OnBnClickedButtonDelete();
+	afx_msg void OnEnChangeEditTension();
+	afx_msg void OnEnChangeEditAlpha();
 };
 
 INT_PTR CALLBACK SelectProc(HWND   hwndDlg, UINT   uMsg, WPARAM wParam, LPARAM lParam);

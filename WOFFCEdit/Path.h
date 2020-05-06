@@ -26,6 +26,12 @@ public:
 
 	inline bool AtPathEnd() { return m_pathEnd; };
 
+	inline float GetTension() { return m_tension; };
+	inline float GetAlpha() { return m_alpha; };
+
+	inline void SetTension(float tension) { m_tension = tension; };
+	inline void SetAlpha(float alpha) { m_alpha = alpha; };
+
 	std::wstring m_name;
 
 private:
