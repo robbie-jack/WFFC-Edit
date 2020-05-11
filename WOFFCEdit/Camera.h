@@ -76,12 +76,7 @@ public:
 
 	inline void CalculateCamPosition()
 	{
-		//create look direction from Euler angles in m_camOrientation
-		m_camLookDirection.x = cos((m_camOrientation.x) * 3.1415 / 180) * cos((m_camOrientation.y) * 3.1415 / 180);
-		m_camLookDirection.y = sin((m_camOrientation.x) * 3.1415 / 180);
-		m_camLookDirection.z = cos((m_camOrientation.x) * 3.1415 / 180) * sin((m_camOrientation.y) * 3.1415 / 180);
-
-		m_camLookDirection.Normalize();
+		CalculateLookDirection();
 
 		m_camPosition = m_camLookAt - (m_camLookDirection * m_camDistance);
 	}
@@ -113,5 +108,15 @@ private:
 
 	void FreeCamUpdate(InputCommands InputCommands);
 	void OrbitCamUpdate(InputCommands InputCommands);
+
+	inline void CalculateLookDirection()
+	{
+		//create look direction from Euler angles in m_camOrientation
+		m_camLookDirection.x = cos((m_camOrientation.x) * 3.1415 / 180) * cos((m_camOrientation.y) * 3.1415 / 180);
+		m_camLookDirection.y = sin((m_camOrientation.x) * 3.1415 / 180);
+		m_camLookDirection.z = cos((m_camOrientation.x) * 3.1415 / 180) * sin((m_camOrientation.y) * 3.1415 / 180);
+
+		m_camLookDirection.Normalize();
+	}
 };
 
